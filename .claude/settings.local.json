@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npx tsc:*)",
+      "Bash(./node_modules/.bin/tsc:*)",
+      "Bash(npx:*)",
+      "Bash(node_modules/typescript/bin/tsc:*)",
+      "Bash(rm:*)",
+      "Bash(npm run build:renderer:*)",
+      "Bash(node:*)",
+      "Bash(timeout 10 node:*)",
+      "Bash(sudo rm:*)",
+      "Bash(timeout:*)",
+      "Bash(sudo npm install --force)",
+      "Bash(npm run lint)",
+      "Bash(npm run:*)",
+      "Bash(sudo npx playwright:*)",
+      "Bash(touch:*)",
+      "Bash(git init:*)",
+      "Bash(sudo git init:*)",
+      "Bash(git config:*)",
+      "Bash(git branch:*)",
+      "Bash(MSYS=winsymlinks:nativestrict git init)",
+      "Bash(sudo git config:*)",
+      "Bash(sudo git config user.email \"lee.barry84@gmail.com\")",
+      "Bash(sudo git branch:*)",
+      "Bash(sudo git remote add origin https://github.com/korallis/Gideon.git)",
+      "Bash(sudo git add:*)",
+      "Bash(sudo git status:*)",
+      "Bash(sudo git commit -m \"feat: initial project setup with modern tooling\n\n- Set up Node.js project with TypeScript 5.8.3 and strict mode\n- Configure Vite 5.4.11 build system with Electron integration  \n- Install Electron 34.0.0 with security best practices\n- Set up ESLint + Prettier + Husky for code quality\n- Configure Vitest for unit testing with coverage\n- Set up Playwright for E2E testing across browsers\n- Create comprehensive CI/CD pipeline with GitHub Actions\n- Implement project structure following tech stack requirements\n- Add development workflows and automation\")"
+    ],
+    "deny": []
+  }
+}
