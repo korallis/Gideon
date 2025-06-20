@@ -7,12 +7,24 @@ export default defineConfig({
   test: {
     environment: 'node',
     setupFiles: ['./src/test/setup.ts'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/tests/e2e/**', // Exclude Playwright E2E tests
+      '**/*.e2e.{test,spec}.{js,ts}',
+      '**/*.spec.{js,ts}', // Exclude .spec files (Playwright)
+    ],
+    include: [
+      'src/**/*.{test,spec}.{js,ts,tsx}',
+      'src/**/__tests__/**/*.{js,ts,tsx}',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       exclude: [
         'node_modules/',
         'src/test/',
+        'tests/',
         '**/*.d.ts',
         '**/*.test.{ts,tsx}',
         '**/*.spec.{ts,tsx}',
