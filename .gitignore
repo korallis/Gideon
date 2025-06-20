@@ -136,3 +136,6 @@ sde-cache/
 .secrets
 credentials/
 tokens/
+
+# Claude Code settings with sensitive info
+.claude/settings.local.json

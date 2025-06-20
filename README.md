@@ -17,8 +17,8 @@ A comprehensive desktop application for EVE Online players featuring ship fittin
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/gideon.git
-cd gideon
+git clone https://github.com/korallis/Gideon.git
+cd Gideon
 
 # Install dependencies
 npm install
@@ -67,8 +67,8 @@ This project follows a comprehensive 144-task development plan organized into 7 
 6. **Phase 6: Testing & QA** - Comprehensive testing and quality assurance
 7. **Phase 7: Deployment** - Build, packaging, and distribution
 
-**Current Progress:** Phase 1 - Foundation (0% complete)  
-**Active Task:** TASK-001 - Initialize Node.js project
+**Current Progress:** Phase 1 - Foundation (6% complete)  
+**Active Task:** TASK-010 - Create modular file/folder structure
 
 See [development-plan.md](./development-plan.md) for the complete task breakdown and progress tracking.
 
