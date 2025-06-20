@@ -22,8 +22,8 @@ Building Gideon (EVE Online's AI Copilot) - a comprehensive desktop application 
 - [x] **TASK-005** Set up ESLint + Prettier + Husky for code quality ✅
 - [x] **TASK-006** Configure Vitest for unit testing ✅
 - [x] **TASK-007** Set up Playwright for E2E testing ✅
-- [ ] **TASK-008** Create CI/CD pipeline configuration
-- [ ] **TASK-009** Initialize Git repository with proper .gitignore
+- [x] **TASK-008** Create CI/CD pipeline configuration ✅
+- [x] **TASK-009** Initialize Git repository with proper .gitignore ✅
 
 #### 1.2 Core Architecture Setup
 - [ ] **TASK-010** Create modular file/folder structure following tech stack
