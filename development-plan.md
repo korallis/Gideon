@@ -27,7 +27,7 @@ Building Gideon (EVE Online's AI Copilot) - a comprehensive desktop application 
 
 #### 1.2 Core Architecture Setup
 - [x] **TASK-010** Create modular file/folder structure following tech stack ✅
-- [ ] **TASK-011** Set up Electron main process with IPC communication
+- [x] **TASK-011** Set up Electron main process with IPC communication ✅
 - [ ] **TASK-012** Initialize React 19.1.0 renderer process
 - [ ] **TASK-013** Configure Zustand state management stores
 - [ ] **TASK-014** Set up React Query (TanStack Query) for server state
