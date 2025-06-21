@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <!-- Custom MSBuild Targets for Gideon Development -->
+
+  <!-- Full Clean Target -->
+  <Target Name="FullClean" BeforeTargets="Clean">
+    <Message Text="Performing full clean..." Importance="high" />
+    <ItemGroup>
+      <FilesToDelete Include="$(BaseOutputPath)**\*" />
+      <FilesToDelete Include="$(BaseIntermediateOutputPath)**\*" />
+      <FilesToDelete Include="$(PackageOutputPath)**\*" />
+      <FilesToDelete Include="**\bin\**\*" />
+      <FilesToDelete Include="**\obj\**\*" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" ContinueOnError="true" />
+    <RemoveDir Directories="$(BaseOutputPath);$(BaseIntermediateOutputPath);$(PackageOutputPath)" ContinueOnError="true" />
+  </Target>
+
+  <!-- Code Quality Check Target -->
+  <Target Name="CodeQuality" DependsOnTargets="Build">
+    <Message Text="Running code quality checks..." Importance="high" />
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="Build" Properties="TreatWarningsAsErrors=true;RunAnalyzersDuringBuild=true" />
+  </Target>
+
+  <!-- Development Build Target -->
+  <Target Name="DevBuild" DependsOnTargets="FullClean;Build;CodeQuality">
+    <Message Text="Development build completed successfully!" Importance="high" />
+  </Target>
+
+  <!-- Release Build Target -->
+  <Target Name="ReleaseBuild">
+    <Message Text="Creating release build..." Importance="high" />
+    <MSBuild Projects="$(MSBuildProjectFile)" 
+             Targets="FullClean;Build" 
+             Properties="Configuration=Release;TreatWarningsAsErrors=false;Optimize=true" />
+    <Message Text="Release build completed!" Importance="high" />
+  </Target>
+
+  <!-- Package Restore and Update Target -->
+  <Target Name="UpdatePackages">
+    <Message Text="Updating NuGet packages..." Importance="high" />
+    <Exec Command="dotnet restore --force --no-cache" />
+    <Message Text="Packages updated!" Importance="high" />
+  </Target>
+
+  <!-- Version Info Target -->
+  <Target Name="ShowVersion" BeforeTargets="Build">
+    <Message Text="Building $(AssemblyTitle) v$(AssemblyVersion)" Importance="high" />
+    <Message Text="Configuration: $(Configuration)" Importance="normal" />
+    <Message Text="Target Framework: $(TargetFramework)" Importance="normal" />
+    <Message Text="Platform: $(Platform)" Importance="normal" />
+  </Target>
+
+  <!-- Development Prerequisites Check -->
+  <Target Name="CheckPrerequisites" BeforeTargets="Build">
+    <Message Text="Checking development prerequisites..." Importance="normal" />
+    
+    <!-- Check .NET SDK Version -->
+    <Exec Command="dotnet --version" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="DotNetVersion" />
+    </Exec>
+    <Message Text="Using .NET SDK: $(DotNetVersion)" Importance="normal" />
+    
+    <!-- Verify required files exist -->
+    <Error Text="EditorConfig file not found!" Condition="!Exists('$(MSBuildThisFileDirectory).editorconfig')" />
+    <Error Text="StyleCop ruleset not found!" Condition="!Exists('$(MSBuildThisFileDirectory)StyleCop.ruleset')" />
+    <Error Text="Directory.Packages.props not found!" Condition="!Exists('$(MSBuildThisFileDirectory)Directory.Packages.props')" />
+    
+    <Message Text="All prerequisites satisfied ✓" Importance="normal" />
+  </Target>
+
+  <!-- Post-Build Validation -->
+  <Target Name="PostBuildValidation" AfterTargets="Build">
+    <Message Text="Validating build output..." Importance="normal" />
+    
+    <!-- Check if primary output exists -->
+    <Error Text="Primary output not found: $(TargetPath)" Condition="'$(TargetPath)' != '' AND !Exists('$(TargetPath)')" />
+    
+    <!-- Log successful build -->
+    <Message Text="Build validation completed ✓" Importance="normal" />
+  </Target>
+
+  <!-- Generate Build Report -->
+  <Target Name="BuildReport" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <BuildReportFile>$(OutputPath)BuildReport.txt</BuildReportFile>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <ReportLines Include="Gideon Build Report" />
+      <ReportLines Include="==================" />
+      <ReportLines Include="Build Time: $([System.DateTime]::Now.ToString('yyyy-MM-dd HH:mm:ss'))" />
+      <ReportLines Include="Configuration: $(Configuration)" />
+      <ReportLines Include="Target Framework: $(TargetFramework)" />
+      <ReportLines Include="Platform: $(Platform)" />
+      <ReportLines Include="Output Path: $(OutputPath)" />
+      <ReportLines Include="Assembly Version: $(AssemblyVersion)" />
+      <ReportLines Include="File Version: $(FileVersion)" />
+      <ReportLines Include=" " />
+      <ReportLines Include="Primary Output: $(TargetFileName)" />
+      <ReportLines Include="Output Size: $([System.IO.FileInfo]::new('$(TargetPath)').Length) bytes" Condition="Exists('$(TargetPath)')" />
+    </ItemGroup>
+    
+    <WriteLinesToFile File="$(BuildReportFile)" Lines="@(ReportLines)" Overwrite="true" />
+    <Message Text="Build report written to: $(BuildReportFile)" Importance="high" />
+  </Target>
+
+  <!-- Help Target -->
+  <Target Name="Help">
+    <Message Text="" Importance="high" />
+    <Message Text="Available Custom Targets:" Importance="high" />
+    <Message Text="=========================" Importance="high" />
+    <Message Text="FullClean       - Comprehensive clean of all build artifacts" Importance="high" />
+    <Message Text="CodeQuality     - Run build with strict code quality checks" Importance="high" />
+    <Message Text="DevBuild        - Full development build with quality checks" Importance="high" />
+    <Message Text="ReleaseBuild    - Optimized release build" Importance="high" />
+    <Message Text="UpdatePackages  - Force update all NuGet packages" Importance="high" />
+    <Message Text="ShowVersion     - Display version and build information" Importance="high" />
+    <Message Text="BuildReport     - Generate detailed build report (Release only)" Importance="high" />
+    <Message Text="Help            - Show this help message" Importance="high" />
+    <Message Text="" Importance="high" />
+    <Message Text="Usage: dotnet build -t:TargetName" Importance="high" />
+    <Message Text="Example: dotnet build -t:DevBuild" Importance="high" />
+    <Message Text="" Importance="high" />
+  </Target>
+
+</Project>
