@@ -62,8 +62,15 @@ public partial class App : System.Windows.Application
             var windowsAppSdkService = _host.Services.GetRequiredService<WindowsAppSdkService>();
             await windowsAppSdkService.InitializeAsync();
 
+            var highDpiService = _host.Services.GetRequiredService<HighDpiService>();
+            await highDpiService.InitializeAsync();
+
             // Show main window
             var mainWindow = _host.Services.GetRequiredService<Presentation.Views.MainWindow>();
+            
+            // Configure main window for optimal DPI handling
+            highDpiService.ConfigureWindow(mainWindow);
+            
             mainWindow.Show();
         }
         catch (Exception ex)
@@ -118,6 +125,7 @@ public partial class App : System.Windows.Application
         services.Configure<NotificationConfiguration>(configuration.GetSection(NotificationConfiguration.SectionName));
         services.Configure<SystemIntegrationConfiguration>(configuration.GetSection(SystemIntegrationConfiguration.SectionName));
         services.Configure<WindowsAppSdkConfiguration>(configuration.GetSection(WindowsAppSdkConfiguration.SectionName));
+        services.Configure<HighDpiConfiguration>(configuration.GetSection(HighDpiConfiguration.SectionName));
         
         // Register Entity Framework
         services.AddDbContext<GideonDbContext>(options =>
@@ -147,6 +155,7 @@ public partial class App : System.Windows.Application
         services.AddSingleton<Windows11ThemeManager>();
         services.AddSingleton<WindowsAppSdkService>();
         services.AddSingleton<ModernFileDialogService>();
+        services.AddSingleton<HighDpiService>();
         
         // Register HttpClient for API calls
         services.AddHttpClient<IAuthenticationService, AuthenticationService>();
