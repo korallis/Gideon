@@ -23,6 +23,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
                 
+                <!-- EVE Military Color Palette (Foundation) -->
+                <ResourceDictionary Source="Presentation/Themes/EVEMilitaryPalette.xaml" />
+                
                 <!-- Windows 11 Theme Integration -->
                 <ResourceDictionary Source="Presentation/Themes/Windows11Theme.xaml" />
                 
@@ -35,63 +38,54 @@
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             
-            <!-- EVE Online Themed Colors -->
-            <SolidColorBrush x:Key="EVE_PrimaryBrush" Color="#00D4FF" />        <!-- EVE Cyan -->
-            <SolidColorBrush x:Key="EVE_SecondaryBrush" Color="#FFB800" />      <!-- EVE Gold -->
-            <SolidColorBrush x:Key="EVE_AccentBrush" Color="#7289DA" />         <!-- Discord-like Purple -->
-            <SolidColorBrush x:Key="EVE_BackgroundBrush" Color="#1C1C1E" />     <!-- Dark Background -->
-            <SolidColorBrush x:Key="EVE_SurfaceBrush" Color="#2C2C2E" />        <!-- Dark Surface -->
-            <SolidColorBrush x:Key="EVE_ErrorBrush" Color="#FF453A" />          <!-- Red -->
-            <SolidColorBrush x:Key="EVE_SuccessBrush" Color="#30D158" />        <!-- Green -->
-            <SolidColorBrush x:Key="EVE_WarningBrush" Color="#FF9F0A" />        <!-- Orange -->
-            <SolidColorBrush x:Key="EVE_TextPrimaryBrush" Color="#FFFFFF" />    <!-- White Text -->
-            <SolidColorBrush x:Key="EVE_TextSecondaryBrush" Color="#C4C4C6" />  <!-- Gray Text -->
-            <SolidColorBrush x:Key="EVE_BorderBrush" Color="#48484A" />         <!-- Border Color -->
+            <!-- Legacy EVE Color Aliases - Now reference the comprehensive military palette -->
+            <!-- Note: Main EVE colors are now defined in EVEMilitaryPalette.xaml -->
+            <!-- These aliases maintain compatibility with existing styles -->
             
-            <!-- EVE Online Typography Styles -->
+            <!-- EVE Military Typography Styles -->
             <Style x:Key="EVE_TitleStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignHeadline4TextBlock}">
                 <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="Foreground" Value="{StaticResource EVE_PrimaryBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource Text_Primary_ElectricBrush}" />
                 <Setter Property="FontFamily" Value="Segoe UI, Arial, sans-serif" />
             </Style>
             
             <Style x:Key="EVE_SubtitleStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignHeadline6TextBlock}">
                 <Setter Property="FontWeight" Value="Medium" />
-                <Setter Property="Foreground" Value="{StaticResource EVE_TextPrimaryBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource Text_PrimaryBrush}" />
             </Style>
             
             <Style x:Key="EVE_BodyStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-                <Setter Property="Foreground" Value="{StaticResource EVE_TextSecondaryBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource Text_SecondaryBrush}" />
                 <Setter Property="LineHeight" Value="20" />
             </Style>
             
             <Style x:Key="EVE_CaptionStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}">
-                <Setter Property="Foreground" Value="{StaticResource EVE_TextSecondaryBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource Text_TertiaryBrush}" />
                 <Setter Property="Opacity" Value="0.8" />
             </Style>
             
-            <!-- EVE Card Style -->
+            <!-- EVE Military Card Style -->
             <Style x:Key="EVE_CardStyle" TargetType="materialDesign:Card">
-                <Setter Property="Background" Value="{StaticResource EVE_SurfaceBrush}" />
-                <Setter Property="Foreground" Value="{StaticResource EVE_TextPrimaryBrush}" />
+                <Setter Property="Background" Value="{StaticResource Surface_SecondaryBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource Text_PrimaryBrush}" />
                 <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp4" />
                 <Setter Property="Margin" Value="8" />
                 <Setter Property="Padding" Value="16" />
             </Style>
             
-            <!-- EVE Button Styles -->
+            <!-- EVE Military Button Styles -->
             <Style x:Key="EVE_PrimaryButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
-                <Setter Property="Background" Value="{StaticResource EVE_PrimaryBrush}" />
-                <Setter Property="BorderBrush" Value="{StaticResource EVE_PrimaryBrush}" />
-                <Setter Property="Foreground" Value="#000000" />
+                <Setter Property="Background" Value="{StaticResource ElectricBlue_CoreBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_CoreBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource EVEMilitary_VoidBlackBrush}" />
                 <Setter Property="FontWeight" Value="Medium" />
                 <Setter Property="Height" Value="36" />
                 <Setter Property="Padding" Value="16,0" />
             </Style>
             
             <Style x:Key="EVE_SecondaryButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignOutlinedButton}">
-                <Setter Property="BorderBrush" Value="{StaticResource EVE_SecondaryBrush}" />
-                <Setter Property="Foreground" Value="{StaticResource EVE_SecondaryBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource EVEGold_CoreBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource EVEGold_CoreBrush}" />
                 <Setter Property="FontWeight" Value="Medium" />
                 <Setter Property="Height" Value="36" />
                 <Setter Property="Padding" Value="16,0" />

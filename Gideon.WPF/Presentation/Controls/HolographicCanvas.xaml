@@ -244,7 +244,7 @@ Created: June 21, 2025
         </EventTrigger>
 
         <!-- Layer transition animations -->
-        <Trigger Property="IsMouseOver" Value="True">
+        <Trigger Property="UIElement.IsMouseOver" Value="True">
             <Trigger.EnterActions>
                 <BeginStoryboard>
                     <Storyboard>

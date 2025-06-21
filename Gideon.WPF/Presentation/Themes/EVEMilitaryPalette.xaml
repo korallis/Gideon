@@ -1,0 +1,335 @@
+<!--
+=========================================================================
+EVEMilitaryPalette.xaml - EVE Military Color Palette Theme
+=========================================================================
+Comprehensive color palette for the Westworld-EVE fusion interface.
+Defines military-grade colors with electric blue and gold accents for
+the holographic UI system.
+
+Features:
+- EVE military dark foundation colors
+- Electric blue accent system
+- Gold highlight system  
+- Holographic color variants
+- Semantic color assignments
+- Windows 11 compatibility
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =============================================================== -->
+    <!--                    FOUNDATION COLORS                          -->
+    <!-- =============================================================== -->
+
+    <!-- EVE Military Dark Foundation -->
+    <Color x:Key="EVEMilitary_VoidBlack">#FF0A0A0A</Color>
+    <Color x:Key="EVEMilitary_DeepSpace">#FF0F1419</Color>
+    <Color x:Key="EVEMilitary_StationGray">#FF1A1D23</Color>
+    <Color x:Key="EVEMilitary_HullMetal">#FF2A2D33</Color>
+    <Color x:Key="EVEMilitary_PanelDark">#FF1C1C1E</Color>
+    <Color x:Key="EVEMilitary_SurfaceMetal">#FF2C2C2E</Color>
+
+    <!-- EVE Military Blue Spectrum -->
+    <Color x:Key="EVEMilitary_NavyCore">#FF0D1B2A</Color>
+    <Color x:Key="EVEMilitary_FleetBlue">#FF1B263B</Color>
+    <Color x:Key="EVEMilitary_TacticalBlue">#FF415A77</Color>
+    <Color x:Key="EVEMilitary_ShieldBlue">#FF778DA9</Color>
+
+    <!-- =============================================================== -->
+    <!--                    ELECTRIC BLUE SYSTEM                       -->
+    <!-- =============================================================== -->
+
+    <!-- Primary Electric Blue Scale -->
+    <Color x:Key="ElectricBlue_Core">#FF00D4FF</Color>         <!-- Main EVE cyan -->
+    <Color x:Key="ElectricBlue_Bright">#FF33DDFF</Color>       <!-- Brighter variant -->
+    <Color x:Key="ElectricBlue_Intense">#FF00BBFF</Color>      <!-- More saturated -->
+    <Color x:Key="ElectricBlue_Soft">#FF66E6FF</Color>         <!-- Softer variant -->
+    <Color x:Key="ElectricBlue_Deep">#FF0088CC</Color>         <!-- Deeper blue -->
+
+    <!-- Electric Blue State Colors -->
+    <Color x:Key="ElectricBlue_Hover">#FF1ADAFF</Color>        <!-- Hover state -->
+    <Color x:Key="ElectricBlue_Active">#FF00BBDD</Color>       <!-- Active/pressed -->
+    <Color x:Key="ElectricBlue_Focus">#FF4DE6FF</Color>        <!-- Focused state -->
+    <Color x:Key="ElectricBlue_Disabled">#FF004466</Color>     <!-- Disabled state -->
+
+    <!-- Electric Blue Transparency Variants -->
+    <Color x:Key="ElectricBlue_Alpha90">#E600D4FF</Color>      <!-- 90% opacity -->
+    <Color x:Key="ElectricBlue_Alpha75">#BF00D4FF</Color>      <!-- 75% opacity -->
+    <Color x:Key="ElectricBlue_Alpha50">#8000D4FF</Color>      <!-- 50% opacity -->
+    <Color x:Key="ElectricBlue_Alpha25">#4000D4FF</Color>      <!-- 25% opacity -->
+    <Color x:Key="ElectricBlue_Alpha10">#1A00D4FF</Color>      <!-- 10% opacity -->
+
+    <!-- =============================================================== -->
+    <!--                      GOLD ACCENT SYSTEM                       -->
+    <!-- =============================================================== -->
+
+    <!-- Primary Gold Scale -->
+    <Color x:Key="EVEGold_Core">#FFFFD700</Color>              <!-- Classic EVE gold -->
+    <Color x:Key="EVEGold_Bright">#FFFFED4A</Color>            <!-- Bright gold -->
+    <Color x:Key="EVEGold_Rich">#FFFFB700</Color>              <!-- Rich gold -->
+    <Color x:Key="EVEGold_Warm">#FFFFC947</Color>              <!-- Warm gold -->
+    <Color x:Key="EVEGold_Amber">#FFFF8C00</Color>             <!-- Amber gold -->
+
+    <!-- Gold State Colors -->
+    <Color x:Key="EVEGold_Hover">#FFFFDB4D</Color>             <!-- Hover state -->
+    <Color x:Key="EVEGold_Active">#FFFFAA00</Color>            <!-- Active/pressed -->
+    <Color x:Key="EVEGold_Focus">#FFFFE066</Color>             <!-- Focused state -->
+    <Color x:Key="EVEGold_Disabled">#FF664400</Color>          <!-- Disabled state -->
+
+    <!-- Gold Transparency Variants -->
+    <Color x:Key="EVEGold_Alpha90">#E6FFD700</Color>           <!-- 90% opacity -->
+    <Color x:Key="EVEGold_Alpha75">#BFFFD700</Color>           <!-- 75% opacity -->
+    <Color x:Key="EVEGold_Alpha50">#80FFD700</Color>           <!-- 50% opacity -->
+    <Color x:Key="EVEGold_Alpha25">#40FFD700</Color>           <!-- 25% opacity -->
+    <Color x:Key="EVEGold_Alpha10">#1AFFD700</Color>           <!-- 10% opacity -->
+
+    <!-- =============================================================== -->
+    <!--                    HOLOGRAPHIC VARIANTS                       -->
+    <!-- =============================================================== -->
+
+    <!-- Holographic Electric Blue -->
+    <Color x:Key="Holo_ElectricBlue_Glow">#FF80E6FF</Color>    <!-- Glowing variant -->
+    <Color x:Key="Holo_ElectricBlue_Pulse">#FF00FFFF</Color>   <!-- Pulsing effect -->
+    <Color x:Key="Holo_ElectricBlue_Scan">#FF4DDDFF</Color>    <!-- Scan line effect -->
+    <Color x:Key="Holo_ElectricBlue_Flicker">#FF1AC6E6</Color> <!-- Flickering -->
+
+    <!-- Holographic Gold -->
+    <Color x:Key="Holo_Gold_Glow">#FFFFEE80</Color>            <!-- Glowing gold -->
+    <Color x:Key="Holo_Gold_Pulse">#FFFFFF80</Color>           <!-- Pulsing gold -->
+    <Color x:Key="Holo_Gold_Scan">#FFFFDD66</Color>            <!-- Scan line gold -->
+    <Color x:Key="Holo_Gold_Flicker">#FFE6B800</Color>         <!-- Flickering gold -->
+
+    <!-- Holographic White Variants -->
+    <Color x:Key="Holo_White_Pure">#FFFFFFFF</Color>           <!-- Pure white -->
+    <Color x:Key="Holo_White_Warm">#FFFFF8E1</Color>           <!-- Warm white -->
+    <Color x:Key="Holo_White_Cool">#FFF0F8FF</Color>           <!-- Cool white -->
+    <Color x:Key="Holo_White_Glow">#FFFFFFFF</Color>           <!-- Glowing white -->
+
+    <!-- =============================================================== -->
+    <!--                      SEMANTIC COLORS                          -->
+    <!-- =============================================================== -->
+
+    <!-- Success States -->
+    <Color x:Key="Semantic_Success_Primary">#FF30D158</Color>   <!-- Green success -->
+    <Color x:Key="Semantic_Success_Light">#FF66DD7A</Color>     <!-- Light green -->
+    <Color x:Key="Semantic_Success_Dark">#FF248A3D</Color>      <!-- Dark green -->
+
+    <!-- Warning States -->
+    <Color x:Key="Semantic_Warning_Primary">#FFFF9F0A</Color>  <!-- Orange warning -->
+    <Color x:Key="Semantic_Warning_Light">#FFFFB347</Color>    <!-- Light orange -->
+    <Color x:Key="Semantic_Warning_Dark">#FFE8890B</Color>     <!-- Dark orange -->
+
+    <!-- Error States -->
+    <Color x:Key="Semantic_Error_Primary">#FFFF453A</Color>    <!-- Red error -->
+    <Color x:Key="Semantic_Error_Light">#FFFF6961</Color>      <!-- Light red -->
+    <Color x:Key="Semantic_Error_Dark">#FFD70015</Color>       <!-- Dark red -->
+
+    <!-- Information States -->
+    <Color x:Key="Semantic_Info_Primary">#FF007AFF</Color>     <!-- Blue info -->
+    <Color x:Key="Semantic_Info_Light">#FF5AC8FA</Color>       <!-- Light blue -->
+    <Color x:Key="Semantic_Info_Dark">#FF0051D5</Color>        <!-- Dark blue -->
+
+    <!-- =============================================================== -->
+    <!--                        TEXT COLORS                            -->
+    <!-- =============================================================== -->
+
+    <!-- Primary Text -->
+    <Color x:Key="Text_Primary">#FFFFFFFF</Color>              <!-- White primary -->
+    <Color x:Key="Text_Primary_Electric">#FF00D4FF</Color>     <!-- Electric blue primary -->
+    <Color x:Key="Text_Primary_Gold">#FFFFD700</Color>         <!-- Gold primary -->
+
+    <!-- Secondary Text -->
+    <Color x:Key="Text_Secondary">#FFC4C4C6</Color>            <!-- Gray secondary -->
+    <Color x:Key="Text_Secondary_Electric">#FF80E6FF</Color>   <!-- Electric blue secondary -->
+    <Color x:Key="Text_Secondary_Gold">#FFFFDD80</Color>       <!-- Gold secondary -->
+
+    <!-- Tertiary Text -->
+    <Color x:Key="Text_Tertiary">#FF8E8E93</Color>             <!-- Light gray -->
+    <Color x:Key="Text_Disabled">#FF48484A</Color>             <!-- Disabled text -->
+    <Color x:Key="Text_Placeholder">#FF636366</Color>          <!-- Placeholder text -->
+
+    <!-- =============================================================== -->
+    <!--                    SURFACE & BACKGROUND                       -->
+    <!-- =============================================================== -->
+
+    <!-- Background Surfaces -->
+    <Color x:Key="Surface_Background">#FF000000</Color>        <!-- True black background -->
+    <Color x:Key="Surface_Primary">#FF1C1C1E</Color>           <!-- Primary surface -->
+    <Color x:Key="Surface_Secondary">#FF2C2C2E</Color>         <!-- Secondary surface -->
+    <Color x:Key="Surface_Tertiary">#FF3A3A3C</Color>          <!-- Tertiary surface -->
+
+    <!-- Glass Surfaces -->
+    <Color x:Key="Surface_Glass_Ultra">#08FFFFFF</Color>       <!-- Ultra light glass -->
+    <Color x:Key="Surface_Glass_Light">#15FFFFFF</Color>       <!-- Light glass -->
+    <Color x:Key="Surface_Glass_Medium">#25FFFFFF</Color>      <!-- Medium glass -->
+    <Color x:Key="Surface_Glass_Dark">#35FFFFFF</Color>        <!-- Dark glass -->
+
+    <!-- Electric Glass Surfaces -->
+    <Color x:Key="Surface_ElectricGlass_Light">#1000D4FF</Color>    <!-- Light electric glass -->
+    <Color x:Key="Surface_ElectricGlass_Medium">#2000D4FF</Color>   <!-- Medium electric glass -->
+    <Color x:Key="Surface_ElectricGlass_Dark">#3000D4FF</Color>     <!-- Dark electric glass -->
+
+    <!-- Gold Glass Surfaces -->
+    <Color x:Key="Surface_GoldGlass_Light">#10FFD700</Color>    <!-- Light gold glass -->
+    <Color x:Key="Surface_GoldGlass_Medium">#20FFD700</Color>   <!-- Medium gold glass -->
+    <Color x:Key="Surface_GoldGlass_Dark">#30FFD700</Color>     <!-- Dark gold glass -->
+
+    <!-- =============================================================== -->
+    <!--                        BRUSH RESOURCES                        -->
+    <!-- =============================================================== -->
+
+    <!-- Solid Color Brushes - Electric Blue System -->
+    <SolidColorBrush x:Key="ElectricBlue_CoreBrush" Color="{StaticResource ElectricBlue_Core}"/>
+    <SolidColorBrush x:Key="ElectricBlue_BrightBrush" Color="{StaticResource ElectricBlue_Bright}"/>
+    <SolidColorBrush x:Key="ElectricBlue_IntenseBrush" Color="{StaticResource ElectricBlue_Intense}"/>
+    <SolidColorBrush x:Key="ElectricBlue_SoftBrush" Color="{StaticResource ElectricBlue_Soft}"/>
+    <SolidColorBrush x:Key="ElectricBlue_DeepBrush" Color="{StaticResource ElectricBlue_Deep}"/>
+
+    <!-- Solid Color Brushes - Gold System -->
+    <SolidColorBrush x:Key="EVEGold_CoreBrush" Color="{StaticResource EVEGold_Core}"/>
+    <SolidColorBrush x:Key="EVEGold_BrightBrush" Color="{StaticResource EVEGold_Bright}"/>
+    <SolidColorBrush x:Key="EVEGold_RichBrush" Color="{StaticResource EVEGold_Rich}"/>
+    <SolidColorBrush x:Key="EVEGold_WarmBrush" Color="{StaticResource EVEGold_Warm}"/>
+    <SolidColorBrush x:Key="EVEGold_AmberBrush" Color="{StaticResource EVEGold_Amber}"/>
+
+    <!-- Solid Color Brushes - Foundation -->
+    <SolidColorBrush x:Key="EVEMilitary_VoidBlackBrush" Color="{StaticResource EVEMilitary_VoidBlack}"/>
+    <SolidColorBrush x:Key="EVEMilitary_DeepSpaceBrush" Color="{StaticResource EVEMilitary_DeepSpace}"/>
+    <SolidColorBrush x:Key="EVEMilitary_StationGrayBrush" Color="{StaticResource EVEMilitary_StationGray}"/>
+    <SolidColorBrush x:Key="EVEMilitary_HullMetalBrush" Color="{StaticResource EVEMilitary_HullMetal}"/>
+
+    <!-- Solid Color Brushes - Text -->
+    <SolidColorBrush x:Key="Text_PrimaryBrush" Color="{StaticResource Text_Primary}"/>
+    <SolidColorBrush x:Key="Text_Primary_ElectricBrush" Color="{StaticResource Text_Primary_Electric}"/>
+    <SolidColorBrush x:Key="Text_Primary_GoldBrush" Color="{StaticResource Text_Primary_Gold}"/>
+    <SolidColorBrush x:Key="Text_SecondaryBrush" Color="{StaticResource Text_Secondary}"/>
+    <SolidColorBrush x:Key="Text_TertiaryBrush" Color="{StaticResource Text_Tertiary}"/>
+
+    <!-- Solid Color Brushes - Surfaces -->
+    <SolidColorBrush x:Key="Surface_BackgroundBrush" Color="{StaticResource Surface_Background}"/>
+    <SolidColorBrush x:Key="Surface_PrimaryBrush" Color="{StaticResource Surface_Primary}"/>
+    <SolidColorBrush x:Key="Surface_SecondaryBrush" Color="{StaticResource Surface_Secondary}"/>
+    <SolidColorBrush x:Key="Surface_TertiaryBrush" Color="{StaticResource Surface_Tertiary}"/>
+
+    <!-- Solid Color Brushes - Glass Surfaces -->
+    <SolidColorBrush x:Key="Surface_Glass_UltraBrush" Color="{StaticResource Surface_Glass_Ultra}"/>
+    <SolidColorBrush x:Key="Surface_Glass_LightBrush" Color="{StaticResource Surface_Glass_Light}"/>
+    <SolidColorBrush x:Key="Surface_Glass_MediumBrush" Color="{StaticResource Surface_Glass_Medium}"/>
+    <SolidColorBrush x:Key="Surface_Glass_DarkBrush" Color="{StaticResource Surface_Glass_Dark}"/>
+
+    <!-- =============================================================== -->
+    <!--                     GRADIENT BRUSHES                          -->
+    <!-- =============================================================== -->
+
+    <!-- Electric Blue Gradients -->
+    <LinearGradientBrush x:Key="ElectricBlue_HorizontalGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource ElectricBlue_Deep}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Bright}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ElectricBlue_VerticalGradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="{StaticResource ElectricBlue_Bright}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Deep}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="ElectricBlue_RadialGradient" Center="0.5,0.5" RadiusX="1" RadiusY="1">
+        <GradientStop Color="{StaticResource ElectricBlue_Bright}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="0.7"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Deep}" Offset="1"/>
+    </RadialGradientBrush>
+
+    <!-- Gold Gradients -->
+    <LinearGradientBrush x:Key="EVEGold_HorizontalGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource EVEGold_Amber}" Offset="0"/>
+        <GradientStop Color="{StaticResource EVEGold_Core}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource EVEGold_Bright}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="EVEGold_VerticalGradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="{StaticResource EVEGold_Bright}" Offset="0"/>
+        <GradientStop Color="{StaticResource EVEGold_Core}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource EVEGold_Rich}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="EVEGold_RadialGradient" Center="0.5,0.5" RadiusX="1" RadiusY="1">
+        <GradientStop Color="{StaticResource EVEGold_Bright}" Offset="0"/>
+        <GradientStop Color="{StaticResource EVEGold_Core}" Offset="0.7"/>
+        <GradientStop Color="{StaticResource EVEGold_Amber}" Offset="1"/>
+    </RadialGradientBrush>
+
+    <!-- Military Foundation Gradients -->
+    <LinearGradientBrush x:Key="EVEMilitary_FoundationGradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="{StaticResource EVEMilitary_DeepSpace}" Offset="0"/>
+        <GradientStop Color="{StaticResource EVEMilitary_PanelDark}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource EVEMilitary_VoidBlack}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="EVEMilitary_MetalGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource EVEMilitary_HullMetal}" Offset="0"/>
+        <GradientStop Color="{StaticResource EVEMilitary_SurfaceMetal}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource EVEMilitary_StationGray}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Combined EVE-Electric Gradients -->
+    <LinearGradientBrush x:Key="EVE_CombinedGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Deep}" Offset="0.3"/>
+        <GradientStop Color="{StaticResource EVEGold_Core}" Offset="0.7"/>
+        <GradientStop Color="{StaticResource EVEGold_Amber}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Holographic Scan Line Gradient -->
+    <LinearGradientBrush x:Key="Holo_ScanLineGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#00FFFFFF" Offset="0"/>
+        <GradientStop Color="{StaticResource Holo_ElectricBlue_Scan}" Offset="0.4"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Bright}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource Holo_ElectricBlue_Scan}" Offset="0.6"/>
+        <GradientStop Color="#00FFFFFF" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- =============================================================== -->
+    <!--                  COMPATIBILITY ALIASES                        -->
+    <!-- =============================================================== -->
+
+    <!-- Legacy EVE Theme Compatibility -->
+    <SolidColorBrush x:Key="EVE_PrimaryBrush" Color="{StaticResource ElectricBlue_Core}"/>
+    <SolidColorBrush x:Key="EVE_SecondaryBrush" Color="{StaticResource EVEGold_Core}"/>
+    <SolidColorBrush x:Key="EVE_AccentBrush" Color="{StaticResource ElectricBlue_Bright}"/>
+    <SolidColorBrush x:Key="EVE_BackgroundBrush" Color="{StaticResource Surface_Background}"/>
+    <SolidColorBrush x:Key="EVE_SurfaceBrush" Color="{StaticResource Surface_Primary}"/>
+    <SolidColorBrush x:Key="EVE_TextPrimaryBrush" Color="{StaticResource Text_Primary}"/>
+    <SolidColorBrush x:Key="EVE_TextSecondaryBrush" Color="{StaticResource Text_Secondary}"/>
+
+    <!-- State Color Aliases -->
+    <SolidColorBrush x:Key="EVE_SuccessBrush" Color="{StaticResource Semantic_Success_Primary}"/>
+    <SolidColorBrush x:Key="EVE_WarningBrush" Color="{StaticResource Semantic_Warning_Primary}"/>
+    <SolidColorBrush x:Key="EVE_ErrorBrush" Color="{StaticResource Semantic_Error_Primary}"/>
+    <SolidColorBrush x:Key="EVE_InfoBrush" Color="{StaticResource Semantic_Info_Primary}"/>
+
+    <!-- Glass Material Aliases -->
+    <SolidColorBrush x:Key="GlassUltraLight" Color="{StaticResource Surface_Glass_Ultra}"/>
+    <SolidColorBrush x:Key="GlassLight" Color="{StaticResource Surface_Glass_Light}"/>
+    <SolidColorBrush x:Key="GlassMedium" Color="{StaticResource Surface_Glass_Medium}"/>
+    <SolidColorBrush x:Key="GlassDark" Color="{StaticResource Surface_Glass_Dark}"/>
+
+    <!-- Holographic Gradient Aliases -->
+    <LinearGradientBrush x:Key="HoloCyanGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Deep}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Bright}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="HoloGoldGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource EVEGold_Core}" Offset="0"/>
+        <GradientStop Color="{StaticResource EVEGold_Rich}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource EVEGold_Bright}" Offset="1"/>
+    </LinearGradientBrush>
+
+</ResourceDictionary>

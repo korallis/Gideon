@@ -281,20 +281,24 @@ Created: June 21, 2025
                                HorizontalAlignment="Center"
                                Margin="0,0,0,20"/>
                     
-                    <StackPanel Spacing="15">
+                    <StackPanel>
                         <Slider x:Name="GlowIntensitySlider"
                                 Minimum="0" Maximum="2" Value="1"
-                                Foreground="{StaticResource EVE_PrimaryBrush}"/>
+                                Foreground="{StaticResource EVE_PrimaryBrush}"
+                                Margin="0,0,0,15"/>
                         <TextBlock Text="Glow Intensity" 
                                    Style="{StaticResource EVE_CaptionStyle}"
+                                   Margin="0,0,0,15"
                                    HorizontalAlignment="Center"/>
                         
                         <Slider x:Name="BlurRadiusSlider"
                                 Minimum="5" Maximum="30" Value="15"
-                                Foreground="{StaticResource EVE_SecondaryBrush}"/>
+                                Foreground="{StaticResource EVE_SecondaryBrush}"
+                                Margin="0,0,0,15"/>
                         <TextBlock Text="Glassmorphism Blur" 
                                    Style="{StaticResource EVE_CaptionStyle}"
-                                   HorizontalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,15"/>
                         
                         <CheckBox Content="Enable Scanlines"
                                   x:Name="ScanlinesCheckbox"
