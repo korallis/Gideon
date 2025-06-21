@@ -1,0 +1,437 @@
+<!--
+=========================================================================
+AngularBordersDemo.xaml - Angular Borders and Corporation Insignia Demo
+=========================================================================
+Comprehensive demonstration of the EVE angular border system with 
+corporation insignia support, military rank indicators, and animated
+border effects for the Westworld-EVE fusion interface.
+
+Features:
+- All angular border types showcase
+- Corporation insignia demonstrations
+- Military rank indicator examples
+- Interactive border controls
+- Animation effect toggles
+- Real-time border customization
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<Page x:Class="Gideon.WPF.Presentation.Views.AngularBordersDemo"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="clr-namespace:Gideon.WPF.Presentation.Controls"
+      mc:Ignorable="d"
+      Title="Angular Borders Demo"
+      Background="{StaticResource Surface_BackgroundBrush}">
+
+    <Page.Resources>
+        <!-- Merge the angular border styles -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/AngularBorders.xaml"/>
+                <ResourceDictionary Source="../Styles/AngularBorderPanel.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- Demo content styles -->
+            <Style x:Key="DemoContentStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Setter Property="Foreground" Value="{StaticResource Text_PrimaryBrush}"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="LineHeight" Value="16"/>
+            </Style>
+
+            <Style x:Key="DemoTitleStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="{StaticResource Text_Primary_ElectricBrush}"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0,0,0,10"/>
+                <Setter Property="Effect" Value="{StaticResource CyanGlowSoft}"/>
+            </Style>
+
+            <Style x:Key="ControlSliderStyle" TargetType="Slider">
+                <Setter Property="Minimum" Value="0"/>
+                <Setter Property="Maximum" Value="2"/>
+                <Setter Property="Value" Value="1"/>
+                <Setter Property="Width" Value="120"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Foreground" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0" 
+                    Style="{StaticResource GlassMediumPanel}" 
+                    Margin="0,0,0,30"
+                    HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="30,15">
+                    <TextBlock Text="ANGULAR BORDER SYSTEM"
+                               FontSize="24" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource Text_Primary_ElectricBrush}"
+                               VerticalAlignment="Center"
+                               Effect="{StaticResource CyanGlowMedium}"/>
+                    
+                    <Rectangle Width="4" Height="30" 
+                               Fill="{StaticResource EVE_CombinedGradient}"
+                               Margin="20,0"
+                               Effect="{StaticResource CyanGlowSoft}"/>
+                    
+                    <TextBlock Text="EVE Military &amp; Corporation Borders"
+                               FontSize="14"
+                               Foreground="{StaticResource Text_Primary_GoldBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Main Demo Area -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Control Panel -->
+                <Border Grid.Column="0" 
+                        Style="{StaticResource GlassDarkPanel}"
+                        VerticalAlignment="Top"
+                        Margin="0,0,20,0">
+                    <StackPanel Margin="20">
+                        <TextBlock Text="BORDER CONTROLS"
+                                   Style="{StaticResource EVE_SubtitleStyle}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,20"/>
+
+                        <!-- Border Type Selection -->
+                        <TextBlock Text="Border Type" Style="{StaticResource DemoTitleStyle}" FontSize="12"/>
+                        <ComboBox x:Name="BorderTypeCombo" 
+                                  SelectionChanged="OnBorderTypeChanged"
+                                  Margin="0,5,0,15">
+                            <ComboBoxItem Content="Standard" IsSelected="True"/>
+                            <ComboBoxItem Content="Military"/>
+                            <ComboBoxItem Content="Corporation"/>
+                            <ComboBoxItem Content="ScanLine"/>
+                            <ComboBoxItem Content="Heavy"/>
+                            <ComboBoxItem Content="Minimal"/>
+                        </ComboBox>
+
+                        <!-- Thickness Control -->
+                        <TextBlock Text="Border Thickness" Style="{StaticResource DemoTitleStyle}" FontSize="12"/>
+                        <Slider x:Name="ThicknessSlider" 
+                                Style="{StaticResource ControlSliderStyle}"
+                                Minimum="0.5" Maximum="3"
+                                Value="1.0"
+                                ValueChanged="OnThicknessChanged"/>
+                        <TextBlock x:Name="ThicknessValue" 
+                                   Text="1.0" 
+                                   Style="{StaticResource EVE_CaptionStyle}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,15"/>
+
+                        <!-- Corporation Settings -->
+                        <TextBlock Text="CORPORATION" Style="{StaticResource DemoTitleStyle}" FontSize="12" Margin="0,10,0,5"/>
+                        
+                        <TextBlock Text="Insignia Position" Style="{StaticResource EVE_CaptionStyle}" FontSize="10"/>
+                        <ComboBox x:Name="InsigniaPositionCombo" 
+                                  SelectionChanged="OnInsigniaPositionChanged"
+                                  Margin="0,5,0,10">
+                            <ComboBoxItem Content="None" IsSelected="True"/>
+                            <ComboBoxItem Content="TopLeft"/>
+                            <ComboBoxItem Content="TopRight"/>
+                            <ComboBoxItem Content="Both"/>
+                        </ComboBox>
+
+                        <TextBox x:Name="CorporationNameText" 
+                                 Text="CORP"
+                                 Margin="0,5"
+                                 TextChanged="OnCorporationNameChanged"
+                                 ToolTip="Corporation Name"/>
+                        
+                        <TextBox x:Name="AllianceNameText" 
+                                 Text="ALLY"
+                                 Margin="0,5,0,15"
+                                 TextChanged="OnAllianceNameChanged"
+                                 ToolTip="Alliance Name"/>
+
+                        <!-- Military Rank -->
+                        <TextBlock Text="MILITARY RANK" Style="{StaticResource DemoTitleStyle}" FontSize="12" Margin="0,10,0,5"/>
+                        <ComboBox x:Name="MilitaryRankCombo" 
+                                  SelectionChanged="OnMilitaryRankChanged"
+                                  Margin="0,5,0,15">
+                            <ComboBoxItem Content="None" IsSelected="True"/>
+                            <ComboBoxItem Content="Ensign"/>
+                            <ComboBoxItem Content="Lieutenant"/>
+                            <ComboBoxItem Content="Commander"/>
+                            <ComboBoxItem Content="Captain"/>
+                            <ComboBoxItem Content="Admiral"/>
+                        </ComboBox>
+
+                        <Separator Background="{StaticResource Surface_Glass_MediumBrush}" Margin="0,10"/>
+
+                        <!-- Animation Controls -->
+                        <TextBlock Text="ANIMATIONS" Style="{StaticResource DemoTitleStyle}" FontSize="12" Margin="0,10,0,5"/>
+                        <CheckBox x:Name="CornerGlowCheck" 
+                                  Content="Corner Glow"
+                                  IsChecked="True"
+                                  Foreground="{StaticResource Text_SecondaryBrush}"
+                                  Checked="OnAnimationSettingsChanged"
+                                  Unchecked="OnAnimationSettingsChanged"
+                                  Margin="0,5"/>
+                        
+                        <CheckBox x:Name="ScanLineCheck" 
+                                  Content="Scan Line"
+                                  IsChecked="False"
+                                  Foreground="{StaticResource Text_SecondaryBrush}"
+                                  Checked="OnAnimationSettingsChanged"
+                                  Unchecked="OnAnimationSettingsChanged"
+                                  Margin="0,5,0,15"/>
+
+                        <!-- Action Buttons -->
+                        <Button Content="Trigger Effect" 
+                                x:Name="TriggerEffectButton"
+                                Style="{StaticResource EVE_PrimaryButton}"
+                                Click="OnTriggerEffect"
+                                Margin="0,5"/>
+                        
+                        <Button Content="Reset Settings" 
+                                x:Name="ResetButton"
+                                Style="{StaticResource EVE_SecondaryButton}"
+                                Click="OnResetSettings"
+                                Margin="0,5"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Demo Canvas -->
+                <ScrollViewer Grid.Column="1" 
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto">
+                    <Grid x:Name="DemoGrid" Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Interactive Demo Panel -->
+                        <StackPanel Grid.Row="0" Margin="0,0,0,30">
+                            <TextBlock Text="INTERACTIVE DEMO" 
+                                       Style="{StaticResource DemoTitleStyle}" 
+                                       FontSize="16"
+                                       Margin="0,0,0,20"/>
+                            
+                            <controls:AngularBorderPanel x:Name="InteractivePanel"
+                                                        Width="400" Height="200"
+                                                        BorderType="Standard"
+                                                        EnableCornerGlow="True"
+                                                        HorizontalAlignment="Center">
+                                <StackPanel>
+                                    <TextBlock Text="INTERACTIVE BORDER PANEL" 
+                                               Style="{StaticResource DemoTitleStyle}"/>
+                                    <TextBlock Text="Use the controls on the left to modify this panel's appearance in real-time. Test different border types, corporation insignia, military ranks, and animation effects."
+                                               Style="{StaticResource DemoContentStyle}"
+                                               Margin="20"/>
+                                    <Rectangle Height="2" 
+                                               Fill="{StaticResource ElectricBlue_HorizontalGradient}"
+                                               Margin="40,10"
+                                               Effect="{StaticResource CyanGlowSoft}"/>
+                                    <TextBlock Text="Live Demo Panel"
+                                               Style="{StaticResource EVE_CaptionStyle}"
+                                               HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </controls:AngularBorderPanel>
+                        </StackPanel>
+
+                        <!-- Border Type Examples -->
+                        <StackPanel Grid.Row="1" Margin="0,0,0,30">
+                            <TextBlock Text="BORDER TYPE GALLERY" 
+                                       Style="{StaticResource DemoTitleStyle}" 
+                                       FontSize="16"
+                                       Margin="0,0,0,20"/>
+                            
+                            <UniformGrid Columns="3" 
+                                         HorizontalAlignment="Center">
+                                
+                                <!-- Standard Border -->
+                                <controls:AngularBorderPanel BorderType="Standard"
+                                                            Width="180" Height="120"
+                                                            Margin="10">
+                                    <StackPanel>
+                                        <TextBlock Text="STANDARD" Style="{StaticResource DemoTitleStyle}" FontSize="12"/>
+                                        <TextBlock Text="Basic EVE angular border for general use."
+                                                   Style="{StaticResource DemoContentStyle}" FontSize="10"/>
+                                    </StackPanel>
+                                </controls:AngularBorderPanel>
+
+                                <!-- Military Border -->
+                                <controls:AngularBorderPanel BorderType="Military"
+                                                            Width="180" Height="120"
+                                                            MilitaryRank="Commander"
+                                                            Margin="10">
+                                    <StackPanel>
+                                        <TextBlock Text="MILITARY" Style="{StaticResource DemoTitleStyle}" FontSize="12"/>
+                                        <TextBlock Text="Enhanced military-grade border with rank indicators."
+                                                   Style="{StaticResource DemoContentStyle}" FontSize="10"/>
+                                    </StackPanel>
+                                </controls:AngularBorderPanel>
+
+                                <!-- Corporation Border -->
+                                <controls:AngularBorderPanel BorderType="Corporation"
+                                                            Width="180" Height="120"
+                                                            InsigniaPosition="Both"
+                                                            CorporationName="DEMO"
+                                                            AllianceName="TEST"
+                                                            Margin="10">
+                                    <StackPanel>
+                                        <TextBlock Text="CORPORATION" Style="{StaticResource DemoTitleStyle}" FontSize="12"/>
+                                        <TextBlock Text="Corporation border with insignia placement zones."
+                                                   Style="{StaticResource DemoContentStyle}" FontSize="10"/>
+                                    </StackPanel>
+                                </controls:AngularBorderPanel>
+
+                                <!-- Scan Line Border -->
+                                <controls:AngularBorderPanel BorderType="ScanLine"
+                                                            Width="180" Height="120"
+                                                            EnableScanLine="True"
+                                                            Margin="10">
+                                    <StackPanel>
+                                        <TextBlock Text="SCAN LINE" Style="{StaticResource DemoTitleStyle}" FontSize="12"/>
+                                        <TextBlock Text="Animated scan line border for active systems."
+                                                   Style="{StaticResource DemoContentStyle}" FontSize="10"/>
+                                    </StackPanel>
+                                </controls:AngularBorderPanel>
+
+                                <!-- Heavy Border -->
+                                <controls:AngularBorderPanel BorderType="Heavy"
+                                                            Width="180" Height="120"
+                                                            MilitaryRank="Admiral"
+                                                            BorderThicknessMultiplier="1.5"
+                                                            Margin="10">
+                                    <StackPanel>
+                                        <TextBlock Text="HEAVY DUTY" Style="{StaticResource DemoTitleStyle}" FontSize="12"/>
+                                        <TextBlock Text="Heavy-duty border for critical systems."
+                                                   Style="{StaticResource DemoContentStyle}" FontSize="10"/>
+                                    </StackPanel>
+                                </controls:AngularBorderPanel>
+
+                                <!-- Minimal Border -->
+                                <controls:AngularBorderPanel BorderType="Minimal"
+                                                            Width="180" Height="120"
+                                                            EnableCornerGlow="False"
+                                                            BorderThicknessMultiplier="0.6"
+                                                            Margin="10">
+                                    <StackPanel>
+                                        <TextBlock Text="MINIMAL" Style="{StaticResource DemoTitleStyle}" FontSize="12"/>
+                                        <TextBlock Text="Minimal border for subtle interface elements."
+                                                   Style="{StaticResource DemoContentStyle}" FontSize="10"/>
+                                    </StackPanel>
+                                </controls:AngularBorderPanel>
+                            </UniformGrid>
+                        </StackPanel>
+
+                        <!-- Legacy Template Examples -->
+                        <StackPanel Grid.Row="2">
+                            <TextBlock Text="LEGACY TEMPLATE GALLERY" 
+                                       Style="{StaticResource DemoTitleStyle}" 
+                                       FontSize="16"
+                                       Margin="0,0,0,20"/>
+                            
+                            <UniformGrid Columns="3" HorizontalAlignment="Center">
+                                
+                                <!-- Standard Template -->
+                                <ContentControl Style="{StaticResource EVE_AngularBorder_Standard}"
+                                               Width="160" Height="100"
+                                               Margin="10">
+                                    <TextBlock Text="STANDARD TEMPLATE" 
+                                               Style="{StaticResource DemoTitleStyle}" 
+                                               FontSize="11"/>
+                                </ContentControl>
+
+                                <!-- Military Template -->
+                                <ContentControl Style="{StaticResource EVE_AngularBorder_Military}"
+                                               Width="160" Height="100"
+                                               Margin="10">
+                                    <TextBlock Text="MILITARY TEMPLATE" 
+                                               Style="{StaticResource DemoTitleStyle}" 
+                                               FontSize="11"/>
+                                </ContentControl>
+
+                                <!-- Corporation Template -->
+                                <ContentControl Style="{StaticResource EVE_AngularBorder_Corporation}"
+                                               Width="160" Height="100"
+                                               Margin="10">
+                                    <TextBlock Text="CORPORATION TEMPLATE" 
+                                               Style="{StaticResource DemoTitleStyle}" 
+                                               FontSize="11"/>
+                                </ContentControl>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Status Bar -->
+            <Border Grid.Row="2" 
+                    Background="{StaticResource Surface_Glass_UltraBrush}"
+                    BorderBrush="{StaticResource Surface_Glass_LightBrush}"
+                    BorderThickness="0,1,0,0"
+                    Padding="20,10"
+                    Margin="0,30,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" 
+                               x:Name="StatusText"
+                               Text="Angular border system ready | Adjust controls to customize the interactive demo panel"
+                               Style="{StaticResource EVE_CaptionStyle}"
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Ellipse Width="8" Height="8" 
+                                 Fill="{StaticResource EVE_SuccessBrush}"
+                                 VerticalAlignment="Center"
+                                 Effect="{StaticResource CyanGlowSoft}"
+                                 Margin="0,0,5,0"/>
+                        <TextBlock Text="Border System Active" 
+                                   Style="{StaticResource EVE_CaptionStyle}" 
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+
+    <!-- Page entry animation -->
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                   From="0" To="1" Duration="0:0:0.6">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
+</Page>

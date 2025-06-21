@@ -1,0 +1,203 @@
+<!--
+=========================================================================
+AngularBorderPanel.xaml - Default Template for AngularBorderPanel Control
+=========================================================================
+Default control template and styles for the AngularBorderPanel custom control.
+Provides the visual structure for angular borders with corporation insignia
+support and animated effects.
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Gideon.WPF.Presentation.Controls">
+
+    <!-- Default Template for AngularBorderPanel -->
+    <Style TargetType="{x:Type controls:AngularBorderPanel}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:AngularBorderPanel}">
+                    <Grid>
+                        <!-- Content Area -->
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                        Margin="50"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        
+                        <!-- Border Canvas (for corner paths and decorations) -->
+                        <Canvas x:Name="PART_BorderCanvas"
+                                ClipToBounds="False"/>
+                        
+                        <!-- Corporation Insignia (Top-Left) -->
+                        <Border x:Name="PART_CorporationInsignia"
+                                Width="35" Height="35"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Margin="15"
+                                Background="{StaticResource Surface_Glass_LightBrush}"
+                                BorderBrush="{StaticResource EVEGold_CoreBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Visibility="Collapsed">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{StaticResource EVEGold_Core}" 
+                                                BlurRadius="6" 
+                                                ShadowDepth="0" 
+                                                Opacity="0.5"/>
+                            </Border.Effect>
+                        </Border>
+                        
+                        <!-- Alliance Insignia (Top-Right) -->
+                        <Border x:Name="PART_AllianceInsignia"
+                                Width="35" Height="35"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Margin="15"
+                                Background="{StaticResource Surface_Glass_LightBrush}"
+                                BorderBrush="{StaticResource ElectricBlue_CoreBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Visibility="Collapsed">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{StaticResource ElectricBlue_Core}" 
+                                                BlurRadius="6" 
+                                                ShadowDepth="0" 
+                                                Opacity="0.5"/>
+                            </Border.Effect>
+                        </Border>
+                        
+                        <!-- Military Rank Indicators -->
+                        <StackPanel x:Name="PART_RankIndicators"
+                                   Orientation="Horizontal"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Margin="55,8,0,0"
+                                   Visibility="Collapsed"/>
+                        
+                        <!-- Scan Line Element -->
+                        <Rectangle x:Name="PART_ScanLine"
+                                  Height="2"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Top"
+                                  Margin="40,20,40,0"
+                                  Fill="{StaticResource Holo_ScanLineGradient}"
+                                  Visibility="Collapsed">
+                            <Rectangle.Effect>
+                                <DropShadowEffect Color="{StaticResource ElectricBlue_Core}" 
+                                                BlurRadius="4" 
+                                                ShadowDepth="0" 
+                                                Opacity="0.6"/>
+                            </Rectangle.Effect>
+                        </Rectangle>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+        <!-- Default Property Values -->
+        <Setter Property="BorderColor" Value="{StaticResource ElectricBlue_Core}"/>
+        <Setter Property="SecondaryBorderColor" Value="{StaticResource EVEGold_Core}"/>
+        <Setter Property="BorderType" Value="Standard"/>
+        <Setter Property="InsigniaPosition" Value="None"/>
+        <Setter Property="MilitaryRank" Value="None"/>
+        <Setter Property="BorderThicknessMultiplier" Value="1.0"/>
+        <Setter Property="EnableCornerGlow" Value="True"/>
+        <Setter Property="EnableScanLine" Value="False"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        
+        <!-- Interactive Triggers -->
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="{StaticResource ElectricBlue_Core}" 
+                                        BlurRadius="12" 
+                                        ShadowDepth="0" 
+                                        Opacity="0.4"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            
+            <Trigger Property="BorderType" Value="Military">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="{StaticResource ElectricBlue_Core}" 
+                                        BlurRadius="8" 
+                                        ShadowDepth="0" 
+                                        Opacity="0.6"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            
+            <Trigger Property="BorderType" Value="Corporation">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="{StaticResource EVEGold_Core}" 
+                                        BlurRadius="10" 
+                                        ShadowDepth="0" 
+                                        Opacity="0.5"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Specialized Styles for Different Border Types -->
+    
+    <!-- Military Style -->
+    <Style x:Key="AngularBorder_MilitaryStyle" TargetType="{x:Type controls:AngularBorderPanel}" 
+           BasedOn="{StaticResource {x:Type controls:AngularBorderPanel}}">
+        <Setter Property="BorderType" Value="Military"/>
+        <Setter Property="EnableCornerGlow" Value="True"/>
+        <Setter Property="BorderThicknessMultiplier" Value="1.2"/>
+        <Setter Property="MilitaryRank" Value="Commander"/>
+    </Style>
+    
+    <!-- Corporation Style -->
+    <Style x:Key="AngularBorder_CorporationStyle" TargetType="{x:Type controls:AngularBorderPanel}" 
+           BasedOn="{StaticResource {x:Type controls:AngularBorderPanel}}">
+        <Setter Property="BorderType" Value="Corporation"/>
+        <Setter Property="InsigniaPosition" Value="Both"/>
+        <Setter Property="EnableCornerGlow" Value="True"/>
+        <Setter Property="BorderThicknessMultiplier" Value="1.5"/>
+        <Setter Property="BorderColor" Value="{StaticResource EVEGold_Core}"/>
+        <Setter Property="SecondaryBorderColor" Value="{StaticResource ElectricBlue_Core}"/>
+    </Style>
+    
+    <!-- Scan Line Style -->
+    <Style x:Key="AngularBorder_ScanLineStyle" TargetType="{x:Type controls:AngularBorderPanel}" 
+           BasedOn="{StaticResource {x:Type controls:AngularBorderPanel}}">
+        <Setter Property="BorderType" Value="ScanLine"/>
+        <Setter Property="EnableScanLine" Value="True"/>
+        <Setter Property="EnableCornerGlow" Value="False"/>
+        <Setter Property="BorderThicknessMultiplier" Value="0.8"/>
+    </Style>
+    
+    <!-- Heavy Duty Style -->
+    <Style x:Key="AngularBorder_HeavyStyle" TargetType="{x:Type controls:AngularBorderPanel}" 
+           BasedOn="{StaticResource {x:Type controls:AngularBorderPanel}}">
+        <Setter Property="BorderType" Value="Heavy"/>
+        <Setter Property="EnableCornerGlow" Value="True"/>
+        <Setter Property="BorderThicknessMultiplier" Value="2.0"/>
+        <Setter Property="MilitaryRank" Value="Admiral"/>
+        <Setter Property="BorderColor" Value="{StaticResource ElectricBlue_Intense}"/>
+    </Style>
+    
+    <!-- Minimal Style -->
+    <Style x:Key="AngularBorder_MinimalStyle" TargetType="{x:Type controls:AngularBorderPanel}" 
+           BasedOn="{StaticResource {x:Type controls:AngularBorderPanel}}">
+        <Setter Property="BorderType" Value="Minimal"/>
+        <Setter Property="EnableCornerGlow" Value="False"/>
+        <Setter Property="BorderThicknessMultiplier" Value="0.6"/>
+        <Setter Property="BorderColor" Value="{StaticResource ElectricBlue_Soft}"/>
+    </Style>
+
+</ResourceDictionary>

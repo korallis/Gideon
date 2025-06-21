@@ -1,0 +1,574 @@
+<!--
+=========================================================================
+AngularBorders.xaml - EVE Angular Panel Border System
+=========================================================================
+Comprehensive angular border system for the Westworld-EVE fusion interface.
+Provides distinctive EVE-styled borders with corporation insignia support,
+animated corner accents, and holographic enhancement effects.
+
+Features:
+- Angular corner geometries for EVE military aesthetic
+- Corporation insignia placement zones
+- Animated corner accent system
+- Border glow and pulse effects
+- Modular border components
+- Scalable border thickness
+- Interactive border animations
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =============================================================== -->
+    <!--                    ANGULAR CORNER GEOMETRIES                  -->
+    <!-- =============================================================== -->
+
+    <!-- EVE Standard Angular Corner (Top-Left) -->
+    <PathGeometry x:Key="AngularCorner_TopLeft_Standard">
+        <PathFigure StartPoint="20,0" IsClosed="False">
+            <LineSegment Point="0,0"/>
+            <LineSegment Point="0,20"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- EVE Standard Angular Corner (Top-Right) -->
+    <PathGeometry x:Key="AngularCorner_TopRight_Standard">
+        <PathFigure StartPoint="-20,0" IsClosed="False">
+            <LineSegment Point="0,0"/>
+            <LineSegment Point="0,20"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- EVE Standard Angular Corner (Bottom-Left) -->
+    <PathGeometry x:Key="AngularCorner_BottomLeft_Standard">
+        <PathFigure StartPoint="0,-20" IsClosed="False">
+            <LineSegment Point="0,0"/>
+            <LineSegment Point="20,0"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- EVE Standard Angular Corner (Bottom-Right) -->
+    <PathGeometry x:Key="AngularCorner_BottomRight_Standard">
+        <PathFigure StartPoint="0,-20" IsClosed="False">
+            <LineSegment Point="0,0"/>
+            <LineSegment Point="-20,0"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- EVE Military Angular Corner (Extended) -->
+    <PathGeometry x:Key="AngularCorner_TopLeft_Military">
+        <PathFigure StartPoint="35,0" IsClosed="False">
+            <LineSegment Point="8,0"/>
+            <LineSegment Point="0,8"/>
+            <LineSegment Point="0,35"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="AngularCorner_TopRight_Military">
+        <PathFigure StartPoint="-35,0" IsClosed="False">
+            <LineSegment Point="-8,0"/>
+            <LineSegment Point="0,8"/>
+            <LineSegment Point="0,35"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="AngularCorner_BottomLeft_Military">
+        <PathFigure StartPoint="0,-35" IsClosed="False">
+            <LineSegment Point="0,-8"/>
+            <LineSegment Point="8,0"/>
+            <LineSegment Point="35,0"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="AngularCorner_BottomRight_Military">
+        <PathFigure StartPoint="0,-35" IsClosed="False">
+            <LineSegment Point="0,-8"/>
+            <LineSegment Point="-8,0"/>
+            <LineSegment Point="-35,0"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- Corporation Insignia Corner (With insignia space) -->
+    <PathGeometry x:Key="AngularCorner_TopLeft_Corp">
+        <PathFigure StartPoint="50,0" IsClosed="False">
+            <LineSegment Point="15,0"/>
+            <LineSegment Point="0,15"/>
+            <LineSegment Point="0,50"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="AngularCorner_TopRight_Corp">
+        <PathFigure StartPoint="-50,0" IsClosed="False">
+            <LineSegment Point="-15,0"/>
+            <LineSegment Point="0,15"/>
+            <LineSegment Point="0,50"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- =============================================================== -->
+    <!--                      BORDER BRUSH STYLES                      -->
+    <!-- =============================================================== -->
+
+    <!-- Standard EVE Border Brushes -->
+    <LinearGradientBrush x:Key="EVE_BorderBrush_Standard" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Deep}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Intense}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Military Grade Border Brush -->
+    <LinearGradientBrush x:Key="EVE_BorderBrush_Military" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource EVEMilitary_TacticalBlue}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="0.3"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Bright}" Offset="0.7"/>
+        <GradientStop Color="{StaticResource EVEGold_Core}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Corporation Border Brush -->
+    <LinearGradientBrush x:Key="EVE_BorderBrush_Corporation" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource EVEGold_Core}" Offset="0"/>
+        <GradientStop Color="{StaticResource EVEGold_Bright}" Offset="0.4"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="0.6"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Bright}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Animated Scan Line Border -->
+    <LinearGradientBrush x:Key="EVE_BorderBrush_ScanLine" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#00FFFFFF" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Bright}" Offset="0.4"/>
+        <GradientStop Color="{StaticResource Holo_ElectricBlue_Pulse}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Bright}" Offset="0.6"/>
+        <GradientStop Color="#00FFFFFF" Offset="1"/>
+        <LinearGradientBrush.Transform>
+            <TranslateTransform x:Name="ScanLineTransform" X="-100"/>
+        </LinearGradientBrush.Transform>
+    </LinearGradientBrush>
+
+    <!-- =============================================================== -->
+    <!--                    BORDER ANIMATION RESOURCES                 -->
+    <!-- =============================================================== -->
+
+    <!-- Corner Glow Pulse Animation -->
+    <Storyboard x:Key="CornerGlowPulse" RepeatBehavior="Forever" AutoReverse="True">
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).Opacity"
+                        From="0.4" To="1.0" Duration="0:0:2">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Scan Line Animation -->
+    <Storyboard x:Key="ScanLineAnimation" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetName="ScanLineTransform"
+                        Storyboard.TargetProperty="X"
+                        From="-100" To="100" Duration="0:0:3">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Border Activation Animation -->
+    <Storyboard x:Key="BorderActivation">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0" To="1" Duration="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="0.9" To="1.0" Duration="0:0:0.6">
+            <DoubleAnimation.EasingFunction>
+                <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="0.9" To="1.0" Duration="0:0:0.6">
+            <DoubleAnimation.EasingFunction>
+                <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- =============================================================== -->
+    <!--                    ANGULAR BORDER TEMPLATES                   -->
+    <!-- =============================================================== -->
+
+    <!-- Standard EVE Angular Border Template -->
+    <ControlTemplate x:Key="AngularBorder_Standard" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <!-- Content Area -->
+            <ContentPresenter Margin="25"/>
+            
+            <!-- Border Frame -->
+            <Canvas>
+                <!-- Top-Left Corner -->
+                <Path Canvas.Left="8" Canvas.Top="8"
+                      Data="{StaticResource AngularCorner_TopLeft_Standard}"
+                      Stroke="{StaticResource EVE_BorderBrush_Standard}"
+                      StrokeThickness="2"
+                      Effect="{StaticResource CyanGlowSoft}"/>
+                
+                <!-- Top-Right Corner -->
+                <Path Canvas.Right="8" Canvas.Top="8"
+                      Data="{StaticResource AngularCorner_TopRight_Standard}"
+                      Stroke="{StaticResource EVE_BorderBrush_Standard}"
+                      StrokeThickness="2"
+                      Effect="{StaticResource CyanGlowSoft}"/>
+                
+                <!-- Bottom-Left Corner -->
+                <Path Canvas.Left="8" Canvas.Bottom="8"
+                      Data="{StaticResource AngularCorner_BottomLeft_Standard}"
+                      Stroke="{StaticResource EVE_BorderBrush_Standard}"
+                      StrokeThickness="2"
+                      Effect="{StaticResource CyanGlowSoft}"/>
+                
+                <!-- Bottom-Right Corner -->
+                <Path Canvas.Right="8" Canvas.Bottom="8"
+                      Data="{StaticResource AngularCorner_BottomRight_Standard}"
+                      Stroke="{StaticResource EVE_BorderBrush_Standard}"
+                      StrokeThickness="2"
+                      Effect="{StaticResource CyanGlowSoft}"/>
+            </Canvas>
+        </Grid>
+    </ControlTemplate>
+
+    <!-- Military Grade Angular Border Template -->
+    <ControlTemplate x:Key="AngularBorder_Military" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <!-- Content Area -->
+            <ContentPresenter Margin="40"/>
+            
+            <!-- Border Frame -->
+            <Canvas>
+                <!-- Top-Left Military Corner -->
+                <Path Canvas.Left="5" Canvas.Top="5"
+                      Data="{StaticResource AngularCorner_TopLeft_Military}"
+                      Stroke="{StaticResource EVE_BorderBrush_Military}"
+                      StrokeThickness="3"
+                      Effect="{StaticResource CyanGlowMedium}">
+                    <Path.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                            <BeginStoryboard Storyboard="{StaticResource CornerGlowPulse}"/>
+                        </EventTrigger>
+                    </Path.Triggers>
+                </Path>
+                
+                <!-- Top-Right Military Corner -->
+                <Path Canvas.Right="5" Canvas.Top="5"
+                      Data="{StaticResource AngularCorner_TopRight_Military}"
+                      Stroke="{StaticResource EVE_BorderBrush_Military}"
+                      StrokeThickness="3"
+                      Effect="{StaticResource CyanGlowMedium}">
+                    <Path.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                            <BeginStoryboard Storyboard="{StaticResource CornerGlowPulse}"/>
+                        </EventTrigger>
+                    </Path.Triggers>
+                </Path>
+                
+                <!-- Bottom-Left Military Corner -->
+                <Path Canvas.Left="5" Canvas.Bottom="5"
+                      Data="{StaticResource AngularCorner_BottomLeft_Military}"
+                      Stroke="{StaticResource EVE_BorderBrush_Military}"
+                      StrokeThickness="3"
+                      Effect="{StaticResource CyanGlowMedium}">
+                    <Path.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                            <BeginStoryboard Storyboard="{StaticResource CornerGlowPulse}"/>
+                        </EventTrigger>
+                    </Path.Triggers>
+                </Path>
+                
+                <!-- Bottom-Right Military Corner -->
+                <Path Canvas.Right="5" Canvas.Bottom="5"
+                      Data="{StaticResource AngularCorner_BottomRight_Military}"
+                      Stroke="{StaticResource EVE_BorderBrush_Military}"
+                      StrokeThickness="3"
+                      Effect="{StaticResource CyanGlowMedium}">
+                    <Path.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                            <BeginStoryboard Storyboard="{StaticResource CornerGlowPulse}"/>
+                        </EventTrigger>
+                    </Path.Triggers>
+                </Path>
+
+                <!-- Corner Enhancement Dots -->
+                <Ellipse Canvas.Left="30" Canvas.Top="30" 
+                         Width="4" Height="4" 
+                         Fill="{StaticResource EVEGold_CoreBrush}"
+                         Effect="{StaticResource GoldGlowSoft}"/>
+                
+                <Ellipse Canvas.Right="30" Canvas.Top="30" 
+                         Width="4" Height="4" 
+                         Fill="{StaticResource EVEGold_CoreBrush}"
+                         Effect="{StaticResource GoldGlowSoft}"/>
+                
+                <Ellipse Canvas.Left="30" Canvas.Bottom="30" 
+                         Width="4" Height="4" 
+                         Fill="{StaticResource EVEGold_CoreBrush}"
+                         Effect="{StaticResource GoldGlowSoft}"/>
+                
+                <Ellipse Canvas.Right="30" Canvas.Bottom="30" 
+                         Width="4" Height="4" 
+                         Fill="{StaticResource EVEGold_CoreBrush}"
+                         Effect="{StaticResource GoldGlowSoft}"/>
+            </Canvas>
+        </Grid>
+    </ControlTemplate>
+
+    <!-- Corporation Border Template (With Insignia Support) -->
+    <ControlTemplate x:Key="AngularBorder_Corporation" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <!-- Content Area -->
+            <ContentPresenter Margin="55"/>
+            
+            <!-- Border Frame -->
+            <Canvas>
+                <!-- Top-Left Corporation Corner -->
+                <Path Canvas.Left="3" Canvas.Top="3"
+                      Data="{StaticResource AngularCorner_TopLeft_Corp}"
+                      Stroke="{StaticResource EVE_BorderBrush_Corporation}"
+                      StrokeThickness="4"
+                      Effect="{StaticResource GoldGlowMedium}"/>
+                
+                <!-- Top-Right Corporation Corner -->
+                <Path Canvas.Right="3" Canvas.Top="3"
+                      Data="{StaticResource AngularCorner_TopRight_Corp}"
+                      Stroke="{StaticResource EVE_BorderBrush_Corporation}"
+                      StrokeThickness="4"
+                      Effect="{StaticResource GoldGlowMedium}"/>
+                
+                <!-- Bottom-Left Corporation Corner -->
+                <Path Canvas.Left="3" Canvas.Bottom="3"
+                      Data="{StaticResource AngularCorner_BottomLeft_Military}"
+                      Stroke="{StaticResource EVE_BorderBrush_Corporation}"
+                      StrokeThickness="4"
+                      Effect="{StaticResource GoldGlowMedium}"/>
+                
+                <!-- Bottom-Right Corporation Corner -->
+                <Path Canvas.Right="3" Canvas.Bottom="3"
+                      Data="{StaticResource AngularCorner_BottomRight_Military}"
+                      Stroke="{StaticResource EVE_BorderBrush_Corporation}"
+                      StrokeThickness="4"
+                      Effect="{StaticResource GoldGlowMedium}"/>
+
+                <!-- Corporation Insignia Placement Zones -->
+                <Border Canvas.Left="15" Canvas.Top="15" 
+                        Width="35" Height="35"
+                        Background="{StaticResource Surface_Glass_LightBrush}"
+                        BorderBrush="{StaticResource EVEGold_CoreBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                    <TextBlock Text="CORP" 
+                               FontSize="8" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource EVEGold_CoreBrush}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+                
+                <Border Canvas.Right="15" Canvas.Top="15" 
+                        Width="35" Height="35"
+                        Background="{StaticResource Surface_Glass_LightBrush}"
+                        BorderBrush="{StaticResource EVEGold_CoreBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                    <TextBlock Text="ALLY" 
+                               FontSize="8" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource EVEGold_CoreBrush}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+
+                <!-- Rank Indicator Strips -->
+                <Rectangle Canvas.Left="55" Canvas.Top="8" 
+                           Width="2" Height="15" 
+                           Fill="{StaticResource EVEGold_HorizontalGradient}"/>
+                
+                <Rectangle Canvas.Left="58" Canvas.Top="10" 
+                           Width="2" Height="11" 
+                           Fill="{StaticResource EVEGold_HorizontalGradient}"/>
+                
+                <Rectangle Canvas.Left="61" Canvas.Top="12" 
+                           Width="2" Height="7" 
+                           Fill="{StaticResource EVEGold_HorizontalGradient}"/>
+            </Canvas>
+        </Grid>
+    </ControlTemplate>
+
+    <!-- Animated Scan Line Border Template -->
+    <ControlTemplate x:Key="AngularBorder_ScanLine" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <!-- Content Area -->
+            <ContentPresenter Margin="30"/>
+            
+            <!-- Static Border Frame -->
+            <Canvas>
+                <!-- Static Corner Structure -->
+                <Path Canvas.Left="6" Canvas.Top="6"
+                      Data="{StaticResource AngularCorner_TopLeft_Military}"
+                      Stroke="{StaticResource EVE_BorderBrush_Standard}"
+                      StrokeThickness="2"
+                      Opacity="0.6"/>
+                
+                <Path Canvas.Right="6" Canvas.Top="6"
+                      Data="{StaticResource AngularCorner_TopRight_Military}"
+                      Stroke="{StaticResource EVE_BorderBrush_Standard}"
+                      StrokeThickness="2"
+                      Opacity="0.6"/>
+                
+                <Path Canvas.Left="6" Canvas.Bottom="6"
+                      Data="{StaticResource AngularCorner_BottomLeft_Military}"
+                      Stroke="{StaticResource EVE_BorderBrush_Standard}"
+                      StrokeThickness="2"
+                      Opacity="0.6"/>
+                
+                <Path Canvas.Right="6" Canvas.Bottom="6"
+                      Data="{StaticResource AngularCorner_BottomRight_Military}"
+                      Stroke="{StaticResource EVE_BorderBrush_Standard}"
+                      StrokeThickness="2"
+                      Opacity="0.6"/>
+            </Canvas>
+            
+            <!-- Animated Scan Line Overlay -->
+            <Rectangle Fill="{StaticResource EVE_BorderBrush_ScanLine}"
+                       Height="2"
+                       VerticalAlignment="Top"
+                       Margin="40,20,40,0"
+                       Effect="{StaticResource CyanGlowSoft}">
+                <Rectangle.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource ScanLineAnimation}"/>
+                    </EventTrigger>
+                </Rectangle.Triggers>
+            </Rectangle>
+        </Grid>
+    </ControlTemplate>
+
+    <!-- =============================================================== -->
+    <!--                    BORDER CONTROL STYLES                      -->
+    <!-- =============================================================== -->
+
+    <!-- Standard EVE Angular Border Style -->
+    <Style x:Key="EVE_AngularBorder_Standard" TargetType="{x:Type ContentControl}">
+        <Setter Property="Template" Value="{StaticResource AngularBorder_Standard}"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource BorderActivation}"/>
+            </EventTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Effect" Value="{StaticResource CyanGlowMedium}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Military Grade Angular Border Style -->
+    <Style x:Key="EVE_AngularBorder_Military" TargetType="{x:Type ContentControl}">
+        <Setter Property="Template" Value="{StaticResource AngularBorder_Military}"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource BorderActivation}"/>
+            </EventTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Effect" Value="{StaticResource CyanGlowStrong}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Corporation Angular Border Style -->
+    <Style x:Key="EVE_AngularBorder_Corporation" TargetType="{x:Type ContentControl}">
+        <Setter Property="Template" Value="{StaticResource AngularBorder_Corporation}"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource BorderActivation}"/>
+            </EventTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Effect" Value="{StaticResource GoldGlowStrong}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Animated Scan Line Border Style -->
+    <Style x:Key="EVE_AngularBorder_ScanLine" TargetType="{x:Type ContentControl}">
+        <Setter Property="Template" Value="{StaticResource AngularBorder_ScanLine}"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource BorderActivation}"/>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- =============================================================== -->
+    <!--                      UTILITY STYLES                           -->
+    <!-- =============================================================== -->
+
+    <!-- Simple Angular Frame (No content) -->
+    <Style x:Key="EVE_AngularFrame_Simple" TargetType="{x:Type Border}">
+        <Setter Property="BorderBrush" Value="{StaticResource EVE_BorderBrush_Standard}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Effect" Value="{StaticResource CyanGlowSoft}"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Effect" Value="{StaticResource CyanGlowMedium}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource EVE_BorderBrush_Military}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Corporation Logo Frame -->
+    <Style x:Key="EVE_CorporationFrame" TargetType="{x:Type Border}">
+        <Setter Property="BorderBrush" Value="{StaticResource EVE_BorderBrush_Corporation}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="Background" Value="{StaticResource Surface_Glass_MediumBrush}"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Effect" Value="{StaticResource GoldGlowSoft}"/>
+        <Setter Property="Width" Value="48"/>
+        <Setter Property="Height" Value="48"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Effect" Value="{StaticResource GoldGlowMedium}"/>
+                <Setter Property="BorderThickness" Value="4"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

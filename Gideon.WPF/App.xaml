@@ -35,6 +35,10 @@
                 <!-- Advanced Holographic Blur Effects -->
                 <ResourceDictionary Source="Presentation/Effects/HolographicBlurEffects.xaml" />
                 
+                <!-- EVE Angular Border System -->
+                <ResourceDictionary Source="Presentation/Styles/AngularBorders.xaml" />
+                <ResourceDictionary Source="Presentation/Styles/AngularBorderPanel.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
             
             <!-- Converters -->
