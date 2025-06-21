@@ -32,6 +32,9 @@
                 <!-- Glassmorphism Theme -->
                 <ResourceDictionary Source="Presentation/Themes/GlassmorphismTheme.xaml" />
                 
+                <!-- Advanced Holographic Blur Effects -->
+                <ResourceDictionary Source="Presentation/Effects/HolographicBlurEffects.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
             
             <!-- Converters -->

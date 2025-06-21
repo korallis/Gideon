@@ -1,0 +1,416 @@
+<!--
+=========================================================================
+HolographicBlurEffects.xaml - Advanced Blur Effects for Holographic UI
+=========================================================================
+Comprehensive blur effect system for the Westworld-EVE fusion interface.
+Provides depth-based blur effects, dynamic transparency controls, and
+holographic depth perception enhancements.
+
+Features:
+- Multi-layer blur effect system
+- Dynamic blur radius based on depth
+- Transparency animation controls
+- Holographic depth perception
+- Performance-optimized blur presets
+- Interactive blur transitions
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =============================================================== -->
+    <!--                    DEPTH-BASED BLUR EFFECTS                   -->
+    <!-- =============================================================== -->
+
+    <!-- Background Layer Blur Effects (Deep - High Blur) -->
+    <BlurEffect x:Key="DepthBlur_Background_Shallow" Radius="8" />
+    <BlurEffect x:Key="DepthBlur_Background_Medium" Radius="15" />
+    <BlurEffect x:Key="DepthBlur_Background_Deep" Radius="25" />
+    <BlurEffect x:Key="DepthBlur_Background_VeryDeep" Radius="35" />
+    <BlurEffect x:Key="DepthBlur_Background_Extreme" Radius="50" />
+
+    <!-- Mid-Layer Blur Effects (Medium - Moderate Blur) -->
+    <BlurEffect x:Key="DepthBlur_MidLayer_None" Radius="0" />
+    <BlurEffect x:Key="DepthBlur_MidLayer_Subtle" Radius="3" />
+    <BlurEffect x:Key="DepthBlur_MidLayer_Light" Radius="6" />
+    <BlurEffect x:Key="DepthBlur_MidLayer_Medium" Radius="12" />
+    <BlurEffect x:Key="DepthBlur_MidLayer_Strong" Radius="18" />
+
+    <!-- Foreground Layer Blur Effects (Minimal - Sharp Focus) -->
+    <BlurEffect x:Key="DepthBlur_Foreground_None" Radius="0" />
+    <BlurEffect x:Key="DepthBlur_Foreground_Subtle" Radius="1" />
+    <BlurEffect x:Key="DepthBlur_Foreground_Light" Radius="2.5" />
+
+    <!-- Overlay Layer Blur Effects (Special Effects) -->
+    <BlurEffect x:Key="DepthBlur_Overlay_Sharp" Radius="0" />
+    <BlurEffect x:Key="DepthBlur_Overlay_Glow" Radius="4" />
+
+    <!-- =============================================================== -->
+    <!--                  DYNAMIC BLUR EFFECT SYSTEM                   -->
+    <!-- =============================================================== -->
+
+    <!-- Animated Blur Effects for Transitions -->
+    <Storyboard x:Key="BlurIn_Animation">
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).Radius"
+                        From="0" To="15" Duration="0:0:0.4">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Key="BlurOut_Animation">
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).Radius"
+                        From="15" To="0" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Interactive Blur Transition (Focus/Unfocus) -->
+    <Storyboard x:Key="FocusBlur_Animation">
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).Radius"
+                        To="0" Duration="0:0:0.2">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Key="UnfocusBlur_Animation">
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).Radius"
+                        To="8" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- =============================================================== -->
+    <!--               HOLOGRAPHIC TRANSPARENCY EFFECTS                -->
+    <!-- =============================================================== -->
+
+    <!-- Glass Panel Transparency Variants -->
+    <SolidColorBrush x:Key="HoloGlass_UltraLight" Color="#05FFFFFF" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_VeryLight" Color="#0AFFFFFF" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_Light" Color="#15FFFFFF" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_Medium" Color="#20FFFFFF" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_MediumPlus" Color="#30FFFFFF" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_Strong" Color="#40FFFFFF" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_VeryStrong" Color="#55FFFFFF" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_Opaque" Color="#70FFFFFF" Opacity="1.0" />
+
+    <!-- Electric Blue Glass Variants -->
+    <SolidColorBrush x:Key="HoloGlass_ElectricBlue_Light" Color="#1000D4FF" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_ElectricBlue_Medium" Color="#2000D4FF" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_ElectricBlue_Strong" Color="#3500D4FF" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_ElectricBlue_Intense" Color="#5000D4FF" Opacity="1.0" />
+
+    <!-- Gold Glass Variants -->
+    <SolidColorBrush x:Key="HoloGlass_Gold_Light" Color="#10FFD700" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_Gold_Medium" Color="#20FFD700" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_Gold_Strong" Color="#35FFD700" Opacity="1.0" />
+    <SolidColorBrush x:Key="HoloGlass_Gold_Intense" Color="#50FFD700" Opacity="1.0" />
+
+    <!-- =============================================================== -->
+    <!--                  TRANSPARENCY ANIMATIONS                      -->
+    <!-- =============================================================== -->
+
+    <!-- Fade In/Out Animations for Glass Panels -->
+    <Storyboard x:Key="GlassPanel_FadeIn">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0" To="1" Duration="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="0.95" To="1.0" Duration="0:0:0.6">
+            <DoubleAnimation.EasingFunction>
+                <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="0.95" To="1.0" Duration="0:0:0.6">
+            <DoubleAnimation.EasingFunction>
+                <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Key="GlassPanel_FadeOut">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="1" To="0" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="1.0" To="0.95" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="1.0" To="0.95" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Transparency Pulse Animation -->
+    <Storyboard x:Key="TransparencyPulse_Animation" RepeatBehavior="Forever" AutoReverse="True">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.6" To="0.9" Duration="0:0:2.5">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- =============================================================== -->
+    <!--                    HOLOGRAPHIC SHADOW EFFECTS                 -->
+    <!-- =============================================================== -->
+
+    <!-- Holographic Depth Shadow for Deep Appearance -->
+    <DropShadowEffect x:Key="HolographicDepth_Effect" 
+                      Color="{StaticResource ElectricBlue_Core}" 
+                      BlurRadius="12" 
+                      ShadowDepth="0" 
+                      Opacity="0.6"/>
+
+    <!-- Background Element Shadow -->
+    <DropShadowEffect x:Key="BackgroundElement_Effect" 
+                      Color="#FF000000" 
+                      BlurRadius="20" 
+                      ShadowDepth="4" 
+                      Opacity="0.3"/>
+
+    <!-- Interactive Element Glow -->
+    <DropShadowEffect x:Key="InteractiveElement_Effect" 
+                      Color="{StaticResource ElectricBlue_Core}" 
+                      BlurRadius="8" 
+                      ShadowDepth="0" 
+                      Opacity="0.7"/>
+
+    <!-- =============================================================== -->
+    <!--                  ADVANCED GLASS PANEL STYLES                  -->
+    <!-- =============================================================== -->
+
+    <!-- Ultra-Light Holographic Glass Panel -->
+    <Style x:Key="HoloGlass_UltraLight_Panel" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource HoloGlass_UltraLight}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_Alpha25}" />
+        <Setter Property="BorderThickness" Value="0.5" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Effect" Value="{StaticResource DepthBlur_Foreground_None}" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource HoloGlass_VeryLight}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_Alpha50}" />
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource FocusBlur_Animation}" />
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource UnfocusBlur_Animation}" />
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Medium Holographic Glass Panel with Dynamic Blur -->
+    <Style x:Key="HoloGlass_Medium_Panel" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource HoloGlass_Medium}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_Alpha50}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Effect" Value="{StaticResource DepthBlur_MidLayer_Subtle}" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource HoloGlass_MediumPlus}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_Alpha75}" />
+                <Setter Property="Effect" Value="{StaticResource HolographicDepth_Effect}" />
+            </Trigger>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource GlassPanel_FadeIn}" />
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Strong Holographic Glass Panel for Background Elements -->
+    <Style x:Key="HoloGlass_Background_Panel" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource HoloGlass_Strong}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_Alpha25}" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="Effect" Value="{StaticResource DepthBlur_Background_Medium}" />
+        <Setter Property="Opacity" Value="0.8" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="0.9" />
+                <Setter Property="Effect" Value="{StaticResource BackgroundElement_Effect}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Electric Blue Tinted Glass Panel -->
+    <Style x:Key="HoloGlass_ElectricBlue_Panel" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource HoloGlass_ElectricBlue_Medium}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_CoreBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Effect" Value="{StaticResource DepthBlur_MidLayer_Light}" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource HoloGlass_ElectricBlue_Strong}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_BrightBrush}" />
+                <Setter Property="Effect" Value="{StaticResource InteractiveElement_Effect}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Gold Tinted Glass Panel -->
+    <Style x:Key="HoloGlass_Gold_Panel" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource HoloGlass_Gold_Medium}" />
+        <Setter Property="BorderBrush" Value="{StaticResource EVEGold_CoreBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Effect" Value="{StaticResource DepthBlur_MidLayer_Light}" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource HoloGlass_Gold_Strong}" />
+                <Setter Property="BorderBrush" Value="{StaticResource EVEGold_BrightBrush}" />
+                <Setter Property="Effect" Value="{StaticResource GoldGlowMedium}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- =============================================================== -->
+    <!--                  PERFORMANCE-OPTIMIZED PRESETS               -->
+    <!-- =============================================================== -->
+
+    <!-- Low-End Hardware Preset (Reduced Effects) -->
+    <Style x:Key="HoloGlass_LowPerformance_Panel" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource HoloGlass_Light}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_Alpha50}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Effect" Value="{StaticResource DepthBlur_Foreground_None}" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource HoloGlass_Medium}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- High-End Hardware Preset (Maximum Effects) -->
+    <Style x:Key="HoloGlass_HighPerformance_Panel" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource HoloGlass_Medium}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_HorizontalGradient}" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Effect" Value="{StaticResource HolographicDepth_Effect}" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource HoloGlass_Strong}" />
+                <Setter Property="BorderBrush" Value="{StaticResource EVE_CombinedGradient}" />
+            </Trigger>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource GlassPanel_FadeIn}" />
+            </EventTrigger>
+            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                       To="1.02" Duration="0:0:0.2">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                       To="1.02" Duration="0:0:0.2">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                       To="1.0" Duration="0:0:0.2">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                       To="1.0" Duration="0:0:0.2">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

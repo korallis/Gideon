@@ -194,52 +194,79 @@
     
     <!-- Light Glass Panel -->
     <Style x:Key="GlassLightPanel" TargetType="{x:Type Border}">
-        <Setter Property="Background" Value="{StaticResource GlassLight}" />
+        <Setter Property="Background" Value="{StaticResource HoloGlass_Light}" />
         <Setter Property="BorderBrush" Value="{StaticResource HoloCyanGradient}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="12" />
-        <Setter Property="Effect" Value="{StaticResource AmbientShadow2}" />
+        <Setter Property="Effect" Value="{StaticResource DepthBlur_MidLayer_Subtle}" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource GlassHover}" />
-                <Setter Property="Effect" Value="{StaticResource CyanGlowSoft}" />
+                <Setter Property="Background" Value="{StaticResource HoloGlass_Medium}" />
+                <Setter Property="Effect" Value="{StaticResource HolographicDepth_Effect}" />
             </Trigger>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource GlassPanel_FadeIn}" />
+            </EventTrigger>
         </Style.Triggers>
     </Style>
     
     <!-- Medium Glass Panel -->
     <Style x:Key="GlassMediumPanel" TargetType="{x:Type Border}">
-        <Setter Property="Background" Value="{StaticResource GlassMedium}" />
+        <Setter Property="Background" Value="{StaticResource HoloGlass_Medium}" />
         <Setter Property="BorderBrush" Value="{StaticResource HoloCyanGradient}" />
         <Setter Property="BorderThickness" Value="1.5" />
         <Setter Property="CornerRadius" Value="12" />
-        <Setter Property="Effect" Value="{StaticResource AmbientShadow3}" />
+        <Setter Property="Effect" Value="{StaticResource DepthBlur_MidLayer_Light}" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource GlassHover}" />
-                <Setter Property="Effect" Value="{StaticResource CyanGlowMedium}" />
+                <Setter Property="Background" Value="{StaticResource HoloGlass_MediumPlus}" />
+                <Setter Property="Effect" Value="{StaticResource HolographicDepth_Effect}" />
             </Trigger>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource GlassPanel_FadeIn}" />
+            </EventTrigger>
         </Style.Triggers>
     </Style>
     
     <!-- Dark Glass Panel -->
     <Style x:Key="GlassDarkPanel" TargetType="{x:Type Border}">
-        <Setter Property="Background" Value="{StaticResource GlassDark}" />
+        <Setter Property="Background" Value="{StaticResource HoloGlass_Strong}" />
         <Setter Property="BorderBrush" Value="{StaticResource HoloCyanGradient}" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="CornerRadius" Value="12" />
-        <Setter Property="Effect" Value="{StaticResource AmbientShadow4}" />
+        <Setter Property="Effect" Value="{StaticResource DepthBlur_Background_Medium}" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource GlassHover}" />
-                <Setter Property="Effect" Value="{StaticResource CyanGlowStrong}" />
+                <Setter Property="Background" Value="{StaticResource HoloGlass_VeryStrong}" />
+                <Setter Property="Effect" Value="{StaticResource BackgroundElement_Effect}" />
             </Trigger>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource GlassPanel_FadeIn}" />
+            </EventTrigger>
         </Style.Triggers>
     </Style>
     
