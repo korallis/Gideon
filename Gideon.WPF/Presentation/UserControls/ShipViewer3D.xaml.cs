@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using WpfUserControl = System.Windows.Controls.UserControl;
 
 namespace Gideon.WPF.Presentation.UserControls;
 
@@ -6,7 +7,7 @@ namespace Gideon.WPF.Presentation.UserControls;
 /// Interaction logic for ShipViewer3D.xaml
 /// 3D ship visualization component using HelixToolkit
 /// </summary>
-public partial class ShipViewer3D : UserControl
+public partial class ShipViewer3D : WpfUserControl
 {
     public ShipViewer3D()
     {

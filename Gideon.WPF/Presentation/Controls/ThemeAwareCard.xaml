@@ -1,0 +1,44 @@
+<UserControl x:Class="Gideon.WPF.Presentation.Controls.ThemeAwareCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    
+    <UserControl.Resources>
+        <!-- Default card style that adapts to Windows 11 theme -->
+        <Style TargetType="{x:Type UserControl}" x:Key="ThemeAwareCardStyle">
+            <Setter Property="Background" Value="{DynamicResource GideonCardBrush}" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="{Binding Source={x:Static SystemParameters.HighContrast}, Converter={StaticResource BoolToColorConverter}}"
+                                      BlurRadius="{DynamicResource GideonBlurRadius}"
+                                      ShadowDepth="2"
+                                      Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type UserControl}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{DynamicResource GideonBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="{DynamicResource GideonCardCornerRadius}"
+                                Effect="{TemplateBinding Effect}">
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource GideonHoverBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Style="{StaticResource ThemeAwareCardStyle}">
+        <ContentPresenter Content="{Binding ElementName=thisCard, Path=CardContent}" />
+    </Grid>
+</UserControl>

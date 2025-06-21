@@ -55,6 +55,13 @@ public partial class App : System.Windows.Application
             var jumpListService = _host.Services.GetRequiredService<WindowsJumpListService>();
             await jumpListService.InitializeAsync();
 
+            var windows11ThemeManager = _host.Services.GetRequiredService<Windows11ThemeManager>();
+            await windows11ThemeManager.InitializeAsync();
+            await windows11ThemeManager.ApplyThemeToApplicationAsync();
+
+            var windowsAppSdkService = _host.Services.GetRequiredService<WindowsAppSdkService>();
+            await windowsAppSdkService.InitializeAsync();
+
             // Show main window
             var mainWindow = _host.Services.GetRequiredService<Presentation.Views.MainWindow>();
             mainWindow.Show();
@@ -110,6 +117,7 @@ public partial class App : System.Windows.Application
         services.Configure<ApplicationModelConfiguration>(configuration.GetSection(ApplicationModelConfiguration.SectionName));
         services.Configure<NotificationConfiguration>(configuration.GetSection(NotificationConfiguration.SectionName));
         services.Configure<SystemIntegrationConfiguration>(configuration.GetSection(SystemIntegrationConfiguration.SectionName));
+        services.Configure<WindowsAppSdkConfiguration>(configuration.GetSection(WindowsAppSdkConfiguration.SectionName));
         
         // Register Entity Framework
         services.AddDbContext<GideonDbContext>(options =>
@@ -136,6 +144,9 @@ public partial class App : System.Windows.Application
         services.AddSingleton<NotificationManager>();
         services.AddSingleton<SystemTrayService>();
         services.AddSingleton<WindowsJumpListService>();
+        services.AddSingleton<Windows11ThemeManager>();
+        services.AddSingleton<WindowsAppSdkService>();
+        services.AddSingleton<ModernFileDialogService>();
         
         // Register HttpClient for API calls
         services.AddHttpClient<IAuthenticationService, AuthenticationService>();

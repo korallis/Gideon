@@ -1,0 +1,267 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Windows 11 Theme Colors -->
+    <!-- These will be dynamically updated by the Windows11ThemeManager -->
+    
+    <!-- Base Colors -->
+    <SolidColorBrush x:Key="GideonBackgroundBrush" Color="#FF1C1C1E" />
+    <SolidColorBrush x:Key="GideonSurfaceBrush" Color="#FF2C2C2E" />
+    <SolidColorBrush x:Key="GideonCardBrush" Color="#FF363636" />
+    <SolidColorBrush x:Key="GideonTextPrimaryBrush" Color="White" />
+    <SolidColorBrush x:Key="GideonTextSecondaryBrush" Color="#FFB0B0B0" />
+    <SolidColorBrush x:Key="GideonBorderBrush" Color="#FF484848" />
+    <SolidColorBrush x:Key="GideonHoverBrush" Color="#FF404040" />
+
+    <!-- Accent Colors -->
+    <SolidColorBrush x:Key="GideonAccentBrush" Color="#FF0078D4" />
+    <SolidColorBrush x:Key="GideonAccentLightBrush" Color="#FF1E8CE8" />
+    <SolidColorBrush x:Key="GideonAccentDarkBrush" Color="#FF0060AA" />
+    <SolidColorBrush x:Key="GideonAccentTransparentBrush" Color="#4C0078D4" />
+    <SolidColorBrush x:Key="GideonAccentTextBrush" Color="White" />
+
+    <!-- Interactive States -->
+    <SolidColorBrush x:Key="GideonAccentHoverBrush" Color="#FF148CE8" />
+    <SolidColorBrush x:Key="GideonAccentPressedBrush" Color="#FF0066C4" />
+    <SolidColorBrush x:Key="GideonAccentDisabledBrush" Color="#7F0078D4" />
+
+    <!-- Semantic Colors -->
+    <SolidColorBrush x:Key="GideonSuccessBrush" Color="#FF107C10" />
+    <SolidColorBrush x:Key="GideonWarningBrush" Color="#FFFFF980" />
+    <SolidColorBrush x:Key="GideonErrorBrush" Color="#FFE74856" />
+    <SolidColorBrush x:Key="GideonInfoBrush" Color="#FF0078D4" />
+
+    <!-- EVE Online Specific Colors -->
+    <SolidColorBrush x:Key="GideonEVECyanBrush" Color="#FF00D4FF" />
+    <SolidColorBrush x:Key="GideonEVEGoldBrush" Color="#FFFFD700" />
+    <SolidColorBrush x:Key="GideonEVEOrangeBrush" Color="#FFFF6600" />
+
+    <!-- Windows 11 Design Values -->
+    <CornerRadius x:Key="GideonCornerRadius">8</CornerRadius>
+    <CornerRadius x:Key="GideonCardCornerRadius">12</CornerRadius>
+    <CornerRadius x:Key="GideonButtonCornerRadius">6</CornerRadius>
+    
+    <sys:Double x:Key="GideonBackgroundOpacity">1.0</sys:Double>
+    <sys:Double x:Key="GideonBlurRadius">0.0</sys:Double>
+    
+    <Duration x:Key="GideonAnimationDuration">0:0:0.2</Duration>
+    
+    <!-- Typography -->
+    <FontFamily x:Key="GideonFontFamily">Segoe UI Variable</FontFamily>
+    <FontFamily x:Key="GideonMonospaceFontFamily">Cascadia Code</FontFamily>
+    
+    <sys:Double x:Key="GideonFontSizeCaption">12</sys:Double>
+    <sys:Double x:Key="GideonFontSizeBody">14</sys:Double>
+    <sys:Double x:Key="GideonFontSizeBodyStrong">14</sys:Double>
+    <sys:Double x:Key="GideonFontSizeSubtitle">16</sys:Double>
+    <sys:Double x:Key="GideonFontSizeTitle">20</sys:Double>
+    <sys:Double x:Key="GideonFontSizeTitleLarge">28</sys:Double>
+    <sys:Double x:Key="GideonFontSizeDisplay">68</sys:Double>
+
+    <!-- Spacing -->
+    <Thickness x:Key="GideonPaddingXS">4</Thickness>
+    <Thickness x:Key="GideonPaddingS">8</Thickness>
+    <Thickness x:Key="GideonPaddingM">16</Thickness>
+    <Thickness x:Key="GideonPaddingL">24</Thickness>
+    <Thickness x:Key="GideonPaddingXL">32</Thickness>
+
+    <!-- Elevation Shadows -->
+    <DropShadowEffect x:Key="GideonElevation1" 
+                      Color="Black" 
+                      BlurRadius="2" 
+                      ShadowDepth="1" 
+                      Opacity="0.14" />
+    
+    <DropShadowEffect x:Key="GideonElevation2" 
+                      Color="Black" 
+                      BlurRadius="4" 
+                      ShadowDepth="2" 
+                      Opacity="0.14" />
+    
+    <DropShadowEffect x:Key="GideonElevation4" 
+                      Color="Black" 
+                      BlurRadius="8" 
+                      ShadowDepth="4" 
+                      Opacity="0.14" />
+    
+    <DropShadowEffect x:Key="GideonElevation8" 
+                      Color="Black" 
+                      BlurRadius="16" 
+                      ShadowDepth="8" 
+                      Opacity="0.14" />
+
+    <!-- Window Chrome Styles -->
+    <Style x:Key="GideonWindowStyle" TargetType="{x:Type Window}">
+        <Setter Property="Background" Value="{DynamicResource GideonBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource GideonTextPrimaryBrush}" />
+        <Setter Property="FontFamily" Value="{DynamicResource GideonFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource GideonFontSizeBody}" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+        <Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome CornerRadius="{DynamicResource GideonCornerRadius}"
+                              GlassFrameThickness="0"
+                              UseAeroCaptionButtons="True"
+                              NonClientFrameEdges="None"
+                              CaptionHeight="32" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Control Base Styles -->
+    <Style x:Key="GideonTextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource GideonTextPrimaryBrush}" />
+        <Setter Property="FontFamily" Value="{DynamicResource GideonFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource GideonFontSizeBody}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style x:Key="GideonCaptionTextStyle" TargetType="{x:Type TextBlock}" 
+           BasedOn="{StaticResource GideonTextBlockStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource GideonFontSizeCaption}" />
+        <Setter Property="Foreground" Value="{DynamicResource GideonTextSecondaryBrush}" />
+    </Style>
+
+    <Style x:Key="GideonBodyTextStyle" TargetType="{x:Type TextBlock}" 
+           BasedOn="{StaticResource GideonTextBlockStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource GideonFontSizeBody}" />
+    </Style>
+
+    <Style x:Key="GideonBodyStrongTextStyle" TargetType="{x:Type TextBlock}" 
+           BasedOn="{StaticResource GideonTextBlockStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource GideonFontSizeBodyStrong}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style x:Key="GideonSubtitleTextStyle" TargetType="{x:Type TextBlock}" 
+           BasedOn="{StaticResource GideonTextBlockStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource GideonFontSizeSubtitle}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style x:Key="GideonTitleTextStyle" TargetType="{x:Type TextBlock}" 
+           BasedOn="{StaticResource GideonTextBlockStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource GideonFontSizeTitle}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style x:Key="GideonTitleLargeTextStyle" TargetType="{x:Type TextBlock}" 
+           BasedOn="{StaticResource GideonTextBlockStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource GideonFontSizeTitleLarge}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <!-- Card Style -->
+    <Style x:Key="GideonCardStyle" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{DynamicResource GideonCardBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource GideonBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource GideonCardCornerRadius}" />
+        <Setter Property="Padding" Value="{DynamicResource GideonPaddingM}" />
+        <Setter Property="Effect" Value="{DynamicResource GideonElevation2}" />
+    </Style>
+
+    <!-- Input Controls -->
+    <Style x:Key="GideonTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{DynamicResource GideonSurfaceBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource GideonTextPrimaryBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource GideonBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="FontFamily" Value="{DynamicResource GideonFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource GideonFontSizeBody}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource GideonButtonCornerRadius}">
+                        <ScrollViewer Name="PART_ContentHost" 
+                                      Margin="{TemplateBinding Padding}"
+                                      VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource GideonAccentBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource GideonAccentBrush}" />
+                            <Setter TargetName="border" Property="BorderThickness" Value="2" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.6" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- List and Grid Styles -->
+    <Style x:Key="GideonListViewStyle" TargetType="{x:Type ListView}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="FontFamily" Value="{DynamicResource GideonFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource GideonFontSizeBody}" />
+    </Style>
+
+    <Style x:Key="GideonListViewItemStyle" TargetType="{x:Type ListViewItem}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Margin" Value="0,2" />
+        <Setter Property="Padding" Value="{DynamicResource GideonPaddingS}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                    <Border Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource GideonButtonCornerRadius}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource GideonHoverBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource GideonAccentTransparentBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Animation Resources -->
+    <Storyboard x:Key="GideonFadeInStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0" To="1"
+                         Duration="{DynamicResource GideonAnimationDuration}" />
+    </Storyboard>
+
+    <Storyboard x:Key="GideonFadeOutStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="1" To="0"
+                         Duration="{DynamicResource GideonAnimationDuration}" />
+    </Storyboard>
+
+    <Storyboard x:Key="GideonSlideInFromLeftStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                         From="-100" To="0"
+                         Duration="{DynamicResource GideonAnimationDuration}" />
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0" To="1"
+                         Duration="{DynamicResource GideonAnimationDuration}" />
+    </Storyboard>
+
+</ResourceDictionary>
