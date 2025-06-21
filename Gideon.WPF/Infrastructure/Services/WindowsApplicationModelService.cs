@@ -1,11 +1,8 @@
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Reflection;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.Core;
-using Windows.Storage;
-using Windows.System;
+using System.IO;
+using System.Text.Json;
 
 namespace Gideon.WPF.Infrastructure.Services;
 
@@ -33,24 +30,24 @@ public class WindowsApplicationModelService
     public bool IsPackaged { get; private set; }
 
     /// <summary>
-    /// Gets the application data folder
+    /// Gets the application data folder path
     /// </summary>
-    public StorageFolder? ApplicationDataFolder { get; private set; }
+    public string? ApplicationDataFolderPath { get; private set; }
 
     /// <summary>
-    /// Gets the local application data folder
+    /// Gets the local application data folder path
     /// </summary>
-    public StorageFolder? LocalDataFolder { get; private set; }
+    public string? LocalDataFolderPath { get; private set; }
 
     /// <summary>
-    /// Gets the roaming application data folder
+    /// Gets the roaming application data folder path
     /// </summary>
-    public StorageFolder? RoamingDataFolder { get; private set; }
+    public string? RoamingDataFolderPath { get; private set; }
 
     /// <summary>
-    /// Gets the temporary application data folder
+    /// Gets the temporary application data folder path
     /// </summary>
-    public StorageFolder? TemporaryDataFolder { get; private set; }
+    public string? TemporaryDataFolderPath { get; private set; }
 
     /// <summary>
     /// Event fired when the app is activated
@@ -180,27 +177,18 @@ public class WindowsApplicationModelService
     {
         try
         {
-            if (IsPackaged)
+            // For WPF apps, we handle restart manually
+            var currentProcess = Process.GetCurrentProcess();
+            var startInfo = new ProcessStartInfo
             {
-                var result = await CoreApplication.RequestRestartAsync(arguments ?? string.Empty);
-                return result == AppRestartFailureReason.NotInForeground || 
-                       result == AppRestartFailureReason.RestartPending;
-            }
-            else
-            {
-                // For unpackaged apps, we need to handle restart manually
-                var currentProcess = Process.GetCurrentProcess();
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = currentProcess.MainModule?.FileName ?? string.Empty,
-                    Arguments = arguments ?? string.Empty,
-                    UseShellExecute = true
-                };
+                FileName = currentProcess.MainModule?.FileName ?? string.Empty,
+                Arguments = arguments ?? string.Empty,
+                UseShellExecute = true
+            };
 
-                Process.Start(startInfo);
-                System.Windows.Application.Current.Shutdown();
-                return true;
-            }
+            Process.Start(startInfo);
+            System.Windows.Application.Current.Shutdown();
+            return true;
         }
         catch (Exception ex)
         {
@@ -216,7 +204,8 @@ public class WindowsApplicationModelService
     {
         try
         {
-            return await Launcher.LaunchUriAsync(uri);
+            Process.Start(new ProcessStartInfo(uri.ToString()) { UseShellExecute = true });
+            return true;
         }
         catch (Exception ex)
         {
@@ -232,21 +221,11 @@ public class WindowsApplicationModelService
     {
         try
         {
-            if (IsPackaged && LocalDataFolder != null)
-            {
-                var file = await LocalDataFolder.CreateFileAsync($"{key}.json", CreationCollisionOption.ReplaceExisting);
-                await FileIO.WriteTextAsync(file, data);
-                return true;
-            }
-            else
-            {
-                // For unpackaged apps, use traditional file system
-                var appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Gideon");
-                Directory.CreateDirectory(appDataPath);
-                var filePath = Path.Combine(appDataPath, $"{key}.json");
-                await File.WriteAllTextAsync(filePath, data);
-                return true;
-            }
+            var appDataPath = LocalDataFolderPath ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Gideon");
+            Directory.CreateDirectory(appDataPath);
+            var filePath = Path.Combine(appDataPath, $"{key}.json");
+            await File.WriteAllTextAsync(filePath, data);
+            return true;
         }
         catch (Exception ex)
         {
@@ -262,23 +241,11 @@ public class WindowsApplicationModelService
     {
         try
         {
-            if (IsPackaged && LocalDataFolder != null)
+            var appDataPath = LocalDataFolderPath ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Gideon");
+            var filePath = Path.Combine(appDataPath, $"{key}.json");
+            if (File.Exists(filePath))
             {
-                var file = await LocalDataFolder.TryGetItemAsync($"{key}.json") as StorageFile;
-                if (file != null)
-                {
-                    return await FileIO.ReadTextAsync(file);
-                }
-            }
-            else
-            {
-                // For unpackaged apps, use traditional file system
-                var appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Gideon");
-                var filePath = Path.Combine(appDataPath, $"{key}.json");
-                if (File.Exists(filePath))
-                {
-                    return await File.ReadAllTextAsync(filePath);
-                }
+                return await File.ReadAllTextAsync(filePath);
             }
 
             return null;
@@ -297,25 +264,12 @@ public class WindowsApplicationModelService
     {
         try
         {
-            if (IsPackaged && LocalDataFolder != null)
+            var appDataPath = LocalDataFolderPath ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Gideon");
+            var filePath = Path.Combine(appDataPath, $"{key}.json");
+            if (File.Exists(filePath))
             {
-                var file = await LocalDataFolder.TryGetItemAsync($"{key}.json") as StorageFile;
-                if (file != null)
-                {
-                    await file.DeleteAsync();
-                    return true;
-                }
-            }
-            else
-            {
-                // For unpackaged apps, use traditional file system
-                var appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Gideon");
-                var filePath = Path.Combine(appDataPath, $"{key}.json");
-                if (File.Exists(filePath))
-                {
-                    File.Delete(filePath);
-                    return true;
-                }
+                File.Delete(filePath);
+                return true;
             }
 
             return false;
@@ -331,13 +285,8 @@ public class WindowsApplicationModelService
     {
         try
         {
-            // Try to access Package.Current - this will throw if not packaged
-            var package = Package.Current;
-            return package != null;
-        }
-        catch (InvalidOperationException)
-        {
-            // Not packaged
+            // For WPF apps, we assume they are not packaged by default
+            // This could be enhanced to check for MSIX packaging
             return false;
         }
         catch (Exception ex)
@@ -351,29 +300,10 @@ public class WindowsApplicationModelService
     {
         try
         {
-            var package = Package.Current;
-            PackageInfo = new PackageInfo
-            {
-                Id = package.Id.FullName,
-                DisplayName = package.DisplayName,
-                PublisherDisplayName = package.PublisherDisplayName,
-                Version = package.Id.Version,
-                InstallDate = package.InstalledDate.DateTime,
-                InstalledLocation = package.InstalledLocation.Path
-            };
-
-            // Get application data folders
-            ApplicationDataFolder = ApplicationData.Current.LocalFolder;
-            LocalDataFolder = ApplicationData.Current.LocalFolder;
-            RoamingDataFolder = ApplicationData.Current.RoamingFolder;
-            TemporaryDataFolder = ApplicationData.Current.TemporaryFolder;
-
-            // Set up lifecycle events
-            CoreApplication.Suspending += OnSuspending;
-            CoreApplication.Resuming += OnResuming;
-
+            // This method is kept for future MSIX packaging support
+            await InitializeUnpackagedAppAsync();
             _logger.LogDebug("Packaged app initialized: {DisplayName} v{Version}", 
-                PackageInfo.DisplayName, GetApplicationVersion());
+                PackageInfo?.DisplayName ?? "Unknown", GetApplicationVersion());
         }
         catch (Exception ex)
         {
@@ -393,7 +323,7 @@ public class WindowsApplicationModelService
                 Id = assembly.GetName().Name ?? "Gideon.WPF",
                 DisplayName = assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? "Gideon",
                 PublisherDisplayName = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company ?? "Gideon Development Team",
-                Version = new PackageVersion
+                Version = new ApplicationPackageVersion
                 {
                     Major = (ushort)version.Major,
                     Minor = (ushort)version.Minor,
@@ -404,6 +334,20 @@ public class WindowsApplicationModelService
                 InstalledLocation = Path.GetDirectoryName(assembly.Location) ?? string.Empty
             };
 
+            // Set up application data folders
+            var appDataRoot = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var appDataPath = Path.Combine(appDataRoot, "Gideon");
+            
+            ApplicationDataFolderPath = appDataPath;
+            LocalDataFolderPath = appDataPath;
+            RoamingDataFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Gideon");
+            TemporaryDataFolderPath = Path.Combine(Path.GetTempPath(), "Gideon");
+
+            // Create directories if they don't exist
+            Directory.CreateDirectory(LocalDataFolderPath);
+            Directory.CreateDirectory(RoamingDataFolderPath);
+            Directory.CreateDirectory(TemporaryDataFolderPath);
+
             _logger.LogDebug("Unpackaged app initialized: {DisplayName} v{Version}", 
                 PackageInfo.DisplayName, GetApplicationVersion());
         }
@@ -413,12 +357,12 @@ public class WindowsApplicationModelService
         }
     }
 
-    private void OnSuspending(object? sender, SuspendingEventArgs e)
+    private void OnSuspending(object? sender, EventArgs e)
     {
         try
         {
             _logger.LogInformation("Application suspending");
-            AppSuspended?.Invoke(this, new AppSuspendedEventArgs(e.SuspendingOperation.Deadline));
+            AppSuspended?.Invoke(this, new AppSuspendedEventArgs(DateTime.UtcNow.AddMinutes(5)));
         }
         catch (Exception ex)
         {
@@ -426,7 +370,7 @@ public class WindowsApplicationModelService
         }
     }
 
-    private void OnResuming(object? sender, object e)
+    private void OnResuming(object? sender, EventArgs e)
     {
         try
         {
@@ -441,11 +385,8 @@ public class WindowsApplicationModelService
 
     public void Dispose()
     {
-        if (IsPackaged)
-        {
-            CoreApplication.Suspending -= OnSuspending;
-            CoreApplication.Resuming -= OnResuming;
-        }
+        // Clean up any resources
+        _logger.LogDebug("ApplicationModel service disposed");
     }
 }
 
@@ -457,9 +398,25 @@ public class PackageInfo
     public string Id { get; set; } = string.Empty;
     public string DisplayName { get; set; } = string.Empty;
     public string PublisherDisplayName { get; set; } = string.Empty;
-    public PackageVersion Version { get; set; }
+    public ApplicationPackageVersion Version { get; set; } = new();
     public DateTime InstallDate { get; set; }
     public string InstalledLocation { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// Represents application package version information
+/// </summary>
+public class ApplicationPackageVersion
+{
+    public ushort Major { get; set; }
+    public ushort Minor { get; set; }
+    public ushort Build { get; set; }
+    public ushort Revision { get; set; }
+
+    public override string ToString()
+    {
+        return $"{Major}.{Minor}.{Build}.{Revision}";
+    }
 }
 
 /// <summary>

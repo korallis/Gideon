@@ -1,8 +1,8 @@
 using Microsoft.Win32;
-using System.Management;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
+using WpfColor = System.Windows.Media.Color;
 
 namespace Gideon.WPF.Infrastructure.Services;
 
@@ -58,7 +58,7 @@ public class WindowsThemeService
     /// <summary>
     /// Gets the Windows accent color
     /// </summary>
-    public Color AccentColor
+    public WpfColor AccentColor
     {
         get
         {
@@ -68,7 +68,7 @@ public class WindowsThemeService
                 if (value is int colorValue)
                 {
                     var bytes = BitConverter.GetBytes(colorValue);
-                    return Color.FromRgb(bytes[0], bytes[1], bytes[2]);
+                    return WpfColor.FromRgb(bytes[0], bytes[1], bytes[2]);
                 }
             }
             catch
@@ -77,7 +77,7 @@ public class WindowsThemeService
             }
 
             // Default EVE Online cyan color
-            return Color.FromRgb(0x00, 0xD4, 0xFF);
+            return WpfColor.FromRgb(0x00, 0xD4, 0xFF);
         }
     }
 
@@ -154,36 +154,36 @@ public class WindowsThemeService
     private void ApplyDarkTheme(ResourceDictionary resources)
     {
         // Update EVE theme colors for dark mode
-        resources["EVE_BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(0x1C, 0x1C, 0x1E));
-        resources["EVE_SurfaceBrush"] = new SolidColorBrush(Color.FromRgb(0x2C, 0x2C, 0x2E));
+        resources["EVE_BackgroundBrush"] = new SolidColorBrush(WpfColor.FromRgb(0x1C, 0x1C, 0x1E));
+        resources["EVE_SurfaceBrush"] = new SolidColorBrush(WpfColor.FromRgb(0x2C, 0x2C, 0x2E));
         resources["EVE_TextPrimaryBrush"] = new SolidColorBrush(Colors.White);
-        resources["EVE_TextSecondaryBrush"] = new SolidColorBrush(Color.FromRgb(0xC4, 0xC4, 0xC6));
-        resources["EVE_BorderBrush"] = new SolidColorBrush(Color.FromRgb(0x48, 0x48, 0x4A));
+        resources["EVE_TextSecondaryBrush"] = new SolidColorBrush(WpfColor.FromRgb(0xC4, 0xC4, 0xC6));
+        resources["EVE_BorderBrush"] = new SolidColorBrush(WpfColor.FromRgb(0x48, 0x48, 0x4A));
     }
 
     private void ApplyLightTheme(ResourceDictionary resources)
     {
         // Update EVE theme colors for light mode (if user prefers light)
-        resources["EVE_BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(0xF2, 0xF2, 0xF7));
+        resources["EVE_BackgroundBrush"] = new SolidColorBrush(WpfColor.FromRgb(0xF2, 0xF2, 0xF7));
         resources["EVE_SurfaceBrush"] = new SolidColorBrush(Colors.White);
         resources["EVE_TextPrimaryBrush"] = new SolidColorBrush(Colors.Black);
-        resources["EVE_TextSecondaryBrush"] = new SolidColorBrush(Color.FromRgb(0x3C, 0x3C, 0x43));
-        resources["EVE_BorderBrush"] = new SolidColorBrush(Color.FromRgb(0xC6, 0xC6, 0xC8));
+        resources["EVE_TextSecondaryBrush"] = new SolidColorBrush(WpfColor.FromRgb(0x3C, 0x3C, 0x43));
+        resources["EVE_BorderBrush"] = new SolidColorBrush(WpfColor.FromRgb(0xC6, 0xC6, 0xC8));
     }
 
-    private void ApplyAccentColor(ResourceDictionary resources, Color accentColor)
+    private void ApplyAccentColor(ResourceDictionary resources, WpfColor accentColor)
     {
         // Use Windows accent color as secondary, keep EVE cyan as primary
         resources["EVE_AccentBrush"] = new SolidColorBrush(accentColor);
         
         // Create derived colors
-        var darkerAccent = Color.FromRgb(
+        var darkerAccent = WpfColor.FromRgb(
             (byte)(accentColor.R * 0.8),
             (byte)(accentColor.G * 0.8),
             (byte)(accentColor.B * 0.8));
         resources["EVE_AccentDarkBrush"] = new SolidColorBrush(darkerAccent);
 
-        var lighterAccent = Color.FromRgb(
+        var lighterAccent = WpfColor.FromRgb(
             (byte)Math.Min(255, accentColor.R * 1.2),
             (byte)Math.Min(255, accentColor.G * 1.2),
             (byte)Math.Min(255, accentColor.B * 1.2));
@@ -216,7 +216,7 @@ public class WindowsThemeService
     }
 
     private bool _lastDarkMode;
-    private Color _lastAccentColor;
+    private WpfColor _lastAccentColor;
 
     private void CheckForThemeChanges()
     {
@@ -302,9 +302,9 @@ public class ThemeChangedEventArgs : EventArgs
 
 public class AccentColorChangedEventArgs : EventArgs
 {
-    public Color AccentColor { get; }
+    public WpfColor AccentColor { get; }
 
-    public AccentColorChangedEventArgs(Color accentColor)
+    public AccentColorChangedEventArgs(WpfColor accentColor)
     {
         AccentColor = accentColor;
     }
