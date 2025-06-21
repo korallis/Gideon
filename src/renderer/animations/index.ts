@@ -273,7 +273,7 @@ export const tabVariants: Variants = {
 export const progressVariants: Variants = {
   initial: {
     scaleX: 0,
-    originX: 0,
+    transformOrigin: "left",
   },
   animate: {
     scaleX: 1,
@@ -463,11 +463,11 @@ export const presets = {
   
   bounce: {
     animate: {
-      y: [0, -10, 0],
+      y: [0, -10, 0] as any,
       transition: { duration: 0.6, repeat: Infinity, ease: 'easeInOut' }
     },
   },
-} as const;
+};
 
 export type AnimationPreset = keyof typeof presets;
 export type AnimationConfig = keyof typeof animations;

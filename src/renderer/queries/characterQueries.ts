@@ -72,13 +72,11 @@ const mockESIService = {
 // Character data queries
 export const useCharacterQuery = (characterId: number, enabled = true) => {
   return useQuery({
-    queryKey: queryKeys.characters.detail(characterId),
+    queryKey: [...queryKeys.characters.detail(characterId)],
     queryFn: () => mockESIService.getCharacter(characterId),
     enabled: enabled && characterId > 0,
     staleTime: 10 * 60 * 1000, // Character data doesn't change often
-    onError: (error) => {
-      queryErrorHandlers.handleGenericError(error, queryKeys.characters.detail(characterId));
-    },
+    throwOnError: false, // Handle errors via error boundaries instead
   });
 };
 

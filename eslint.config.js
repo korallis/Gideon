@@ -10,12 +10,13 @@ export default [
   {
     files: ['**/*.{ts,tsx}'],
     ignores: [
-      'dist/**/*',
-      'node_modules/**/*',
-      'coverage/**/*',
+      'dist/**',
+      'node_modules/**',
+      'coverage/**',
+      'release/**',
       '*.config.{js,ts}',
-      'tests/**/*',
-      'src/workers/**/*',
+      'tests/**',
+      'src/workers/**',
     ],
     languageOptions: {
       parser: tsParser,

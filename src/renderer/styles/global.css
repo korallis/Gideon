@@ -1,5 +1,8 @@
 /* Global styles for Gideon */
 
+/* Import Tailwind CSS v4 (new simplified syntax) */
+@import 'tailwindcss';
+
 /* Import utility and component styles */
 @import './utilities.css';
 @import './components.css';
