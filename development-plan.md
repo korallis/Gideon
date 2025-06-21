@@ -56,7 +56,7 @@ All tasks in this section have been completed as part of the comprehensive found
 - [x] **TASK-027** Install and configure Babylon.js 8.13.0 ✅
 - [x] **TASK-028** Create 3D scene management system ✅
 - [x] **TASK-029** Implement ship model loading (GLTF/GLB) ✅
-- [ ] **TASK-030** Set up PBR materials and lighting system
+- [x] **TASK-030** Set up PBR materials and lighting system ✅
 - [ ] **TASK-031** Create camera controls and scene navigation
 - [ ] **TASK-032** Implement module highlighting and selection
 - [ ] **TASK-033** Add particle systems for visual effects
@@ -271,13 +271,13 @@ All tasks in this section have been completed as part of the comprehensive found
 | Phase | Tasks | Completed | In Progress | Pending | Progress |
 |-------|--------|-----------|-------------|---------|----------|
 | Phase 1: Foundation | 26 | 26 | 0 | 0 | 100% |
-| Phase 2: Ship Fitting | 36 | 3 | 0 | 33 | 8% |
+| Phase 2: Ship Fitting | 36 | 4 | 0 | 32 | 11% |
 | Phase 3: Character Mgmt | 26 | 0 | 0 | 26 | 0% |
 | Phase 4: Market Analysis | 16 | 0 | 0 | 16 | 0% |
 | Phase 5: Advanced Features | 16 | 0 | 0 | 16 | 0% |
 | Phase 6: Testing & QA | 16 | 0 | 0 | 16 | 0% |
 | Phase 7: Deployment | 8 | 0 | 0 | 8 | 0% |
-| **TOTAL** | **144** | **29** | **0** | **115** | **20%** |
+| **TOTAL** | **144** | **30** | **0** | **114** | **21%** |
 
 ---
 

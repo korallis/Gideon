@@ -23,6 +23,8 @@ import {
 import { SceneLoader } from '@babylonjs/loaders';
 import { babylonEngine } from './engine';
 import { ModelLoader, LoadedModel, ModelLoadOptions, ModelLoadProgress } from './modelLoader';
+import { MaterialSystem, MaterialConfig } from './materialSystem';
+import { LightingSystem, LightingPreset, DynamicLightingState } from './lightingSystem';
 
 export interface ShipModel {
   id: string;
@@ -60,6 +62,8 @@ export interface SceneState {
 export class SceneManager {
   private scene: Scene | null = null;
   private modelLoader: ModelLoader | null = null;
+  private materialSystem: MaterialSystem | null = null;
+  private lightingSystem: LightingSystem | null = null;
   private loadedModels = new Map<string, ShipModel>();
   private sceneObjects = new Map<string, SceneObject>();
   private assetContainers = new Map<string, AssetContainer>();
@@ -94,11 +98,15 @@ export class SceneManager {
       return false;
     }
 
-    // Initialize model loader
+    // Initialize subsystems
     this.modelLoader = new ModelLoader(this.scene);
+    this.materialSystem = new MaterialSystem(this.scene);
+    this.lightingSystem = new LightingSystem(this.scene);
 
-    this.setupEnvironment();
+    // Setup environment and lighting
+    await this.setupEnvironment();
     this.setupEventHandlers();
+    
     console.log('SceneManager initialized successfully');
     return true;
   }
@@ -106,14 +114,17 @@ export class SceneManager {
   /**
    * Set up the space environment and backdrop
    */
-  private setupEnvironment(): void {
-    if (!this.scene) return;
+  private async setupEnvironment(): Promise<void> {
+    if (!this.scene || !this.materialSystem || !this.lightingSystem) return;
 
     // Create space backdrop
     this.createSpaceBackdrop();
     
-    // Set up environmental lighting
-    this.updateLighting();
+    // Initialize material system with environment mapping
+    await this.materialSystem.setupEnvironmentMapping();
+    
+    // Set up default lighting
+    this.lightingSystem.setupLighting('space_default');
   }
 
   /**
@@ -336,18 +347,46 @@ export class SceneManager {
   }
 
   /**
-   * Update scene lighting configuration
+   * Apply lighting preset
    */
-  updateLighting(): void {
-    if (!this.scene) return;
+  applyLightingPreset(presetName: string): void {
+    if (!this.lightingSystem) return;
+    
+    this.lightingSystem.setupLighting(presetName);
+    console.log(`Applied lighting preset: ${presetName}`);
+  }
 
-    const lights = this.scene.lights;
-    lights.forEach(light => {
-      light.intensity = this.currentState.lighting.intensity;
-      if (light.diffuse) {
-        light.diffuse = this.currentState.lighting.color;
-      }
+  /**
+   * Update dynamic lighting state
+   */
+  updateDynamicLighting(state: Partial<DynamicLightingState>): void {
+    if (!this.lightingSystem) return;
+    
+    this.lightingSystem.updateDynamicLighting(state);
+  }
+
+  /**
+   * Apply material preset to ship
+   */
+  applyMaterialPreset(shipId: string, presetName: string): void {
+    if (!this.materialSystem) return;
+
+    const shipModel = this.loadedModels.get(shipId);
+    if (!shipModel) return;
+
+    // Apply material to all meshes in the ship
+    const meshes = shipModel.mesh.getChildMeshes();
+    meshes.forEach((mesh, index) => {
+      this.materialSystem!.applyMaterialToMesh(mesh, presetName, `variant_${index}`);
     });
+
+    // Add shadow casting if shadows are enabled
+    if (this.currentState.lighting.shadows && this.lightingSystem) {
+      meshes.forEach(mesh => {
+        this.lightingSystem!.addShadowCaster(mesh);
+        this.lightingSystem!.addShadowReceiver(mesh);
+      });
+    }
   }
 
   /**
@@ -447,6 +486,34 @@ export class SceneManager {
   }
 
   /**
+   * Get material system
+   */
+  getMaterialSystem(): MaterialSystem | null {
+    return this.materialSystem;
+  }
+
+  /**
+   * Get lighting system
+   */
+  getLightingSystem(): LightingSystem | null {
+    return this.lightingSystem;
+  }
+
+  /**
+   * Get available material presets
+   */
+  getMaterialPresets() {
+    return this.materialSystem?.getPresets() || new Map();
+  }
+
+  /**
+   * Get available lighting presets
+   */
+  getLightingPresets() {
+    return this.lightingSystem?.getPresets() || new Map();
+  }
+
+  /**
    * Get memory usage statistics
    */
   getMemoryStats() {
@@ -467,10 +534,20 @@ export class SceneManager {
     // Clear scene first
     this.clearScene();
 
-    // Dispose model loader
+    // Dispose subsystems
     if (this.modelLoader) {
       this.modelLoader.dispose();
       this.modelLoader = null;
+    }
+
+    if (this.materialSystem) {
+      this.materialSystem.dispose();
+      this.materialSystem = null;
+    }
+
+    if (this.lightingSystem) {
+      this.lightingSystem.dispose();
+      this.lightingSystem = null;
     }
 
     // Clean up any remaining resources

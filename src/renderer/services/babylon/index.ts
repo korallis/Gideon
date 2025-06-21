@@ -6,3 +6,5 @@
 export * from './engine';
 export * from './sceneManager';
 export * from './modelLoader';
+export * from './materialSystem';
+export * from './lightingSystem';

@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { BabylonCanvas } from './BabylonCanvas';
 import { ModelLoadDemo } from './ModelLoadDemo';
+import { MaterialLightingDemo } from './MaterialLightingDemo';
 import { Button } from '../UI';
 import { useSceneManager } from '../../hooks';
 import { cn } from '../../utils';
@@ -88,6 +89,9 @@ export const ShipViewer: React.FC<ShipViewerProps> = ({
 
       {/* Model Loading Demo */}
       <ModelLoadDemo />
+
+      {/* Material and Lighting Demo */}
+      <MaterialLightingDemo />
 
       {/* Controls Panel */}
       {showControls && (
