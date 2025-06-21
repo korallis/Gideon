@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Microsoft .NET and Framework Packages -->
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.CommandLine" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.6" />
+
+    <!-- Entity Framework -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.6" />
+
+    <!-- WPF and UI Frameworks -->
+    <PackageVersion Include="MaterialDesignThemes" Version="5.2.1" />
+    <PackageVersion Include="MaterialDesignColors" Version="5.2.1" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    
+    <!-- 3D Graphics -->
+    <PackageVersion Include="HelixToolkit" Version="2015.1.715" />
+    <PackageVersion Include="HelixToolkit.Wpf" Version="2015.1.715" />
+
+    <!-- HTTP and API -->
+    <PackageVersion Include="Refit" Version="8.0.0" />
+    <PackageVersion Include="Refit.HttpClientFactory" Version="8.0.0" />
+    <PackageVersion Include="Polly" Version="8.6.1" />
+    <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
+
+    <!-- Serialization and Data -->
+    <PackageVersion Include="System.Text.Json" Version="9.0.1" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="AutoMapper" Version="12.0.1" />
+    <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+
+    <!-- Logging -->
+    <PackageVersion Include="Serilog" Version="4.3.0" />
+    <PackageVersion Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Debug" Version="3.0.0" />
+
+    <!-- Security and Authentication -->
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.2" />
+    <PackageVersion Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+
+    <!-- Performance and Monitoring -->
+    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.1" />
+    <PackageVersion Include="Microsoft.ApplicationInsights" Version="2.22.0" />
+
+    <!-- Testing Packages -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="FluentAssertions" Version="7.0.0" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.6" />
+
+    <!-- Build and Analysis -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.1" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
+
+    <!-- Windows Platform -->
+    <PackageVersion Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.1742" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
+  </ItemGroup>
+</Project>

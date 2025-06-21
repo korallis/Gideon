@@ -1,336 +1,335 @@
 # Gideon Development Master Plan
 
-> **Status:** Active Development Plan | **Last Updated:** June 21, 2025  
-> **Approach:** Frontend-First Development | **Tech Stack:** Electron 36.5.0 + TypeScript 5.8.3 + React 19.1.0 + Babylon.js 8.13.0
+> **Status:** WPF Native Development | **Last Updated:** June 21, 2025  
+> **Tech Stack:** .NET 9.0 + WPF + CommunityToolkit.Mvvm + HelixToolkit + Windows 11 Integration
+> **Target:** High-performance native Windows desktop application for EVE Online
 
-## 🎯 Project Overview
+c## 🎯 Project Overview
 
-Building Gideon (EVE Online's AI Copilot) - a comprehensive desktop application for EVE Online players featuring ship fitting, character planning, and market analysis with game-like sci-fi UI.
+Building Gideon (EVE Online's AI Copilot) - a high-performance native Windows desktop application for EVE Online players featuring ship fitting, character planning, and market analysis with Windows 11 Fluent Design integration.
+
+### 🚀 **Technology Stack**
+- **.NET 9.0** - Latest .NET with C# 13 and native AOT support
+- **WPF** - Windows Presentation Foundation for rich native UI
+- **CommunityToolkit.Mvvm** - Modern MVVM framework with source generators
+- **HelixToolkit.Wpf** - 3D visualization for ship viewer
+- **MaterialDesignInXamlToolkit** - Modern Material Design UI components
+- **Entity Framework Core** - Data persistence with SQLite
+- **Refit** - Type-safe HTTP client for ESI API
+- **Polly** - Resilience patterns for API calls
+- **Windows 11 Features** - Native notifications, system tray, Fluent Design
 
 ---
 
 ## 📋 Development Phases
 
-### Phase 1: Foundation & Core Infrastructure (Months 1-2)
-**Goal:** Establish robust project foundation with modern tooling and architecture
+### Phase 0: Project Cleanup & Documentation (Week 0) 🎯 **CRITICAL**
+**Goal:** Clean up legacy Electron artifacts and update project documentation
 
-#### 1.1 Project Setup & Tooling
-- [x] **TASK-001** Initialize Node.js project with package.json ✅
-- [x] **TASK-002** Set up TypeScript 5.8.3 configuration with strict mode ✅
-- [x] **TASK-003** Configure Vite 6.3.5 build system with Electron integration ✅
-- [x] **TASK-004** Install and configure Electron 36.5.0 with security best practices ✅
-- [x] **TASK-005** Set up ESLint + Prettier + Husky for code quality ✅
-- [x] **TASK-006** Configure Vitest for unit testing ✅
-- [x] **TASK-007** Set up Playwright for E2E testing ✅
-- [x] **TASK-008** Create CI/CD pipeline configuration ✅
-- [x] **TASK-009** Initialize Git repository with proper .gitignore ✅
+#### 0.1 Legacy Cleanup
+- [x] **TASK-000** Clean up Electron artifacts and legacy files ✅
+- [x] **TASK-000-B** Update README.md to reflect WPF-only development approach ✅
+- [x] **TASK-000-C** Archive/organize existing codebase for reference ✅
 
-#### 1.2 Core Architecture Setup
-- [x] **TASK-010** Create modular file/folder structure following tech stack ✅
-- [x] **TASK-011** Set up Electron main process with IPC communication ✅
-- [x] **TASK-012** Initialize React 19.1.0 renderer process ✅
-- [x] **TASK-013** Configure Zustand v5.0.5 state management stores ✅
-- [x] **TASK-014** Set up TanStack Query v5.80.10 for server state ✅
-- [x] **TASK-015** Configure Dexie.js for local IndexedDB storage ✅
-- [x] **TASK-016** Implement base routing with React Router ✅
-- [x] **TASK-017** Set up Tailwind CSS v4.1.10 with custom theme ✅
-- [x] **TASK-018** Configure Framer Motion v12.18.1 animations ✅
-- [x] **TASK-019** Set up React Hook Form validation ✅
-- [x] **TASK-020** Install and configure Radix UI v1.4.2 components ✅
-- [x] **TASK-021** Set up Emotion CSS-in-JS with theming ✅
-- [x] **TASK-022** Create EVE-inspired color palette and design tokens ✅
-- [x] **TASK-023** Build base component library (Button, Input, Card, etc.) ✅
-- [x] **TASK-024** Implement responsive layout system ✅
-- [x] **TASK-025** Create loading states and micro-interactions ✅
-- [x] **TASK-026** Implement dark theme with sci-fi styling ✅
+### Phase 1: Foundation & Project Setup (Weeks 1-2)
+**Goal:** Establish modern .NET 9 WPF foundation with Windows 11 integration
 
-🎉 **PHASE 1 FOUNDATION COMPLETE!** All 26 tasks finished successfully.
+#### 1.1 Project Infrastructure
+- [x] **TASK-001** Create .NET 9 WPF project with Windows 11 targeting ✅
+- [x] **TASK-002** Configure project structure with Clean Architecture patterns ✅
+- [x] **TASK-003** Set up NuGet package management with Central Package Management ✅
+- [x] **TASK-004** Configure Cursor IDE with .NET 9 and WPF development extensions ✅
+- [ ] **TASK-005** Set up Git integration and development workflow
+- [ ] **TASK-006** Configure EditorConfig and .NET analyzers for code quality
+- [ ] **TASK-007** Set up MSBuild targets for automated builds
+- [ ] **TASK-008** Configure application manifest for Windows 11 features
 
-#### 1.3 Design System Foundation - COMPLETE ✅
-All tasks in this section have been completed as part of the comprehensive foundation.
+#### 1.2 Modern WPF Stack Setup
+- [ ] **TASK-009** Install CommunityToolkit.Mvvm 8.3+ for MVVM framework
+- [ ] **TASK-010** Set up Microsoft.Extensions.DependencyInjection for IoC
+- [ ] **TASK-011** Configure Microsoft.Extensions.Hosting for application lifecycle
+- [ ] **TASK-012** Install MaterialDesignInXamlToolkit 5.1+ for modern UI
+- [ ] **TASK-013** Set up HelixToolkit.Wpf 2024.6+ for 3D ship visualization
+- [ ] **TASK-014** Configure Serilog 8.0+ for structured logging
+- [ ] **TASK-015** Install Microsoft.Toolkit.Win32.UI.Controls for modern controls
+- [ ] **TASK-016** Set up FluentValidation 11.9+ for form validation
 
-### Phase 2: Ship Fitting Module (Months 2-3)
-**Goal:** Core ship fitting functionality with 3D visualization and drag-and-drop interface
+#### 1.3 Windows Integration Foundation
+- [ ] **TASK-017** Configure Windows 11 Fluent Design System integration
+- [ ] **TASK-018** Set up Windows.ApplicationModel for modern app features
+- [ ] **TASK-019** Configure Windows Credential Manager integration
+- [ ] **TASK-020** Set up Windows notification system integration
+- [ ] **TASK-021** Configure system tray and jump list functionality
+- [ ] **TASK-022** Implement Windows 11 theme awareness and accent colors
+- [ ] **TASK-023** Set up Windows App SDK integration for enhanced features
+- [ ] **TASK-024** Configure high DPI awareness and scaling
 
-#### 2.1 3D Visualization Engine
-- [x] **TASK-027** Install and configure Babylon.js 8.13.0 ✅
-- [x] **TASK-028** Create 3D scene management system ✅
-- [x] **TASK-029** Implement ship model loading (GLTF/GLB) ✅
-- [x] **TASK-030** Set up PBR materials and lighting system ✅
-- [x] **TASK-031** Create camera controls and scene navigation ✅
-- [x] **TASK-032** Implement module highlighting and selection ✅
-- [ ] **TASK-033** Add particle systems for visual effects
-- [ ] **TASK-034** Optimize 3D rendering performance
-- [ ] **TASK-035** Create fallback 2D mode for low-end systems
+### Phase 2: Core Architecture & MVVM (Weeks 3-4)
+**Goal:** Establish MVVM architecture and core services
 
-#### 2.2 EVE Data Integration
-- [ ] **TASK-036** Set up EVE Static Data Export (SDE) integration
-- [ ] **TASK-037** Create ship database with all hulls and attributes
-- [ ] **TASK-038** Build module database with complete item catalog
-- [ ] **TASK-039** Implement Dogma attribute system
-- [ ] **TASK-040** Create ship/module search and filtering
-- [ ] **TASK-041** Set up automatic SDE update mechanism
-- [ ] **TASK-042** Validate data integrity against official sources
-- [ ] **TASK-043** Implement ship bonus calculations
-- [ ] **TASK-044** Create module categorization system
+#### 2.1 MVVM Architecture Setup
+- [ ] **TASK-025** Design ViewModels hierarchy with CommunityToolkit.Mvvm
+- [ ] **TASK-026** Create base ViewModel classes with property notification
+- [ ] **TASK-027** Implement RelayCommand and AsyncRelayCommand patterns
+- [ ] **TASK-028** Set up Messenger for decoupled communication
+- [ ] **TASK-029** Create service interfaces for dependency injection
+- [ ] **TASK-030** Implement repository pattern for data access
+- [ ] **TASK-031** Set up AutoMapper 13.0+ for object mapping
+- [ ] **TASK-032** Create navigation service for view management
 
-#### 2.3 Fitting Interface
-- [ ] **TASK-045** Create drag-and-drop fitting interface with React DnD
-- [ ] **TASK-046** Build slot management system (high/mid/low/rig/subsystem)
-- [ ] **TASK-047** Implement real-time constraint validation (CPU/PWG/Calibration)
-- [ ] **TASK-048** Create module browser with search and filters
-- [ ] **TASK-049** Add fitting templates and presets system
-- [ ] **TASK-050** Implement fitting comparison tools
-- [ ] **TASK-051** Create fitting import/export (EFT, DNA, XML formats)
-- [ ] **TASK-052** Add fitting cost calculation interface
-- [ ] **TASK-053** Implement fitting optimization suggestions
+#### 2.2 Data Layer Foundation
+- [ ] **TASK-033** Create EVE data models as C# record types
+- [ ] **TASK-034** Set up Entity Framework Core 8.0+ for data persistence
+- [ ] **TASK-035** Configure SQLite provider for local data storage
+- [ ] **TASK-036** Design ship and module data structures
+- [ ] **TASK-037** Implement data seeding for EVE universe data
+- [ ] **TASK-038** Create data access layer with async patterns
+- [ ] **TASK-039** Set up data caching with Microsoft.Extensions.Caching
+- [ ] **TASK-040** Implement data validation and integrity checks
 
-#### 2.4 Performance Calculations
-- [ ] **TASK-054** Build DPS calculation engine with all bonuses
-- [ ] **TASK-055** Implement tank calculations (shield/armor/hull)
-- [ ] **TASK-056** Create capacitor stability analysis
-- [ ] **TASK-057** Add speed and agility calculations
-- [ ] **TASK-058** Implement targeting system calculations
-- [ ] **TASK-059** Build stacking penalty system
-- [ ] **TASK-060** Create skill-based calculation adjustments
-- [ ] **TASK-061** Add ammunition and charge effects
-- [ ] **TASK-062** Implement mutated module support
+#### 2.3 Configuration and Settings
+- [ ] **TASK-041** Set up .NET configuration system with JSON providers
+- [ ] **TASK-042** Create user settings management system
+- [ ] **TASK-043** Implement theme and appearance settings
+- [ ] **TASK-044** Configure application-level settings management
+- [ ] **TASK-045** Set up settings backup and restore functionality
+- [ ] **TASK-046** Implement settings validation and migration
+- [ ] **TASK-047** Create settings UI with modern WPF controls
+- [ ] **TASK-048** Set up settings change notification system
 
-### Phase 3: Character Management Module (Months 3-4)
-**Goal:** Character data integration and skill planning functionality
+### Phase 3: Authentication System (Weeks 5-6)
+**Goal:** Implement OAuth2 authentication with native Windows integration
 
-#### 3.1 ESI Authentication System
-- [ ] **TASK-063** Implement OAuth2 PKCE authentication flow
-- [ ] **TASK-064** Set up secure token storage with keytar
-- [ ] **TASK-065** Create multi-character support system
-- [ ] **TASK-066** Implement automatic token refresh
-- [ ] **TASK-067** Add authentication error handling
-- [ ] **TASK-068** Create ESI rate limiting system
-- [ ] **TASK-069** Build offline mode with cached data
-- [ ] **TASK-070** Implement logout and token cleanup
+#### 3.1 OAuth2 PKCE Implementation
+- [ ] **TASK-049** Create OAuth2 service with System.Net.Http.HttpClient
+- [ ] **TASK-050** Implement PKCE flow with System.Security.Cryptography
+- [ ] **TASK-051** Set up embedded browser control for EVE login
+- [ ] **TASK-052** Configure callback URL handling with localhost server
+- [ ] **TASK-053** Implement state parameter validation and security
+- [ ] **TASK-054** Create token management service
+- [ ] **TASK-055** Set up automatic token refresh with hosted services
+- [ ] **TASK-056** Implement secure token storage with Windows Credential Manager
 
-#### 3.2 Character Data Synchronization
-- [ ] **TASK-071** Create ESI client with Axios and error handling
-- [ ] **TASK-072** Implement character skills data retrieval
-- [ ] **TASK-073** Add character assets and location tracking
-- [ ] **TASK-074** Sync corporation and alliance information
-- [ ] **TASK-075** Retrieve jump clone and implant data
-- [ ] **TASK-076** Add wallet and transaction tracking
-- [ ] **TASK-077** Implement background sync scheduling
-- [ ] **TASK-078** Create data conflict resolution system
-- [ ] **TASK-079** Add character switching interface
+#### 3.2 Multi-Character Support
+- [ ] **TASK-057** Design character management ViewModels
+- [ ] **TASK-058** Create character switching UI with modern WPF
+- [ ] **TASK-059** Implement character data synchronization
+- [ ] **TASK-060** Set up character-specific settings and preferences
+- [ ] **TASK-061** Create character authentication status monitoring
+- [ ] **TASK-062** Implement character logout and cleanup
+- [ ] **TASK-063** Set up character data caching and persistence
+- [ ] **TASK-064** Create character management navigation
 
-#### 3.3 Skill Planning System
-- [ ] **TASK-080** Build skill tree visualization
-- [ ] **TASK-081** Create skill queue optimization algorithm
-- [ ] **TASK-082** Implement training time calculations
-- [ ] **TASK-083** Add character goal setting interface
-- [ ] **TASK-084** Create skill comparison tools
-- [ ] **TASK-085** Implement attribute remapping analysis
-- [ ] **TASK-086** Add implant effect calculations
-- [ ] **TASK-087** Create skill plan export/import
-- [ ] **TASK-088** Build progress tracking dashboard
+#### 3.3 ESI Integration Layer
+- [ ] **TASK-065** Create typed ESI client with Refit 7.1+
+- [ ] **TASK-066** Implement ESI rate limiting with Polly 8.4+
+- [ ] **TASK-067** Set up ESI response caching strategies
+- [ ] **TASK-068** Create ESI error handling and retry policies
+- [ ] **TASK-069** Implement ESI scope management
+- [ ] **TASK-070** Set up ESI data validation and serialization
+- [ ] **TASK-071** Create ESI monitoring and diagnostics
+- [ ] **TASK-072** Implement offline mode with cached data
 
-### Phase 4: Market Analysis Module (Months 4-5)
-**Goal:** Real-time market data integration and analysis tools
+### Phase 4: Main UI & Navigation (Weeks 7-8)
+**Goal:** Create modern Windows 11 UI foundation
 
-#### 4.1 Market Data Integration
-- [ ] **TASK-089** Set up ESI market endpoints integration
-- [ ] **TASK-090** Implement regional market data retrieval
-- [ ] **TASK-091** Create market data caching system
-- [ ] **TASK-092** Add price history tracking
-- [ ] **TASK-093** Implement market order monitoring
-- [ ] **TASK-094** Create price alert system
-- [ ] **TASK-095** Add market trend analysis
-- [ ] **TASK-096** Build market data visualization
+#### 4.1 Main Window and Layout
+- [ ] **TASK-073** Design main window with Windows 11 aesthetics
+- [ ] **TASK-074** Implement navigation system with modern patterns
+- [ ] **TASK-075** Create responsive layout with grid and panels
+- [ ] **TASK-076** Set up window state management and persistence
+- [ ] **TASK-077** Implement title bar customization
+- [ ] **TASK-078** Create status bar with real-time information
+- [ ] **TASK-079** Set up keyboard shortcuts and accessibility
+- [ ] **TASK-080** Implement window management (minimize to tray, etc.)
 
-#### 4.2 Cost Analysis Tools
-- [ ] **TASK-097** Create fitting cost calculator
-- [ ] **TASK-098** Add regional price comparison
-- [ ] **TASK-099** Implement insurance analysis
-- [ ] **TASK-100** Create bulk pricing tools
-- [ ] **TASK-101** Add manufacturing cost analysis
-- [ ] **TASK-102** Implement profit/loss calculations
-- [ ] **TASK-103** Create budget optimization suggestions
-- [ ] **TASK-104** Add market opportunity identification
+#### 4.2 Authentication UI
+- [ ] **TASK-081** Create modern login interface
+- [ ] **TASK-082** Design character selection and management UI
+- [ ] **TASK-083** Implement character switching interface
+- [ ] **TASK-084** Create authentication status indicators
+- [ ] **TASK-085** Design OAuth flow user experience
+- [ ] **TASK-086** Implement authentication error handling UI
+- [ ] **TASK-087** Create character portrait and information display
+- [ ] **TASK-088** Set up authentication progress indicators
 
-### Phase 5: Advanced Features & Polish (Months 5-6)
-**Goal:** Advanced functionality and user experience polish
+### Phase 5: Ship Fitting System (Weeks 9-10)
+**Goal:** Core ship fitting functionality with native WPF interface
 
-#### 5.1 Advanced Ship Fitting
-- [ ] **TASK-105** Implement AI-powered fitting optimization
-- [ ] **TASK-106** Create activity-specific fitting recommendations
-- [ ] **TASK-107** Add fleet doctrine management
-- [ ] **TASK-108** Implement fitting sharing system
-- [ ] **TASK-109** Create fitting analytics and statistics
-- [ ] **TASK-110** Add advanced simulation modes
-- [ ] **TASK-111** Implement damage projection tools
-- [ ] **TASK-112** Create fitting vulnerability analysis
+#### 5.1 Ship Fitting Interface
+- [ ] **TASK-089** Design drag-and-drop fitting interface
+- [ ] **TASK-090** Create slot management with modern controls
+- [ ] **TASK-091** Implement module browser with advanced search
+- [ ] **TASK-092** Design fitting comparison interface
+- [ ] **TASK-093** Create performance calculation displays
+- [ ] **TASK-094** Implement fitting templates and presets UI
+- [ ] **TASK-095** Design constraint validation indicators
+- [ ] **TASK-096** Create fitting export/import interface
 
-#### 5.2 User Experience Enhancements
-- [ ] **TASK-113** Polish UI animations and transitions
-- [ ] **TASK-114** Implement keyboard shortcuts system
-- [ ] **TASK-115** Add contextual help and tooltips
-- [ ] **TASK-116** Create user onboarding flow
-- [ ] **TASK-117** Implement settings and preferences
-- [ ] **TASK-118** Add accessibility features
-- [ ] **TASK-119** Create advanced search functionality
-- [ ] **TASK-120** Implement data export/import tools
+#### 5.2 Ship Fitting Engine
+- [ ] **TASK-097** Implement DPS calculations with precision
+- [ ] **TASK-098** Create tank calculations (shield/armor/hull)
+- [ ] **TASK-099** Implement capacitor stability analysis
+- [ ] **TASK-100** Create speed and agility calculations
+- [ ] **TASK-101** Implement targeting system calculations
+- [ ] **TASK-102** Create stacking penalty system
+- [ ] **TASK-103** Implement skill-based calculation adjustments
+- [ ] **TASK-104** Set up ammunition and charge effects
 
-#### 5.3 Performance Optimization
-- [ ] **TASK-121** Optimize application startup time
-- [ ] **TASK-122** Implement code splitting and lazy loading
-- [ ] **TASK-123** Add memory usage monitoring
-- [ ] **TASK-124** Optimize 3D rendering performance
-- [ ] **TASK-125** Implement Web Workers for calculations
-- [ ] **TASK-126** Add progressive data loading
-- [ ] **TASK-127** Optimize database queries
-- [ ] **TASK-128** Implement caching strategies
+### Phase 6: 3D Ship Visualization (Weeks 11-12)
+**Goal:** 3D ship viewer with hardware acceleration
 
-### Phase 6: Testing & Quality Assurance (Ongoing)
-**Goal:** Comprehensive testing and quality assurance
+#### 6.1 3D Visualization System
+- [ ] **TASK-105** Integrate HelixToolkit for 3D ship rendering
+- [ ] **TASK-106** Implement ship model loading and caching
+- [ ] **TASK-107** Create camera controls and navigation
+- [ ] **TASK-108** Set up module highlighting and selection
+- [ ] **TASK-109** Implement material and lighting systems
+- [ ] **TASK-110** Create particle effects for visual enhancement
+- [ ] **TASK-111** Set up 3D performance optimization
+- [ ] **TASK-112** Implement fallback 2D mode for low-end systems
 
-#### 6.1 Testing Infrastructure
-- [ ] **TASK-129** Set up unit testing with Vitest
-- [ ] **TASK-130** Create component testing with React Testing Library
-- [ ] **TASK-131** Implement E2E testing with Playwright
-- [ ] **TASK-132** Add visual regression testing
-- [ ] **TASK-133** Create performance testing suite
-- [ ] **TASK-134** Implement API integration testing
+### Phase 7: Market Analysis & Character Planning (Weeks 13-14)
+**Goal:** Advanced features for market analysis and character development
+
+#### 7.1 Market Analysis System
+- [ ] **TASK-113** Create market data retrieval services
+- [ ] **TASK-114** Implement price history tracking
+- [ ] **TASK-115** Set up market order monitoring
+- [ ] **TASK-116** Create price alert system
+- [ ] **TASK-117** Implement market trend analysis
+- [ ] **TASK-118** Create cost calculation engines
+- [ ] **TASK-119** Set up profit/loss analysis
+- [ ] **TASK-120** Implement market data visualization
+
+#### 7.2 Character Planning System
+- [ ] **TASK-121** Create skill tree visualization
+- [ ] **TASK-122** Implement skill queue optimization
+- [ ] **TASK-123** Set up training time calculations
+- [ ] **TASK-124** Create character goal setting
+- [ ] **TASK-125** Implement skill comparison tools
+- [ ] **TASK-126** Set up attribute remapping analysis
+- [ ] **TASK-127** Create implant effect calculations
+- [ ] **TASK-128** Implement skill plan export/import
+
+### Phase 8: Testing & Quality Assurance (Weeks 15)
+**Goal:** Comprehensive testing and quality validation
+
+#### 8.1 Testing Infrastructure
+- [ ] **TASK-129** Set up xUnit testing framework
+- [ ] **TASK-130** Create unit tests for core services
+- [ ] **TASK-131** Implement integration tests for ESI services
+- [ ] **TASK-132** Set up UI automation tests with WinAppDriver
+- [ ] **TASK-133** Create performance and load testing
+- [ ] **TASK-134** Implement memory leak detection tests
 - [ ] **TASK-135** Set up continuous testing in CI/CD
-- [ ] **TASK-136** Create test data management system
+- [ ] **TASK-136** Create test data management
 
-#### 6.2 Quality Assurance
-- [ ] **TASK-137** Implement calculation accuracy validation
-- [ ] **TASK-138** Create data integrity testing
-- [ ] **TASK-139** Add security testing and audit
-- [ ] **TASK-140** Implement user acceptance testing
-- [ ] **TASK-141** Create performance benchmarking
-- [ ] **TASK-142** Add accessibility testing
-- [ ] **TASK-143** Implement error tracking and monitoring
-- [ ] **TASK-144** Create beta testing program
+#### 8.2 Quality Assurance
+- [ ] **TASK-137** Validate calculation accuracy against EVE Online
+- [ ] **TASK-138** Test Windows integration features
+- [ ] **TASK-139** Perform security testing and validation
+- [ ] **TASK-140** Conduct accessibility testing
+- [ ] **TASK-141** Test high DPI and scaling scenarios
+- [ ] **TASK-142** Validate performance benchmarks
+- [ ] **TASK-143** Conduct user acceptance testing
+- [ ] **TASK-144** Test application stability and reliability
 
-### Phase 7: Deployment & Distribution (Month 6)
-**Goal:** Production deployment and distribution setup
+### Phase 9: Deployment & Distribution (Weeks 16)
+**Goal:** Windows application packaging and distribution
 
-#### 7.1 Build & Packaging
-- [ ] **TASK-145** Configure electron-builder for all platforms
-- [ ] **TASK-146** Set up code signing for Windows and macOS
-- [ ] **TASK-147** Create installer packages (NSIS, DMG, AppImage)
-- [ ] **TASK-148** Implement auto-updater with electron-updater
-- [ ] **TASK-149** Set up crash reporting and analytics
-- [ ] **TASK-150** Create distribution channels setup
-- [ ] **TASK-151** Add license and legal compliance
-- [ ] **TASK-152** Implement telemetry and usage analytics
+#### 9.1 Application Packaging
+- [ ] **TASK-145** Configure MSIX packaging for modern deployment
+- [ ] **TASK-146** Set up Windows application signing
+- [ ] **TASK-147** Create installer with WiX Toolset v5
+- [ ] **TASK-148** Configure auto-updater with Squirrel.Windows
+- [ ] **TASK-149** Set up crash reporting with Sentry
+- [ ] **TASK-150** Create application telemetry and analytics
+- [ ] **TASK-151** Configure Windows Store packaging
+- [ ] **TASK-152** Set up distribution channels
 
----
-
-## 🏗️ Current Development Status
-
-### Active Sprint: Foundation Complete - Ready for Phase 2! 🚀
-**Current Status:** Phase 1 COMPLETED - All foundation tasks finished  
-**Progress:** Phase 1 - 100% Complete (26/26 tasks)  
-**Next Priority:** Begin Phase 2 - Ship Fitting Module with Babylon.js 8.13.0
-
-### Completed Tasks
-**MAJOR TECH STACK UPGRADE (June 21, 2025):**
-🚀 **All dependencies upgraded to latest versions for optimal performance and security**
-- React 18.3.1 → 19.1.0 (Major version upgrade with performance improvements)
-- Vite 5.4.19 → 6.3.5 (Major version upgrade with 5x faster builds)
-- Electron 34.0.0 → 36.5.0 (Latest stable with security updates)  
-- Tailwind CSS 3.4.17 → 4.1.10 (Major version with 100x faster incremental builds)
-- TypeScript 5.8.3, Babylon.js 8.13.0, Framer Motion 12.18.1, and more!
-
-- [x] **TASK-001** - Initialize Node.js project with package.json ✅ 
-- [x] **TASK-002** - Set up TypeScript 5.8.3 configuration with strict mode ✅
-- [x] **TASK-003** - Configure Vite 6.3.5 build system with Electron integration ✅
-- [x] **TASK-004** - Install and configure Electron 36.5.0 with security best practices ✅
-- [x] **TASK-005** - Set up ESLint 9.29.0 + Prettier + Husky for code quality ✅
-- [x] **TASK-006** - Configure Vitest 3.2.4 for unit testing ✅
-- [x] **TASK-007** - Set up Playwright 1.53.1 for E2E testing ✅
-- [x] **TASK-008** - Create CI/CD pipeline configuration ✅
-- [x] **TASK-009** - Initialize Git repository with proper .gitignore ✅
-- [x] **TASK-010** - Create modular file/folder structure following tech stack ✅
-- [x] **TASK-011** - Set up Electron main process with IPC communication ✅
-- [x] **TASK-012** - Initialize React 19.1.0 renderer process ✅
-- [x] **TASK-013** - Configure Zustand v5.0.5 state management stores ✅
-- [x] **TASK-014** - Set up TanStack Query v5.80.10 for server state ✅
-- [x] **TASK-015** - Configure Dexie.js for local IndexedDB storage ✅
-- [x] **TASK-016** - Implement base routing with React Router ✅
-- [x] **TASK-017** - Set up Tailwind CSS v4.1.10 with custom theme ✅
-- [x] **TASK-018** - Configure Framer Motion v12.18.1 animations ✅
-- [x] **TASK-019** - Set up React Hook Form validation ✅
-
-### Blocked Tasks
-*No blocked tasks currently*
+#### 9.2 Production Deployment
+- [ ] **TASK-153** Configure production build optimization
+- [ ] **TASK-154** Set up release automation pipeline
+- [ ] **TASK-155** Create deployment verification tests
+- [ ] **TASK-156** Set up monitoring and diagnostics
+- [ ] **TASK-157** Configure backup and recovery procedures
+- [ ] **TASK-158** Create user documentation and help system
+- [ ] **TASK-159** Set up customer support infrastructure
+- [ ] **TASK-160** Plan go-to-market strategy
 
 ---
 
 ## 📊 Progress Tracking
 
-| Phase | Tasks | Completed | In Progress | Pending | Progress |
-|-------|--------|-----------|-------------|---------|----------|
-| Phase 1: Foundation | 26 | 26 | 0 | 0 | 100% |
-| Phase 2: Ship Fitting | 36 | 6 | 0 | 30 | 17% |
-| Phase 3: Character Mgmt | 26 | 0 | 0 | 26 | 0% |
-| Phase 4: Market Analysis | 16 | 0 | 0 | 16 | 0% |
-| Phase 5: Advanced Features | 16 | 0 | 0 | 16 | 0% |
-| Phase 6: Testing & QA | 16 | 0 | 0 | 16 | 0% |
-| Phase 7: Deployment | 8 | 0 | 0 | 8 | 0% |
-| **TOTAL** | **144** | **32** | **0** | **112** | **22%** |
+### **Overall Project Status**
+| Phase | Tasks | Completed | In Progress | Pending | Progress | Timeline |
+|-------|--------|-----------|-------------|---------|----------|----------|
+| 0: Cleanup & Docs | 3 | 3 | 0 | 0 | 100% | Week 0 |
+| 1: Foundation | 24 | 0 | 0 | 24 | 0% | Weeks 1-2 |
+| 2: Architecture | 24 | 0 | 0 | 24 | 0% | Weeks 3-4 |
+| 3: Authentication | 24 | 0 | 0 | 24 | 0% | Weeks 5-6 |
+| 4: UI Foundation | 16 | 0 | 0 | 16 | 0% | Weeks 7-8 |
+| 5: Ship Fitting | 16 | 0 | 0 | 16 | 0% | Weeks 9-10 |
+| 6: 3D Visualization | 8 | 0 | 0 | 8 | 0% | Weeks 11-12 |
+| 7: Advanced Features | 16 | 0 | 0 | 16 | 0% | Weeks 13-14 |
+| 8: Testing & QA | 16 | 0 | 0 | 16 | 0% | Week 15 |
+| 9: Deployment | 16 | 0 | 0 | 16 | 0% | Week 16 |
+| **TOTAL** | **163** | **3** | **0** | **160** | **2%** | **17 Weeks** |
+
+### **Current Status**
+- **Active Phase:** Phase 1 - Foundation & Project Setup
+- **Next Task:** TASK-001 - Create .NET 9 WPF project with Windows 11 targeting
+- **Overall Progress:** 2% (3/163 tasks completed)
+- **Estimated Timeline:** 17 weeks to production release (includes cleanup week)
 
 ---
 
 ## 🎯 Success Criteria
 
-### Phase 1 Success Metrics
-- [ ] Application builds and runs without errors
-- [ ] TypeScript strict mode with zero type errors
-- [ ] All linting and formatting rules passing
-- [ ] Test infrastructure functional
-- [ ] Electron security best practices implemented
+### **Technical Requirements**
+- **Performance:** Application launches in under 2 seconds
+- **Memory Usage:** Under 100MB during normal operation
+- **Calculation Accuracy:** Within 0.01% of EVE Online server values
+- **Windows Integration:** Full Windows 11 native features and theming
+- **3D Performance:** 60+ FPS for ship visualization on mid-range hardware
 
-### Overall Project Success Criteria
-- [ ] Ship fitting calculations within 0.1% accuracy of EVE Online
-- [ ] Application startup time under 5 seconds
-- [ ] Memory usage under 500MB during normal operation
-- [ ] ESI authentication success rate >99%
-- [ ] User interface response time <100ms
+### **Quality Standards**
+- **Bundle Size:** Under 50MB installed footprint
+- **Startup Time:** 1-2 seconds cold start
+- **UI Responsiveness:** Sub-100ms response to all user interactions
+- **Crash Rate:** Less than 0.1% during normal operation
+- **Test Coverage:** 80%+ code coverage with automated tests
 
----
-
-## 🔄 Development Workflow
-
-### Daily Workflow
-1. Check `development-plan.md` for next priority task
-2. Update task status to "in_progress"
-3. Complete task following acceptance criteria
-4. Update task status to "completed"
-5. Update progress tracking section
-6. Commit changes with descriptive message
-
-### Session Management
-- Always start by checking current task status
-- Update plan after each completed task
-- Mark blockers and dependencies clearly
-- Log any deviations from planned approach
+### **User Experience Goals**
+- **Native Windows Feel:** Fully integrated with Windows 11 design system
+- **Professional Quality:** Matches or exceeds commercial software standards
+- **EVE Integration:** Seamless workflow with EVE Online game client
+- **Multi-Character Support:** Efficient management of multiple EVE characters
+- **Offline Capability:** Core features work without internet connection
 
 ---
 
-## 📝 Notes & Decisions
+## 🛠️ Development Workflow
 
-### Architecture Decisions
-- **Frontend-First Approach:** Build complete UI before backend integration
-- **TypeScript Strict Mode:** Maximum type safety from start
-- **Component-Driven Development:** Build reusable UI components first
-- **Progressive Enhancement:** Start with basic features, add complexity
+### **Task Management**
+1. **Sequential Development:** Complete phases in order to ensure proper foundation
+2. **Task Tracking:** Update progress after each completed task
+3. **Quality Gates:** Complete testing before moving to next phase
+4. **Documentation:** Maintain architectural decisions and patterns
 
-### Key Dependencies
-- Node.js 18+ for development environment
-- EVE Online ESI API for character and market data
-- EVE Static Data Export (SDE) for ship/module information
-- Internet connection for ESI integration (offline mode for cached data)
+### **Quality Assurance**
+- All features must meet EVE Online calculation accuracy standards
+- Performance benchmarks must show improvement over existing tools
+- Windows integration must provide value beyond web-based alternatives
+- User experience must be superior to current EVE tools
+
+### **Success Metrics**
+- **Native Performance:** 75%+ improvement in startup and memory vs Electron
+- **Feature Completeness:** 100% of planned features implemented and tested
+- **Windows Integration:** Advanced features like system tray, notifications, file associations
+- **User Satisfaction:** Production-ready software worthy of EVE Online community
 
 ---
 
-*This plan is a living document that will be updated as development progresses. Each task should be marked as completed when fully finished and tested.*
+*This plan delivers Gideon as a premier native Windows application that sets the standard for EVE Online desktop tools.*

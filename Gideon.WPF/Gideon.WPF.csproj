@@ -1,0 +1,106 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    
+    <!-- Application Information -->
+    <AssemblyTitle>Gideon - EVE Online AI Copilot</AssemblyTitle>
+    <AssemblyDescription>High-performance native Windows desktop application for EVE Online players</AssemblyDescription>
+    <AssemblyCompany>Gideon Development Team</AssemblyCompany>
+    <AssemblyProduct>Gideon</AssemblyProduct>
+    <AssemblyCopyright>Copyright © 2025</AssemblyCopyright>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    
+    <!-- Windows 11 Integration -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    
+    <!-- Performance and Debugging -->
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    
+    <!-- Windows 11 Features -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <UseRidGraph>true</UseRidGraph>
+    
+    <!-- Application Icon -->
+    <ApplicationIcon>Resources\gideon.ico</ApplicationIcon>
+    
+    <!-- Output Settings -->
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Gideon.WPF.App</StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <!-- NuGet Package References (Versions managed by Directory.Packages.props) -->
+  <ItemGroup>
+    <!-- MVVM Framework -->
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    
+    <!-- Dependency Injection and Hosting -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    
+    <!-- UI Components -->
+    <PackageReference Include="MaterialDesignThemes" />
+    <PackageReference Include="MaterialDesignColors" />
+    <PackageReference Include="HelixToolkit.Wpf" />
+    
+    <!-- Data and Persistence -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    
+    <!-- HTTP and API -->
+    <PackageReference Include="Refit" />
+    <PackageReference Include="Refit.HttpClientFactory" />
+    <PackageReference Include="Polly" />
+    <PackageReference Include="Polly.Extensions.Http" />
+    
+    <!-- Logging -->
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Serilog.Sinks.Debug" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    
+    <!-- Utilities -->
+    <PackageReference Include="AutoMapper" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <PackageReference Include="System.Text.Json" />
+    <PackageReference Include="Newtonsoft.Json" />
+    
+  </ItemGroup>
+
+  <!-- Resource Files -->
+  <ItemGroup>
+    <Resource Include="Resources\**\*" />
+  </ItemGroup>
+
+  <!-- Application Manifest -->
+  <ItemGroup>
+    <None Update="app.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
