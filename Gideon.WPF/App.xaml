@@ -6,9 +6,22 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- Material Design -->
-                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                <!-- Material Design Theme -->
+                <materialDesign:BundledTheme 
+                    BaseTheme="Dark" 
+                    PrimaryColor="DeepPurple" 
+                    SecondaryColor="Cyan"
+                    ColorAdjustment="{materialDesign:ColorAdjustment}" />
+                
+                <!-- Material Design Components -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
                 
             </ResourceDictionary.MergedDictionaries>
             
@@ -16,24 +29,66 @@
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             
-            <!-- Global Application Resources -->
-            <SolidColorBrush x:Key="PrimaryBrush" Color="#673AB7" />
-            <SolidColorBrush x:Key="SecondaryBrush" Color="#CDDC39" />
-            <SolidColorBrush x:Key="BackgroundBrush" Color="#FAFAFA" />
-            <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="ErrorBrush" Color="#F44336" />
-            <SolidColorBrush x:Key="SuccessBrush" Color="#4CAF50" />
-            <SolidColorBrush x:Key="WarningBrush" Color="#FF9800" />
+            <!-- EVE Online Themed Colors -->
+            <SolidColorBrush x:Key="EVE_PrimaryBrush" Color="#00D4FF" />        <!-- EVE Cyan -->
+            <SolidColorBrush x:Key="EVE_SecondaryBrush" Color="#FFB800" />      <!-- EVE Gold -->
+            <SolidColorBrush x:Key="EVE_AccentBrush" Color="#7289DA" />         <!-- Discord-like Purple -->
+            <SolidColorBrush x:Key="EVE_BackgroundBrush" Color="#1C1C1E" />     <!-- Dark Background -->
+            <SolidColorBrush x:Key="EVE_SurfaceBrush" Color="#2C2C2E" />        <!-- Dark Surface -->
+            <SolidColorBrush x:Key="EVE_ErrorBrush" Color="#FF453A" />          <!-- Red -->
+            <SolidColorBrush x:Key="EVE_SuccessBrush" Color="#30D158" />        <!-- Green -->
+            <SolidColorBrush x:Key="EVE_WarningBrush" Color="#FF9F0A" />        <!-- Orange -->
+            <SolidColorBrush x:Key="EVE_TextPrimaryBrush" Color="#FFFFFF" />    <!-- White Text -->
+            <SolidColorBrush x:Key="EVE_TextSecondaryBrush" Color="#C4C4C6" />  <!-- Gray Text -->
+            <SolidColorBrush x:Key="EVE_BorderBrush" Color="#48484A" />         <!-- Border Color -->
             
-            <!-- Typography -->
-            <Style x:Key="ApplicationTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignHeadline4TextBlock}">
-                <Setter Property="FontWeight" Value="Medium" />
-                <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}" />
+            <!-- EVE Online Typography Styles -->
+            <Style x:Key="EVE_TitleStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignHeadline4TextBlock}">
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="Foreground" Value="{StaticResource EVE_PrimaryBrush}" />
+                <Setter Property="FontFamily" Value="Segoe UI, Arial, sans-serif" />
             </Style>
             
-            <Style x:Key="ApplicationSubtitleStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-                <Setter Property="Foreground" Value="{StaticResource MaterialDesignBody}" />
-                <Setter Property="Opacity" Value="0.87" />
+            <Style x:Key="EVE_SubtitleStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignHeadline6TextBlock}">
+                <Setter Property="FontWeight" Value="Medium" />
+                <Setter Property="Foreground" Value="{StaticResource EVE_TextPrimaryBrush}" />
+            </Style>
+            
+            <Style x:Key="EVE_BodyStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                <Setter Property="Foreground" Value="{StaticResource EVE_TextSecondaryBrush}" />
+                <Setter Property="LineHeight" Value="20" />
+            </Style>
+            
+            <Style x:Key="EVE_CaptionStyle" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}">
+                <Setter Property="Foreground" Value="{StaticResource EVE_TextSecondaryBrush}" />
+                <Setter Property="Opacity" Value="0.8" />
+            </Style>
+            
+            <!-- EVE Card Style -->
+            <Style x:Key="EVE_CardStyle" TargetType="materialDesign:Card">
+                <Setter Property="Background" Value="{StaticResource EVE_SurfaceBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource EVE_TextPrimaryBrush}" />
+                <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp4" />
+                <Setter Property="Margin" Value="8" />
+                <Setter Property="Padding" Value="16" />
+            </Style>
+            
+            <!-- EVE Button Styles -->
+            <Style x:Key="EVE_PrimaryButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource EVE_PrimaryBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource EVE_PrimaryBrush}" />
+                <Setter Property="Foreground" Value="#000000" />
+                <Setter Property="FontWeight" Value="Medium" />
+                <Setter Property="Height" Value="36" />
+                <Setter Property="Padding" Value="16,0" />
+            </Style>
+            
+            <Style x:Key="EVE_SecondaryButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignOutlinedButton}">
+                <Setter Property="BorderBrush" Value="{StaticResource EVE_SecondaryBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource EVE_SecondaryBrush}" />
+                <Setter Property="FontWeight" Value="Medium" />
+                <Setter Property="Height" Value="36" />
+                <Setter Property="Padding" Value="16,0" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

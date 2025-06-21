@@ -45,10 +45,10 @@ Building Gideon (EVE Online's AI Copilot) - a high-performance native Windows de
 - [x] **TASK-008** Configure application manifest for Windows 11 features ✅
 
 #### 1.2 Modern WPF Stack Setup
-- [ ] **TASK-009** Install CommunityToolkit.Mvvm 8.3+ for MVVM framework
-- [ ] **TASK-010** Set up Microsoft.Extensions.DependencyInjection for IoC
-- [ ] **TASK-011** Configure Microsoft.Extensions.Hosting for application lifecycle
-- [ ] **TASK-012** Install MaterialDesignInXamlToolkit 5.1+ for modern UI
+- [x] **TASK-009** Install CommunityToolkit.Mvvm 8.3+ for MVVM framework ✅
+- [x] **TASK-010** Set up Microsoft.Extensions.DependencyInjection for IoC ✅
+- [x] **TASK-011** Configure Microsoft.Extensions.Hosting for application lifecycle ✅
+- [x] **TASK-012** Install MaterialDesignInXamlToolkit 5.1+ for modern UI ✅
 - [ ] **TASK-013** Set up HelixToolkit.Wpf 2024.6+ for 3D ship visualization
 - [ ] **TASK-014** Configure Serilog 8.0+ for structured logging
 - [ ] **TASK-015** Install Microsoft.Toolkit.Win32.UI.Controls for modern controls

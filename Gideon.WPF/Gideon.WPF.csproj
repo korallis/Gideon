@@ -98,9 +98,12 @@
     <Resource Include="Resources\**\*" />
   </ItemGroup>
 
-  <!-- Application Manifest -->
+  <!-- Configuration Files -->
   <ItemGroup>
     <None Update="app.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
