@@ -26,6 +26,9 @@
                 <!-- Windows 11 Theme Integration -->
                 <ResourceDictionary Source="Presentation/Themes/Windows11Theme.xaml" />
                 
+                <!-- Glassmorphism Theme -->
+                <ResourceDictionary Source="Presentation/Themes/GlassmorphismTheme.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
             
             <!-- Converters -->
