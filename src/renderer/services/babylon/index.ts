@@ -9,3 +9,4 @@ export * from './modelLoader';
 export * from './materialSystem';
 export * from './lightingSystem';
 export * from './cameraSystem';
+export * from './selectionSystem';

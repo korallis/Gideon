@@ -8,3 +8,4 @@ export * from './ShipViewer';
 export * from './ModelLoadDemo';
 export * from './MaterialLightingDemo';
 export * from './CameraControlsDemo';
+export * from './SelectionDemo';

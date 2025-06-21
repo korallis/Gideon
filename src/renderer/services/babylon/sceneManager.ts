@@ -26,6 +26,7 @@ import { ModelLoader, LoadedModel, ModelLoadOptions, ModelLoadProgress } from '.
 import { MaterialSystem, MaterialConfig } from './materialSystem';
 import { LightingSystem, LightingPreset, DynamicLightingState } from './lightingSystem';
 import { CameraSystem, CameraPreset, CameraControls, ViewportBookmark } from './cameraSystem';
+import { SelectionSystem, SelectableObject, SelectionOptions, SelectionEvent } from './selectionSystem';
 
 export interface ShipModel {
   id: string;
@@ -66,6 +67,7 @@ export class SceneManager {
   private materialSystem: MaterialSystem | null = null;
   private lightingSystem: LightingSystem | null = null;
   private cameraSystem: CameraSystem | null = null;
+  private selectionSystem: SelectionSystem | null = null;
   private loadedModels = new Map<string, ShipModel>();
   private sceneObjects = new Map<string, SceneObject>();
   private assetContainers = new Map<string, AssetContainer>();
@@ -105,6 +107,7 @@ export class SceneManager {
     this.materialSystem = new MaterialSystem(this.scene);
     this.lightingSystem = new LightingSystem(this.scene);
     this.cameraSystem = new CameraSystem(this.scene);
+    this.selectionSystem = new SelectionSystem(this.scene);
 
     // Setup environment and lighting
     await this.setupEnvironment();
@@ -163,17 +166,12 @@ export class SceneManager {
   private setupEventHandlers(): void {
     if (!this.scene) return;
 
-    // Handle picking/selection
-    this.scene.onPointerObservable.add((pointerInfo) => {
-      if (pointerInfo.pickInfo?.hit && pointerInfo.pickInfo.pickedMesh) {
-        this.handleMeshSelection(pointerInfo.pickInfo.pickedMesh);
-      }
-    });
-
     // Handle scene ready events
     this.scene.onReadyObservable.add(() => {
       console.log('Scene ready for rendering');
     });
+    
+    // Selection handling is now managed by SelectionSystem
   }
 
   /**
@@ -240,6 +238,9 @@ export class SceneManager {
         this.animationGroups.set(`${shipId}_anim_${index}`, group);
       });
 
+      // Register ship and its components as selectable objects
+      this.registerSelectableObjects(shipId, loadedModel);
+
       console.log(`Ship model loaded successfully: ${shipName} (${loadedModel.metadata.polyCount} polygons, ${loadedModel.metadata.loadTime.toFixed(2)}ms)`);
       return shipModel;
     } catch (error) {
@@ -248,6 +249,89 @@ export class SceneManager {
     }
   }
 
+  /**
+   * Register ship and its components as selectable objects
+   */
+  private registerSelectableObjects(shipId: string, loadedModel: LoadedModel): void {
+    if (!this.selectionSystem) return;
+
+    // Register main ship hull
+    this.selectionSystem.registerSelectableObject(
+      `${shipId}_hull`,
+      loadedModel.rootMesh,
+      'ship',
+      {
+        name: loadedModel.name,
+        description: `${loadedModel.name} hull`,
+        category: 'hull',
+        interactive: true,
+        selectable: true,
+      }
+    );
+
+    // Register individual meshes as ship components
+    loadedModel.meshes.forEach((mesh, index) => {
+      if (mesh.name && mesh !== loadedModel.rootMesh) {
+        const componentType = this.determineComponentType(mesh.name);
+        
+        this.selectionSystem!.registerSelectableObject(
+          `${shipId}_${mesh.name}_${index}`,
+          mesh,
+          componentType,
+          {
+            name: mesh.name,
+            description: `${mesh.name} component`,
+            category: componentType,
+            interactive: true,
+            selectable: true,
+          }
+        );
+      }
+    });
+
+    // Set up selection event handlers
+    this.setupSelectionEventHandlers();
+  }
+
+  /**
+   * Determine component type from mesh name
+   */
+  private determineComponentType(meshName: string): SelectableObject['type'] {
+    const name = meshName.toLowerCase();
+    
+    if (name.includes('hardpoint') || name.includes('turret') || name.includes('launcher')) {
+      return 'hardpoint';
+    } else if (name.includes('module') || name.includes('slot') || name.includes('bay')) {
+      return 'module';
+    } else {
+      return 'component';
+    }
+  }
+
+  /**
+   * Set up selection event handlers
+   */
+  private setupSelectionEventHandlers(): void {
+    if (!this.selectionSystem) return;
+
+    // Handle selection events
+    this.selectionSystem.addEventListener('select', (event: SelectionEvent) => {
+      console.log(`Selected: ${event.object.metadata.name} (${event.object.type})`);
+      
+      // Focus camera on selected object if requested
+      if (this.cameraSystem && event.object.type === 'ship') {
+        this.cameraSystem.focusOnMesh(event.object.mesh, 1000);
+      }
+    });
+
+    this.selectionSystem.addEventListener('hover', (event: SelectionEvent) => {
+      // Could show tooltip or info panel here
+    });
+
+    this.selectionSystem.addEventListener('deselect', (event: SelectionEvent) => {
+      console.log(`Deselected: ${event.object.metadata.name}`);
+    });
+  }
 
   /**
    * Focus camera on specific ship
@@ -314,65 +398,62 @@ export class SceneManager {
   }
 
   /**
-   * Handle mesh selection for ship interaction
-   */
-  private handleMeshSelection(mesh: AbstractMesh): void {
-    // Find the scene object for this mesh
-    for (const [id, sceneObj] of this.sceneObjects) {
-      if (sceneObj.node === mesh || sceneObj.node.getChildMeshes().includes(mesh)) {
-        this.selectObject(id);
-        break;
-      }
-    }
-  }
-
-  /**
-   * Select a scene object
+   * Select object by ID
    */
   selectObject(objectId: string): void {
-    const sceneObject = this.sceneObjects.get(objectId);
-    if (!sceneObject || !sceneObject.interactive) return;
+    if (!this.selectionSystem) return;
 
-    // Clear previous selection
-    this.clearSelection();
-
-    // Add to selection
-    this.currentState.selectedObjects.push(objectId);
-
-    // Highlight selected object
-    this.highlightObject(objectId, true);
-
-    console.log(`Selected object: ${objectId}`);
+    const selectableObjects = this.selectionSystem.getSelectableObjects();
+    const object = selectableObjects.get(objectId);
+    
+    if (object) {
+      this.selectionSystem.selectObject(object);
+    }
   }
 
   /**
    * Clear current selection
    */
   clearSelection(): void {
-    // Remove highlighting from previously selected objects
-    this.currentState.selectedObjects.forEach(id => {
-      this.highlightObject(id, false);
-    });
-
-    this.currentState.selectedObjects = [];
+    if (!this.selectionSystem) return;
+    
+    this.selectionSystem.clearSelection();
   }
 
   /**
-   * Highlight or unhighlight an object
+   * Get selected objects
    */
-  private highlightObject(objectId: string, highlight: boolean): void {
-    const sceneObject = this.sceneObjects.get(objectId);
-    if (!sceneObject) return;
+  getSelectedObjects(): SelectableObject[] {
+    if (!this.selectionSystem) return [];
+    
+    return this.selectionSystem.getSelectedObjects();
+  }
 
-    // Apply highlighting effect (can be enhanced with outline effects)
-    if (sceneObject.node instanceof AbstractMesh) {
-      const mesh = sceneObject.node as AbstractMesh;
-      if (mesh.material instanceof StandardMaterial) {
-        mesh.material.emissiveColor = highlight 
-          ? new Color3(0.3, 0.5, 1.0) 
-          : new Color3(0.1, 0.1, 0.2);
-      }
-    }
+  /**
+   * Focus camera on selected objects
+   */
+  focusOnSelection(): void {
+    if (!this.selectionSystem) return;
+    
+    this.selectionSystem.focusOnSelection();
+  }
+
+  /**
+   * Update selection options
+   */
+  updateSelectionOptions(options: Partial<SelectionOptions>): void {
+    if (!this.selectionSystem) return;
+    
+    this.selectionSystem.updateOptions(options);
+  }
+
+  /**
+   * Enable/disable selection system
+   */
+  setSelectionEnabled(enabled: boolean): void {
+    if (!this.selectionSystem) return;
+    
+    this.selectionSystem.setEnabled(enabled);
   }
 
   /**
@@ -549,6 +630,13 @@ export class SceneManager {
   }
 
   /**
+   * Get selection system
+   */
+  getSelectionSystem(): SelectionSystem | null {
+    return this.selectionSystem;
+  }
+
+  /**
    * Get available material presets
    */
   getMaterialPresets() {
@@ -616,6 +704,11 @@ export class SceneManager {
     if (this.cameraSystem) {
       this.cameraSystem.dispose();
       this.cameraSystem = null;
+    }
+
+    if (this.selectionSystem) {
+      this.selectionSystem.dispose();
+      this.selectionSystem = null;
     }
 
     // Clean up any remaining resources

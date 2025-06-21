@@ -58,7 +58,7 @@ All tasks in this section have been completed as part of the comprehensive found
 - [x] **TASK-029** Implement ship model loading (GLTF/GLB) ✅
 - [x] **TASK-030** Set up PBR materials and lighting system ✅
 - [x] **TASK-031** Create camera controls and scene navigation ✅
-- [ ] **TASK-032** Implement module highlighting and selection
+- [x] **TASK-032** Implement module highlighting and selection ✅
 - [ ] **TASK-033** Add particle systems for visual effects
 - [ ] **TASK-034** Optimize 3D rendering performance
 - [ ] **TASK-035** Create fallback 2D mode for low-end systems
@@ -271,13 +271,13 @@ All tasks in this section have been completed as part of the comprehensive found
 | Phase | Tasks | Completed | In Progress | Pending | Progress |
 |-------|--------|-----------|-------------|---------|----------|
 | Phase 1: Foundation | 26 | 26 | 0 | 0 | 100% |
-| Phase 2: Ship Fitting | 36 | 5 | 0 | 31 | 14% |
+| Phase 2: Ship Fitting | 36 | 6 | 0 | 30 | 17% |
 | Phase 3: Character Mgmt | 26 | 0 | 0 | 26 | 0% |
 | Phase 4: Market Analysis | 16 | 0 | 0 | 16 | 0% |
 | Phase 5: Advanced Features | 16 | 0 | 0 | 16 | 0% |
 | Phase 6: Testing & QA | 16 | 0 | 0 | 16 | 0% |
 | Phase 7: Deployment | 8 | 0 | 0 | 8 | 0% |
-| **TOTAL** | **144** | **31** | **0** | **113** | **22%** |
+| **TOTAL** | **144** | **32** | **0** | **112** | **22%** |
 
 ---
 
