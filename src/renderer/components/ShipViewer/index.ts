@@ -7,3 +7,4 @@ export * from './BabylonCanvas';
 export * from './ShipViewer';
 export * from './ModelLoadDemo';
 export * from './MaterialLightingDemo';
+export * from './CameraControlsDemo';

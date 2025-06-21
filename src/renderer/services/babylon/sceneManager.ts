@@ -25,6 +25,7 @@ import { babylonEngine } from './engine';
 import { ModelLoader, LoadedModel, ModelLoadOptions, ModelLoadProgress } from './modelLoader';
 import { MaterialSystem, MaterialConfig } from './materialSystem';
 import { LightingSystem, LightingPreset, DynamicLightingState } from './lightingSystem';
+import { CameraSystem, CameraPreset, CameraControls, ViewportBookmark } from './cameraSystem';
 
 export interface ShipModel {
   id: string;
@@ -64,6 +65,7 @@ export class SceneManager {
   private modelLoader: ModelLoader | null = null;
   private materialSystem: MaterialSystem | null = null;
   private lightingSystem: LightingSystem | null = null;
+  private cameraSystem: CameraSystem | null = null;
   private loadedModels = new Map<string, ShipModel>();
   private sceneObjects = new Map<string, SceneObject>();
   private assetContainers = new Map<string, AssetContainer>();
@@ -102,6 +104,7 @@ export class SceneManager {
     this.modelLoader = new ModelLoader(this.scene);
     this.materialSystem = new MaterialSystem(this.scene);
     this.lightingSystem = new LightingSystem(this.scene);
+    this.cameraSystem = new CameraSystem(this.scene);
 
     // Setup environment and lighting
     await this.setupEnvironment();
@@ -251,26 +254,63 @@ export class SceneManager {
    */
   focusOnShip(shipId: string): void {
     const shipModel = this.loadedModels.get(shipId);
-    if (!shipModel) {
-      console.warn(`Ship not found: ${shipId}`);
+    if (!shipModel || !this.cameraSystem) {
+      console.warn(`Ship not found or camera system not initialized: ${shipId}`);
       return;
     }
 
-    // Calculate optimal camera position based on ship bounds
-    const boundingInfo = shipModel.boundingInfo;
-    const center = boundingInfo.boundingBox.center;
-    const size = boundingInfo.boundingBox.maximum.subtract(boundingInfo.boundingBox.minimum);
-    const maxDimension = Math.max(size.x, size.y, size.z);
-    const cameraDistance = maxDimension * 2.5;
-
-    // Focus camera on ship
-    babylonEngine.focusOnTarget(center, cameraDistance);
+    // Use camera system to focus on ship mesh
+    this.cameraSystem.focusOnMesh(shipModel.mesh, 1200);
     
     // Update state
     this.currentState.activeShip = shipId;
-    this.currentState.cameraTarget = center;
+    this.currentState.cameraTarget = shipModel.boundingInfo.boundingBox.center;
 
     console.log(`Camera focused on ship: ${shipModel.name}`);
+  }
+
+  /**
+   * Apply camera preset
+   */
+  applyCameraPreset(presetName: string, targetShipId?: string): void {
+    if (!this.cameraSystem) return;
+
+    let target = Vector3.Zero();
+    if (targetShipId) {
+      const shipModel = this.loadedModels.get(targetShipId);
+      if (shipModel) {
+        target = shipModel.boundingInfo.boundingBox.center;
+      }
+    }
+
+    this.cameraSystem.applyPreset(presetName, target);
+  }
+
+  /**
+   * Update camera controls
+   */
+  updateCameraControls(controls: Partial<CameraControls>): void {
+    if (!this.cameraSystem) return;
+    
+    this.cameraSystem.updateControls(controls);
+  }
+
+  /**
+   * Create camera bookmark
+   */
+  createCameraBookmark(id: string, name: string, description: string = ''): ViewportBookmark | null {
+    if (!this.cameraSystem) return null;
+    
+    return this.cameraSystem.createBookmark(id, name, description);
+  }
+
+  /**
+   * Apply camera bookmark
+   */
+  applyCameraBookmark(bookmarkId: string): void {
+    if (!this.cameraSystem) return;
+    
+    this.cameraSystem.applyBookmark(bookmarkId, 1000);
   }
 
   /**
@@ -459,7 +499,9 @@ export class SceneManager {
     };
 
     // Reset camera
-    babylonEngine.resetCamera();
+    if (this.cameraSystem) {
+      this.cameraSystem.reset();
+    }
 
     console.log('Scene cleared');
   }
@@ -500,6 +542,13 @@ export class SceneManager {
   }
 
   /**
+   * Get camera system
+   */
+  getCameraSystem(): CameraSystem | null {
+    return this.cameraSystem;
+  }
+
+  /**
    * Get available material presets
    */
   getMaterialPresets() {
@@ -511,6 +560,20 @@ export class SceneManager {
    */
   getLightingPresets() {
     return this.lightingSystem?.getPresets() || new Map();
+  }
+
+  /**
+   * Get available camera presets
+   */
+  getCameraPresets() {
+    return this.cameraSystem?.getPresets() || new Map();
+  }
+
+  /**
+   * Get camera bookmarks
+   */
+  getCameraBookmarks() {
+    return this.cameraSystem?.getBookmarks() || new Map();
   }
 
   /**
@@ -548,6 +611,11 @@ export class SceneManager {
     if (this.lightingSystem) {
       this.lightingSystem.dispose();
       this.lightingSystem = null;
+    }
+
+    if (this.cameraSystem) {
+      this.cameraSystem.dispose();
+      this.cameraSystem = null;
     }
 
     // Clean up any remaining resources
