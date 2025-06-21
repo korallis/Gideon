@@ -1,0 +1,524 @@
+<!--
+=========================================================================
+HolographicGlyphs.xaml - EVE Holographic Glyph Icon System
+=========================================================================
+Comprehensive minimalist glyph icon system for the Westworld-EVE fusion
+interface. Features glowing vector icons optimized for holographic
+display with scalable geometry and animated effects.
+
+Features:
+- EVE ship module and station iconography
+- Minimalist glyph design language
+- Scalable vector geometry
+- Holographic glow effects
+- Interactive animation states
+- Performance-optimized rendering
+- Consistent visual hierarchy
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =============================================================== -->
+    <!--                    CORE GLYPH GEOMETRIES                      -->
+    <!-- =============================================================== -->
+
+    <!-- Navigation & Interface Glyphs -->
+    <PathGeometry x:Key="Glyph_Menu">
+        <PathFigure StartPoint="2,6" IsClosed="False">
+            <LineSegment Point="22,6"/>
+        </PathFigure>
+        <PathFigure StartPoint="2,12" IsClosed="False">
+            <LineSegment Point="22,12"/>
+        </PathFigure>
+        <PathFigure StartPoint="2,18" IsClosed="False">
+            <LineSegment Point="22,18"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Close">
+        <PathFigure StartPoint="6,6" IsClosed="False">
+            <LineSegment Point="18,18"/>
+        </PathFigure>
+        <PathFigure StartPoint="18,6" IsClosed="False">
+            <LineSegment Point="6,18"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Settings">
+        <PathFigure StartPoint="12,3" IsClosed="True">
+            <LineSegment Point="15,6"/>
+            <LineSegment Point="21,6"/>
+            <LineSegment Point="18,9"/>
+            <LineSegment Point="21,12"/>
+            <LineSegment Point="15,18"/>
+            <LineSegment Point="12,21"/>
+            <LineSegment Point="9,18"/>
+            <LineSegment Point="3,12"/>
+            <LineSegment Point="6,9"/>
+            <LineSegment Point="3,6"/>
+            <LineSegment Point="9,6"/>
+        </PathFigure>
+        <EllipseGeometry Center="12,12" RadiusX="4" RadiusY="4"/>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Search">
+        <EllipseGeometry Center="10,10" RadiusX="6" RadiusY="6"/>
+        <PathFigure StartPoint="14.5,14.5" IsClosed="False">
+            <LineSegment Point="20,20"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- EVE Ship Module Glyphs -->
+    <PathGeometry x:Key="Glyph_Weapon_Turret">
+        <PathFigure StartPoint="12,4" IsClosed="False">
+            <LineSegment Point="12,20"/>
+        </PathFigure>
+        <PathFigure StartPoint="8,8" IsClosed="False">
+            <LineSegment Point="16,8"/>
+        </PathFigure>
+        <PathFigure StartPoint="6,12" IsClosed="False">
+            <LineSegment Point="18,12"/>
+        </PathFigure>
+        <PathFigure StartPoint="4,16" IsClosed="False">
+            <LineSegment Point="20,16"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Weapon_Missile">
+        <PathFigure StartPoint="12,2" IsClosed="True">
+            <LineSegment Point="10,4"/>
+            <LineSegment Point="10,18"/>
+            <LineSegment Point="8,22"/>
+            <LineSegment Point="16,22"/>
+            <LineSegment Point="14,18"/>
+            <LineSegment Point="14,4"/>
+        </PathFigure>
+        <PathFigure StartPoint="6,6" IsClosed="False">
+            <LineSegment Point="12,8"/>
+            <LineSegment Point="18,6"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Shield">
+        <PathFigure StartPoint="12,3" IsClosed="True">
+            <ArcSegment Point="21,12" Size="12,12" IsLargeArc="False"/>
+            <ArcSegment Point="12,21" Size="12,12" IsLargeArc="False"/>
+            <ArcSegment Point="3,12" Size="12,12" IsLargeArc="False"/>
+            <ArcSegment Point="12,3" Size="12,12" IsLargeArc="False"/>
+        </PathFigure>
+        <PathFigure StartPoint="12,7" IsClosed="False">
+            <LineSegment Point="12,17"/>
+        </PathFigure>
+        <PathFigure StartPoint="8,12" IsClosed="False">
+            <LineSegment Point="16,12"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Armor">
+        <PathFigure StartPoint="12,2" IsClosed="True">
+            <LineSegment Point="20,6"/>
+            <LineSegment Point="20,18"/>
+            <LineSegment Point="12,22"/>
+            <LineSegment Point="4,18"/>
+            <LineSegment Point="4,6"/>
+        </PathFigure>
+        <PathFigure StartPoint="8,10" IsClosed="False">
+            <LineSegment Point="16,10"/>
+        </PathFigure>
+        <PathFigure StartPoint="8,14" IsClosed="False">
+            <LineSegment Point="16,14"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Capacitor">
+        <PathFigure StartPoint="6,8" IsClosed="True">
+            <LineSegment Point="10,4"/>
+            <LineSegment Point="14,8"/>
+            <LineSegment Point="14,12"/>
+            <LineSegment Point="18,16"/>
+            <LineSegment Point="18,20"/>
+            <LineSegment Point="6,20"/>
+        </PathFigure>
+        <PathFigure StartPoint="9,11" IsClosed="False">
+            <LineSegment Point="15,11"/>
+        </PathFigure>
+        <PathFigure StartPoint="12,8" IsClosed="False">
+            <LineSegment Point="12,14"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- EVE Ship Type Glyphs -->
+    <PathGeometry x:Key="Glyph_Ship_Frigate">
+        <PathFigure StartPoint="12,4" IsClosed="True">
+            <LineSegment Point="16,8"/>
+            <LineSegment Point="20,12"/>
+            <LineSegment Point="16,16"/>
+            <LineSegment Point="12,20"/>
+            <LineSegment Point="8,16"/>
+            <LineSegment Point="4,12"/>
+            <LineSegment Point="8,8"/>
+        </PathFigure>
+        <PathFigure StartPoint="12,8" IsClosed="False">
+            <LineSegment Point="12,16"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Ship_Cruiser">
+        <PathFigure StartPoint="12,3" IsClosed="True">
+            <LineSegment Point="18,6"/>
+            <LineSegment Point="21,12"/>
+            <LineSegment Point="18,18"/>
+            <LineSegment Point="12,21"/>
+            <LineSegment Point="6,18"/>
+            <LineSegment Point="3,12"/>
+            <LineSegment Point="6,6"/>
+        </PathFigure>
+        <PathFigure StartPoint="9,9" IsClosed="False">
+            <LineSegment Point="15,15"/>
+        </PathFigure>
+        <PathFigure StartPoint="15,9" IsClosed="False">
+            <LineSegment Point="9,15"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Ship_Battleship">
+        <PathFigure StartPoint="12,2" IsClosed="True">
+            <LineSegment Point="19,5"/>
+            <LineSegment Point="22,12"/>
+            <LineSegment Point="19,19"/>
+            <LineSegment Point="12,22"/>
+            <LineSegment Point="5,19"/>
+            <LineSegment Point="2,12"/>
+            <LineSegment Point="5,5"/>
+        </PathFigure>
+        <RectangleGeometry Rect="8,8,8,8"/>
+    </PathGeometry>
+
+    <!-- EVE Station & Infrastructure Glyphs -->
+    <PathGeometry x:Key="Glyph_Station">
+        <RectangleGeometry Rect="4,4,16,16"/>
+        <PathFigure StartPoint="12,4" IsClosed="False">
+            <LineSegment Point="12,20"/>
+        </PathFigure>
+        <PathFigure StartPoint="4,12" IsClosed="False">
+            <LineSegment Point="20,12"/>
+        </PathFigure>
+        <PathFigure StartPoint="7,7" IsClosed="False">
+            <LineSegment Point="17,17"/>
+        </PathFigure>
+        <PathFigure StartPoint="17,7" IsClosed="False">
+            <LineSegment Point="7,17"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Market">
+        <PathFigure StartPoint="4,8" IsClosed="True">
+            <LineSegment Point="8,4"/>
+            <LineSegment Point="16,4"/>
+            <LineSegment Point="20,8"/>
+            <LineSegment Point="20,16"/>
+            <LineSegment Point="16,20"/>
+            <LineSegment Point="8,20"/>
+            <LineSegment Point="4,16"/>
+        </PathFigure>
+        <PathFigure StartPoint="8,10" IsClosed="False">
+            <LineSegment Point="16,10"/>
+        </PathFigure>
+        <PathFigure StartPoint="8,14" IsClosed="False">
+            <LineSegment Point="16,14"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Industry">
+        <RectangleGeometry Rect="2,10,6,10"/>
+        <RectangleGeometry Rect="9,6,6,14"/>
+        <RectangleGeometry Rect="16,8,6,12"/>
+        <PathFigure StartPoint="5,6" IsClosed="False">
+            <LineSegment Point="5,10"/>
+        </PathFigure>
+        <PathFigure StartPoint="12,2" IsClosed="False">
+            <LineSegment Point="12,6"/>
+        </PathFigure>
+        <PathFigure StartPoint="19,4" IsClosed="False">
+            <LineSegment Point="19,8"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- Character & Corporation Glyphs -->
+    <PathGeometry x:Key="Glyph_Character">
+        <EllipseGeometry Center="12,8" RadiusX="4" RadiusY="4"/>
+        <PathFigure StartPoint="6,16" IsClosed="True">
+            <ArcSegment Point="18,16" Size="6,6" IsLargeArc="False"/>
+            <LineSegment Point="18,20"/>
+            <LineSegment Point="6,20"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Corporation">
+        <PathFigure StartPoint="12,2" IsClosed="True">
+            <LineSegment Point="20,6"/>
+            <LineSegment Point="20,18"/>
+            <LineSegment Point="16,22"/>
+            <LineSegment Point="8,22"/>
+            <LineSegment Point="4,18"/>
+            <LineSegment Point="4,6"/>
+        </PathFigure>
+        <RectangleGeometry Rect="8,8,8,6"/>
+        <PathFigure StartPoint="10,10" IsClosed="False">
+            <LineSegment Point="14,10"/>
+        </PathFigure>
+        <PathFigure StartPoint="10,12" IsClosed="False">
+            <LineSegment Point="14,12"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <PathGeometry x:Key="Glyph_Alliance">
+        <PathFigure StartPoint="12,2" IsClosed="True">
+            <LineSegment Point="22,8"/>
+            <LineSegment Point="18,12"/>
+            <LineSegment Point="22,16"/>
+            <LineSegment Point="12,22"/>
+            <LineSegment Point="2,16"/>
+            <LineSegment Point="6,12"/>
+            <LineSegment Point="2,8"/>
+        </PathFigure>
+        <EllipseGeometry Center="12,12" RadiusX="3" RadiusY="3"/>
+    </PathGeometry>
+
+    <!-- =============================================================== -->
+    <!--                    HOLOGRAPHIC GLOW EFFECTS                   -->
+    <!-- =============================================================== -->
+
+    <!-- Glow Intensity Levels -->
+    <DropShadowEffect x:Key="GlyphGlow_Soft" 
+                      Color="{StaticResource ElectricBlue_Core}" 
+                      BlurRadius="4" 
+                      ShadowDepth="0" 
+                      Opacity="0.4"/>
+
+    <DropShadowEffect x:Key="GlyphGlow_Medium" 
+                      Color="{StaticResource ElectricBlue_Core}" 
+                      BlurRadius="8" 
+                      ShadowDepth="0" 
+                      Opacity="0.6"/>
+
+    <DropShadowEffect x:Key="GlyphGlow_Strong" 
+                      Color="{StaticResource ElectricBlue_Core}" 
+                      BlurRadius="12" 
+                      ShadowDepth="0" 
+                      Opacity="0.8"/>
+
+    <!-- Specialized Glow Colors -->
+    <DropShadowEffect x:Key="GlyphGlow_Warning" 
+                      Color="{StaticResource EVEWarning_Orange}" 
+                      BlurRadius="8" 
+                      ShadowDepth="0" 
+                      Opacity="0.7"/>
+
+    <DropShadowEffect x:Key="GlyphGlow_Success" 
+                      Color="{StaticResource EVE_Success}" 
+                      BlurRadius="8" 
+                      ShadowDepth="0" 
+                      Opacity="0.7"/>
+
+    <DropShadowEffect x:Key="GlyphGlow_Error" 
+                      Color="{StaticResource EVEAlert_Red}" 
+                      BlurRadius="8" 
+                      ShadowDepth="0" 
+                      Opacity="0.7"/>
+
+    <DropShadowEffect x:Key="GlyphGlow_Gold" 
+                      Color="{StaticResource EVEGold_Core}" 
+                      BlurRadius="8" 
+                      ShadowDepth="0" 
+                      Opacity="0.6"/>
+
+    <!-- =============================================================== -->
+    <!--                    GLYPH ANIMATION RESOURCES                  -->
+    <!-- =============================================================== -->
+
+    <!-- Pulse Animation -->
+    <Storyboard x:Key="GlyphPulse" RepeatBehavior="Forever" AutoReverse="True">
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).Opacity"
+                        From="0.4" To="1.0" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Activation Flash -->
+    <Storyboard x:Key="GlyphActivation">
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).Opacity"
+                        From="0.2" To="1.0" Duration="0:0:0.2">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="0.9" To="1.0" Duration="0:0:0.15">
+            <DoubleAnimation.EasingFunction>
+                <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="0.9" To="1.0" Duration="0:0:0.15">
+            <DoubleAnimation.EasingFunction>
+                <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Hover Glow Increase -->
+    <Storyboard x:Key="GlyphHoverIn">
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).BlurRadius"
+                        To="12" Duration="0:0:0.2">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).Opacity"
+                        To="0.8" Duration="0:0:0.2">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Hover Glow Decrease -->
+    <Storyboard x:Key="GlyphHoverOut">
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).BlurRadius"
+                        To="8" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).Opacity"
+                        To="0.6" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- =============================================================== -->
+    <!--                      GLYPH BASE STYLES                        -->
+    <!-- =============================================================== -->
+
+    <!-- Base Holographic Glyph Style -->
+    <Style x:Key="HolographicGlyph_Base" TargetType="Path">
+        <Setter Property="Stroke" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="Fill" Value="Transparent"/>
+        <Setter Property="Effect" Value="{StaticResource GlyphGlow_Medium}"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource GlyphHoverIn}"/>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource GlyphHoverOut}"/>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Interactive Button Glyph Style -->
+    <Style x:Key="HolographicGlyph_Button" TargetType="Path" BasedOn="{StaticResource HolographicGlyph_Base}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="MouseLeftButtonDown">
+                <BeginStoryboard Storyboard="{StaticResource GlyphActivation}"/>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Status Indicator Glyph Style -->
+    <Style x:Key="HolographicGlyph_Status" TargetType="Path" BasedOn="{StaticResource HolographicGlyph_Base}">
+        <Setter Property="StrokeThickness" Value="1.5"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsActive}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource GlyphPulse}"/>
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Navigation Glyph Style -->
+    <Style x:Key="HolographicGlyph_Navigation" TargetType="Path" BasedOn="{StaticResource HolographicGlyph_Button}">
+        <Setter Property="Stroke" Value="{StaticResource ElectricBlue_SoftBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource GlyphGlow_Soft}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                <Setter Property="Stroke" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+                <Setter Property="Effect" Value="{StaticResource GlyphGlow_Strong}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Warning Glyph Style -->
+    <Style x:Key="HolographicGlyph_Warning" TargetType="Path" BasedOn="{StaticResource HolographicGlyph_Base}">
+        <Setter Property="Stroke" Value="{StaticResource EVEWarning_OrangeBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource GlyphGlow_Warning}"/>
+    </Style>
+
+    <!-- Success Glyph Style -->
+    <Style x:Key="HolographicGlyph_Success" TargetType="Path" BasedOn="{StaticResource HolographicGlyph_Base}">
+        <Setter Property="Stroke" Value="{StaticResource EVE_SuccessBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource GlyphGlow_Success}"/>
+    </Style>
+
+    <!-- Error Glyph Style -->
+    <Style x:Key="HolographicGlyph_Error" TargetType="Path" BasedOn="{StaticResource HolographicGlyph_Base}">
+        <Setter Property="Stroke" Value="{StaticResource EVEAlert_RedBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource GlyphGlow_Error}"/>
+    </Style>
+
+    <!-- Corporation/Premium Glyph Style -->
+    <Style x:Key="HolographicGlyph_Premium" TargetType="Path" BasedOn="{StaticResource HolographicGlyph_Base}">
+        <Setter Property="Stroke" Value="{StaticResource EVEGold_CoreBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource GlyphGlow_Gold}"/>
+    </Style>
+
+    <!-- =============================================================== -->
+    <!--                     UTILITY GLYPH CONTAINERS                  -->
+    <!-- =============================================================== -->
+
+    <!-- Scalable Glyph Container -->
+    <Style x:Key="GlyphContainer_Small" TargetType="Viewbox">
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+    </Style>
+
+    <Style x:Key="GlyphContainer_Medium" TargetType="Viewbox">
+        <Setter Property="Width" Value="24"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+    </Style>
+
+    <Style x:Key="GlyphContainer_Large" TargetType="Viewbox">
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+    </Style>
+
+    <Style x:Key="GlyphContainer_XLarge" TargetType="Viewbox">
+        <Setter Property="Width" Value="48"/>
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+    </Style>
+
+</ResourceDictionary>

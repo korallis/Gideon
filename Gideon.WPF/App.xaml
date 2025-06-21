@@ -39,6 +39,10 @@
                 <ResourceDictionary Source="Presentation/Styles/AngularBorders.xaml" />
                 <ResourceDictionary Source="Presentation/Styles/AngularBorderPanel.xaml" />
                 
+                <!-- Holographic Icon System -->
+                <ResourceDictionary Source="Presentation/Icons/HolographicGlyphs.xaml" />
+                <ResourceDictionary Source="Presentation/Styles/HolographicIcon.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
             
             <!-- Converters -->

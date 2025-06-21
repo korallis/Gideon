@@ -1,0 +1,207 @@
+<!--
+=========================================================================
+HolographicIcon.xaml - Default Template for HolographicIcon Control
+=========================================================================
+Default control template and styles for the HolographicIcon custom control.
+Provides the visual structure for holographic glyph icons with dynamic
+effects and interactive states.
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Gideon.WPF.Presentation.Controls">
+
+    <!-- Default Template for HolographicIcon -->
+    <Style TargetType="{x:Type controls:HolographicIcon}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:HolographicIcon}">
+                    <ContentPresenter x:Name="PART_ContentPresenter"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Specialized Icon Styles -->
+    
+    <!-- Navigation Icon Style -->
+    <Style x:Key="HolographicIcon_Navigation" TargetType="{x:Type controls:HolographicIcon}">
+        <Setter Property="IsInteractive" Value="True"/>
+        <Setter Property="GlowIntensity" Value="0.8"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
+        <Setter Property="IconSize" Value="Medium"/>
+        <Style.Triggers>
+            <Trigger Property="IconState" Value="Active">
+                <Setter Property="GlowIntensity" Value="1.2"/>
+                <Setter Property="StrokeThickness" Value="2.5"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Action Button Icon Style -->
+    <Style x:Key="HolographicIcon_Action" TargetType="{x:Type controls:HolographicIcon}">
+        <Setter Property="IsInteractive" Value="True"/>
+        <Setter Property="GlowIntensity" Value="1.0"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="IconSize" Value="Medium"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="GlowIntensity" Value="1.3"/>
+            </Trigger>
+            <Trigger Property="IconState" Value="Active">
+                <Setter Property="GlowIntensity" Value="1.5"/>
+                <Setter Property="EnablePulse" Value="True"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Status Indicator Icon Style -->
+    <Style x:Key="HolographicIcon_Status" TargetType="{x:Type controls:HolographicIcon}">
+        <Setter Property="IsInteractive" Value="False"/>
+        <Setter Property="GlowIntensity" Value="0.6"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
+        <Setter Property="IconSize" Value="Small"/>
+        <Style.Triggers>
+            <Trigger Property="IconState" Value="Active">
+                <Setter Property="EnablePulse" Value="True"/>
+                <Setter Property="GlowIntensity" Value="1.0"/>
+            </Trigger>
+            <Trigger Property="IconState" Value="Warning">
+                <Setter Property="GlowColor" Value="{StaticResource EVEWarning_Orange}"/>
+                <Setter Property="StrokeColor" Value="{StaticResource EVEWarning_Orange}"/>
+            </Trigger>
+            <Trigger Property="IconState" Value="Error">
+                <Setter Property="GlowColor" Value="{StaticResource EVEAlert_Red}"/>
+                <Setter Property="StrokeColor" Value="{StaticResource EVEAlert_Red}"/>
+            </Trigger>
+            <Trigger Property="IconState" Value="Success">
+                <Setter Property="GlowColor" Value="{StaticResource EVE_Success}"/>
+                <Setter Property="StrokeColor" Value="{StaticResource EVE_Success}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Module Icon Style (for ship fitting) -->
+    <Style x:Key="HolographicIcon_Module" TargetType="{x:Type controls:HolographicIcon}">
+        <Setter Property="IsInteractive" Value="True"/>
+        <Setter Property="GlowIntensity" Value="0.7"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="IconSize" Value="Large"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="GlowIntensity" Value="1.0"/>
+                <Setter Property="StrokeThickness" Value="2.5"/>
+            </Trigger>
+            <Trigger Property="IconState" Value="Active">
+                <Setter Property="GlowIntensity" Value="1.2"/>
+                <Setter Property="GlowColor" Value="{StaticResource EVEGold_Core}"/>
+                <Setter Property="StrokeColor" Value="{StaticResource EVEGold_Core}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Corporation Icon Style -->
+    <Style x:Key="HolographicIcon_Corporation" TargetType="{x:Type controls:HolographicIcon}">
+        <Setter Property="IsInteractive" Value="False"/>
+        <Setter Property="GlowIntensity" Value="0.8"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="IconSize" Value="Medium"/>
+        <Setter Property="GlowColor" Value="{StaticResource EVEGold_Core}"/>
+        <Setter Property="StrokeColor" Value="{StaticResource EVEGold_Core}"/>
+        <Style.Triggers>
+            <Trigger Property="IconState" Value="Active">
+                <Setter Property="EnablePulse" Value="True"/>
+                <Setter Property="GlowIntensity" Value="1.1"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Small Icon Style (for compact layouts) -->
+    <Style x:Key="HolographicIcon_Small" TargetType="{x:Type controls:HolographicIcon}">
+        <Setter Property="GlowIntensity" Value="0.5"/>
+        <Setter Property="StrokeThickness" Value="1"/>
+        <Setter Property="IconSize" Value="Small"/>
+    </Style>
+    
+    <!-- Large Icon Style (for prominent displays) -->
+    <Style x:Key="HolographicIcon_Large" TargetType="{x:Type controls:HolographicIcon}">
+        <Setter Property="GlowIntensity" Value="1.2"/>
+        <Setter Property="StrokeThickness" Value="3"/>
+        <Setter Property="IconSize" Value="XLarge"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="GlowIntensity" Value="1.5"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- =============================================================== -->
+    <!--                    ICON CONTAINER STYLES                      -->
+    <!-- =============================================================== -->
+    
+    <!-- Icon with Label Style -->
+    <Style x:Key="IconWithLabel" TargetType="StackPanel">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="8"/>
+    </Style>
+    
+    <!-- Icon Label Text Style -->
+    <Style x:Key="IconLabel" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{StaticResource Text_SecondaryBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,4,0,0"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Effect" Value="{StaticResource CyanGlowSoft}"/>
+    </Style>
+    
+    <!-- Interactive Icon Button Style -->
+    <Style x:Key="IconButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource Surface_Glass_UltraBrush}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_SoftBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource Surface_Glass_LightBrush}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>
