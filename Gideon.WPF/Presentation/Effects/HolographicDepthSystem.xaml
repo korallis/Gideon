@@ -1,0 +1,437 @@
+<!--
+=========================================================================
+HolographicDepthSystem.xaml - Depth-Based Layering System
+=========================================================================
+Advanced holographic depth perception system for the Westworld-EVE fusion
+interface. Provides depth-based layering with z-index management, 
+parallax effects, and depth-sensitive visual treatments.
+
+Features:
+- 10-layer depth system (0.0 to 1.0)
+- Depth-based blur and opacity calculations
+- Parallax motion effects
+- Interactive depth transitions
+- Performance-optimized rendering
+- Accessibility-aware depth cues
+
+Depth Layers:
+- 0.0-0.1: Deep Background (heavily blurred, low opacity)
+- 0.1-0.3: Background Elements (medium blur, medium opacity)
+- 0.3-0.5: Mid-Layer Content (light blur, high opacity)
+- 0.5-0.7: Foreground Elements (minimal blur, full opacity)
+- 0.7-1.0: Surface Elements (no blur, full opacity, enhanced glow)
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =============================================================== -->
+    <!--                    DEPTH LAYER DEFINITIONS                    -->
+    <!-- =============================================================== -->
+
+    <!-- Deep Background Layer (Depth 0.0-0.1) -->
+    <Style x:Key="HoloDepth_DeepBackground" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="0"/>
+        <Setter Property="Opacity" Value="0.2"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <BlurEffect Radius="25"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TranslateTransform X="0" Y="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Background Layer (Depth 0.1-0.3) -->
+    <Style x:Key="HoloDepth_Background" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="10"/>
+        <Setter Property="Opacity" Value="0.4"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <BlurEffect Radius="15"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TranslateTransform X="0" Y="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Background Secondary Layer (Depth 0.2-0.4) -->
+    <Style x:Key="HoloDepth_BackgroundSecondary" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="20"/>
+        <Setter Property="Opacity" Value="0.6"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <BlurEffect Radius="10"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TranslateTransform X="0" Y="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Mid-Layer (Depth 0.3-0.5) -->
+    <Style x:Key="HoloDepth_MidLayer" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="30"/>
+        <Setter Property="Opacity" Value="0.8"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <BlurEffect Radius="5"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TranslateTransform X="0" Y="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Foreground Layer (Depth 0.5-0.7) -->
+    <Style x:Key="HoloDepth_Foreground" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="40"/>
+        <Setter Property="Opacity" Value="0.9"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <BlurEffect Radius="2"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TranslateTransform X="0" Y="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Surface Layer (Depth 0.7-1.0) -->
+    <Style x:Key="HoloDepth_Surface" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="50"/>
+        <Setter Property="Opacity" Value="1.0"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="{StaticResource ElectricBlue_Core}" 
+                                BlurRadius="8" 
+                                ShadowDepth="0" 
+                                Opacity="0.6"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TranslateTransform X="0" Y="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Interactive Surface Layer (Depth 0.8-1.0) -->
+    <Style x:Key="HoloDepth_Interactive" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="60"/>
+        <Setter Property="Opacity" Value="1.0"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="{StaticResource ElectricBlue_Core}" 
+                                BlurRadius="12" 
+                                ShadowDepth="0" 
+                                Opacity="0.8"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TranslateTransform X="0" Y="0"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Panel.ZIndex" Value="70"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="{StaticResource ElectricBlue_Core}" 
+                                        BlurRadius="16" 
+                                        ShadowDepth="0" 
+                                        Opacity="1.0"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Overlay Layer (Depth 0.9-1.0) -->
+    <Style x:Key="HoloDepth_Overlay" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="80"/>
+        <Setter Property="Opacity" Value="1.0"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="{StaticResource ElectricBlue_Bright}" 
+                                BlurRadius="20" 
+                                ShadowDepth="0" 
+                                Opacity="0.9"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Modal/Dialog Layer (Depth 1.0) -->
+    <Style x:Key="HoloDepth_Modal" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="100"/>
+        <Setter Property="Opacity" Value="1.0"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="{StaticResource ElectricBlue_Intense}" 
+                                BlurRadius="25" 
+                                ShadowDepth="3" 
+                                Opacity="0.8"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- =============================================================== -->
+    <!--                    DEPTH TRANSITION ANIMATIONS                -->
+    <!-- =============================================================== -->
+
+    <!-- Depth Emergence Animation (Background to Foreground) -->
+    <Storyboard x:Key="DepthEmergence">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.2" To="1.0" Duration="0:0:0.8">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).(BlurEffect.Radius)"
+                        From="25" To="0" Duration="0:0:1.0">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="20" To="0" Duration="0:0:0.6">
+            <DoubleAnimation.EasingFunction>
+                <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Depth Recession Animation (Foreground to Background) -->
+    <Storyboard x:Key="DepthRecession">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="1.0" To="0.4" Duration="0:0:0.6">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).(BlurEffect.Radius)"
+                        From="0" To="15" Duration="0:0:0.8">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="0" To="-10" Duration="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Parallax Motion Animation -->
+    <Storyboard x:Key="ParallaxMotion" RepeatBehavior="Forever" AutoReverse="True">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                        From="-5" To="5" Duration="0:0:8">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="-2" To="2" Duration="0:0:12">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- =============================================================== -->
+    <!--                    DEPTH-AWARE PANEL STYLES                   -->
+    <!-- =============================================================== -->
+
+    <!-- Deep Background Panel -->
+    <Style x:Key="HoloPanel_DeepBackground" TargetType="Border" BasedOn="{StaticResource HoloDepth_DeepBackground}">
+        <Setter Property="Background" Value="{StaticResource Surface_Glass_UltraBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Surface_Glass_LightBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource ParallaxMotion}"/>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Background Panel -->
+    <Style x:Key="HoloPanel_Background" TargetType="Border" BasedOn="{StaticResource HoloDepth_Background}">
+        <Setter Property="Background" Value="{StaticResource Surface_Glass_LightBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Surface_Glass_MediumBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="6"/>
+    </Style>
+
+    <!-- Mid-Layer Panel -->
+    <Style x:Key="HoloPanel_MidLayer" TargetType="Border" BasedOn="{StaticResource HoloDepth_MidLayer}">
+        <Setter Property="Background" Value="{StaticResource Surface_Glass_MediumBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_SoftBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="4"/>
+    </Style>
+
+    <!-- Foreground Panel -->
+    <Style x:Key="HoloPanel_Foreground" TargetType="Border" BasedOn="{StaticResource HoloDepth_Foreground}">
+        <Setter Property="Background" Value="{StaticResource Surface_Glass_DarkBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="4"/>
+    </Style>
+
+    <!-- Surface Panel -->
+    <Style x:Key="HoloPanel_Surface" TargetType="Border" BasedOn="{StaticResource HoloDepth_Surface}">
+        <Setter Property="Background" Value="{StaticResource Surface_SecondaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="4"/>
+    </Style>
+
+    <!-- Interactive Panel -->
+    <Style x:Key="HoloPanel_Interactive" TargetType="Border" BasedOn="{StaticResource HoloDepth_Interactive}">
+        <Setter Property="Background" Value="{StaticResource Surface_SecondaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource Surface_Glass_DarkBrush}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_BrightBrush}"/>
+                <Setter Property="BorderThickness" Value="3"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- =============================================================== -->
+    <!--                    DEPTH-SENSITIVE TEXT STYLES                -->
+    <!-- =============================================================== -->
+
+    <!-- Deep Background Text -->
+    <Style x:Key="HoloText_DeepBackground" TargetType="TextBlock" BasedOn="{StaticResource HoloDepth_DeepBackground}">
+        <Setter Property="Foreground" Value="{StaticResource Text_TertiaryBrush}"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Opacity" Value="0.3"/>
+    </Style>
+
+    <!-- Background Text -->
+    <Style x:Key="HoloText_Background" TargetType="TextBlock" BasedOn="{StaticResource HoloDepth_Background}">
+        <Setter Property="Foreground" Value="{StaticResource Text_SecondaryBrush}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+
+    <!-- Mid-Layer Text -->
+    <Style x:Key="HoloText_MidLayer" TargetType="TextBlock" BasedOn="{StaticResource HoloDepth_MidLayer}">
+        <Setter Property="Foreground" Value="{StaticResource Text_SecondaryBrush}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Opacity" Value="0.8"/>
+    </Style>
+
+    <!-- Foreground Text -->
+    <Style x:Key="HoloText_Foreground" TargetType="TextBlock" BasedOn="{StaticResource HoloDepth_Foreground}">
+        <Setter Property="Foreground" Value="{StaticResource Text_PrimaryBrush}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Opacity" Value="0.9"/>
+    </Style>
+
+    <!-- Surface Text -->
+    <Style x:Key="HoloText_Surface" TargetType="TextBlock" BasedOn="{StaticResource HoloDepth_Surface}">
+        <Setter Property="Foreground" Value="{StaticResource Text_Primary_ElectricBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Opacity" Value="1.0"/>
+        <Setter Property="Effect" Value="{StaticResource CyanGlowSoft}"/>
+    </Style>
+
+    <!-- Interactive Text -->
+    <Style x:Key="HoloText_Interactive" TargetType="TextBlock" BasedOn="{StaticResource HoloDepth_Interactive}">
+        <Setter Property="Foreground" Value="{StaticResource Text_Primary_ElectricBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Opacity" Value="1.0"/>
+        <Setter Property="Effect" Value="{StaticResource CyanGlowMedium}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource Text_Primary_GoldBrush}"/>
+                <Setter Property="Effect" Value="{StaticResource GoldGlowMedium}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- =============================================================== -->
+    <!--                    DEPTH COMPOSITION HELPERS                  -->
+    <!-- =============================================================== -->
+
+    <!-- Depth Container Template -->
+    <ControlTemplate x:Key="DepthContainer">
+        <Canvas ClipToBounds="False">
+            <!-- Deep Background Layer -->
+            <ContentPresenter x:Name="PART_DeepBackground"
+                            Content="{Binding DeepBackgroundContent, RelativeSource={RelativeSource TemplatedParent}}"
+                            Style="{StaticResource HoloDepth_DeepBackground}"/>
+            
+            <!-- Background Layer -->
+            <ContentPresenter x:Name="PART_Background"
+                            Content="{Binding BackgroundContent, RelativeSource={RelativeSource TemplatedParent}}"
+                            Style="{StaticResource HoloDepth_Background}"/>
+            
+            <!-- Mid-Layer -->
+            <ContentPresenter x:Name="PART_MidLayer"
+                            Content="{Binding MidLayerContent, RelativeSource={RelativeSource TemplatedParent}}"
+                            Style="{StaticResource HoloDepth_MidLayer}"/>
+            
+            <!-- Foreground Layer -->
+            <ContentPresenter x:Name="PART_Foreground"
+                            Content="{Binding ForegroundContent, RelativeSource={RelativeSource TemplatedParent}}"
+                            Style="{StaticResource HoloDepth_Foreground}"/>
+            
+            <!-- Surface Layer -->
+            <ContentPresenter x:Name="PART_Surface"
+                            Content="{Binding SurfaceContent, RelativeSource={RelativeSource TemplatedParent}}"
+                            Style="{StaticResource HoloDepth_Surface}"/>
+        </Canvas>
+    </ControlTemplate>
+
+    <!-- =============================================================== -->
+    <!--                    ACCESSIBILITY DEPTH CUES                   -->
+    <!-- =============================================================== -->
+
+    <!-- High Contrast Depth Styles (for accessibility) -->
+    <Style x:Key="HoloDepth_HighContrast_Background" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="10"/>
+        <Setter Property="Opacity" Value="0.7"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="Black" BlurRadius="2" ShadowDepth="2" Opacity="0.8"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HoloDepth_HighContrast_Foreground" TargetType="FrameworkElement">
+        <Setter Property="Panel.ZIndex" Value="50"/>
+        <Setter Property="Opacity" Value="1.0"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="Black" BlurRadius="4" ShadowDepth="4" Opacity="1.0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

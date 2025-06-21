@@ -1,0 +1,471 @@
+<!--
+=========================================================================
+HolographicDepthDemo.xaml - Holographic Depth System Demo
+=========================================================================
+Comprehensive demonstration of the EVE holographic depth perception system
+with interactive depth controls, layer management, and visual depth cues.
+
+Features:
+- 10-layer depth system showcase
+- Interactive depth manipulation
+- Parallax motion effects
+- Depth transition animations
+- Performance optimization controls
+- Accessibility testing
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<Page x:Class="Gideon.WPF.Presentation.Views.HolographicDepthDemo"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="clr-namespace:Gideon.WPF.Presentation.Controls"
+      mc:Ignorable="d"
+      Title="Holographic Depth Demo"
+      Background="{StaticResource Surface_BackgroundBrush}">
+
+    <Page.Resources>
+        <!-- Merge the holographic depth resources -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Effects/HolographicDepthSystem.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- Demo content styles -->
+            <Style x:Key="DemoSectionTitle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="{StaticResource Text_Primary_ElectricBrush}"/>
+                <Setter Property="Margin" Value="0,15,0,10"/>
+                <Setter Property="Effect" Value="{StaticResource CyanGlowSoft}"/>
+            </Style>
+
+            <Style x:Key="DepthLayerDemo" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource Surface_Glass_MediumBrush}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_SoftBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="Padding" Value="20"/>
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="MinWidth" Value="200"/>
+                <Setter Property="MinHeight" Value="120"/>
+            </Style>
+
+            <Style x:Key="LayerContent" TargetType="StackPanel">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0" 
+                    Style="{StaticResource GlassMediumPanel}" 
+                    Margin="0,0,0,30"
+                    HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="30,15">
+                    <controls:HolographicIcon IconType="Settings"
+                                            IconSize="Large"
+                                            EnablePulse="True"
+                                            VerticalAlignment="Center"
+                                            Margin="0,0,20,0"/>
+                    
+                    <TextBlock Text="HOLOGRAPHIC DEPTH SYSTEM"
+                               FontSize="24" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource Text_Primary_ElectricBrush}"
+                               VerticalAlignment="Center"
+                               Effect="{StaticResource CyanGlowMedium}"/>
+                    
+                    <Rectangle Width="4" Height="30" 
+                               Fill="{StaticResource EVE_CombinedGradient}"
+                               Margin="20,0"
+                               Effect="{StaticResource CyanGlowSoft}"/>
+                    
+                    <TextBlock Text="Depth Perception &amp; Layering"
+                               FontSize="14"
+                               Foreground="{StaticResource Text_Primary_GoldBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Main Demo Area -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Control Panel -->
+                <Border Grid.Column="0" 
+                        Style="{StaticResource GlassDarkPanel}"
+                        VerticalAlignment="Top"
+                        Margin="0,0,20,0">
+                    <StackPanel Margin="20">
+                        <TextBlock Text="DEPTH CONTROLS"
+                                   Style="{StaticResource EVE_SubtitleStyle}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,20"/>
+
+                        <!-- Interactive Depth Element -->
+                        <TextBlock Text="Interactive Element" Style="{StaticResource DemoSectionTitle}"/>
+                        <Border x:Name="InteractiveElement"
+                                Background="{StaticResource Surface_Glass_DarkBrush}"
+                                BorderBrush="{StaticResource ElectricBlue_CoreBrush}"
+                                BorderThickness="2"
+                                CornerRadius="4"
+                                Padding="15"
+                                Margin="0,0,0,15"
+                                Cursor="Hand"
+                                MouseEnter="OnInteractiveElementMouseEnter"
+                                MouseLeave="OnInteractiveElementMouseLeave">
+                            <StackPanel HorizontalAlignment="Center">
+                                <controls:HolographicIcon IconType="Shield" 
+                                                        IconSize="Medium"
+                                                        HorizontalAlignment="Center"/>
+                                <TextBlock Text="INTERACTIVE PANEL" 
+                                           Style="{StaticResource EVE_CaptionStyle}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Depth Controls -->
+                        <TextBlock Text="Element Depth" Style="{StaticResource DemoSectionTitle}" FontSize="12"/>
+                        <Slider x:Name="DepthSlider" 
+                                Minimum="0" Maximum="1" Value="0.5"
+                                ValueChanged="OnDepthChanged"
+                                Margin="0,0,0,5"/>
+                        <TextBlock x:Name="DepthValue" 
+                                   Text="0.5" 
+                                   Style="{StaticResource EVE_CaptionStyle}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,15"/>
+
+                        <!-- Depth Level Selection -->
+                        <TextBlock Text="Depth Level" Style="{StaticResource DemoSectionTitle}" FontSize="12"/>
+                        <ComboBox x:Name="DepthLevelCombo" 
+                                  SelectionChanged="OnDepthLevelChanged"
+                                  Margin="0,0,0,15">
+                            <ComboBoxItem Content="DeepBackground"/>
+                            <ComboBoxItem Content="Background"/>
+                            <ComboBoxItem Content="BackgroundSecondary"/>
+                            <ComboBoxItem Content="MidLayer" IsSelected="True"/>
+                            <ComboBoxItem Content="Foreground"/>
+                            <ComboBoxItem Content="Surface"/>
+                            <ComboBoxItem Content="Interactive"/>
+                            <ComboBoxItem Content="Overlay"/>
+                            <ComboBoxItem Content="Modal"/>
+                            <ComboBoxItem Content="System"/>
+                        </ComboBox>
+
+                        <!-- Transition Type -->
+                        <TextBlock Text="Transition Type" Style="{StaticResource DemoSectionTitle}" FontSize="12"/>
+                        <ComboBox x:Name="TransitionTypeCombo" 
+                                  SelectionChanged="OnTransitionTypeChanged"
+                                  Margin="0,0,0,15">
+                            <ComboBoxItem Content="None" IsSelected="True"/>
+                            <ComboBoxItem Content="Emergence"/>
+                            <ComboBoxItem Content="Recession"/>
+                            <ComboBoxItem Content="Focus"/>
+                            <ComboBoxItem Content="Blur"/>
+                        </ComboBox>
+
+                        <!-- System Controls -->
+                        <TextBlock Text="SYSTEM SETTINGS" Style="{StaticResource DemoSectionTitle}"/>
+
+                        <TextBlock Text="Depth Intensity" Style="{StaticResource DemoSectionTitle}" FontSize="12"/>
+                        <Slider x:Name="IntensitySlider" 
+                                Minimum="0" Maximum="2" Value="1"
+                                ValueChanged="OnIntensityChanged"
+                                Margin="0,0,0,5"/>
+                        <TextBlock x:Name="IntensityValue" 
+                                   Text="1.0" 
+                                   Style="{StaticResource EVE_CaptionStyle}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Optimization Level" Style="{StaticResource DemoSectionTitle}" FontSize="12"/>
+                        <Slider x:Name="OptimizationSlider" 
+                                Minimum="0" Maximum="3" Value="2"
+                                ValueChanged="OnOptimizationChanged"
+                                Margin="0,0,0,5"/>
+                        <TextBlock x:Name="OptimizationValue" 
+                                   Text="2" 
+                                   Style="{StaticResource EVE_CaptionStyle}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,15"/>
+
+                        <!-- Feature Toggles -->
+                        <CheckBox x:Name="EnableDepthEffectsCheck" 
+                                  Content="Enable Depth Effects"
+                                  IsChecked="True"
+                                  Foreground="{StaticResource Text_SecondaryBrush}"
+                                  Checked="OnDepthEffectsToggled"
+                                  Unchecked="OnDepthEffectsToggled"
+                                  Margin="0,5"/>
+                        
+                        <CheckBox x:Name="EnableParallaxCheck" 
+                                  Content="Enable Parallax"
+                                  IsChecked="False"
+                                  Foreground="{StaticResource Text_SecondaryBrush}"
+                                  Checked="OnParallaxToggled"
+                                  Unchecked="OnParallaxToggled"
+                                  Margin="0,5,0,15"/>
+
+                        <!-- Action Buttons -->
+                        <Button Content="Focus Element" 
+                                x:Name="FocusButton"
+                                Style="{StaticResource EVE_PrimaryButton}"
+                                Click="OnFocusElement"
+                                Margin="0,5"/>
+                        
+                        <Button Content="Restore Element" 
+                                x:Name="RestoreButton"
+                                Style="{StaticResource EVE_SecondaryButton}"
+                                Click="OnRestoreElement"
+                                Margin="0,5"/>
+
+                        <Button Content="Reset Demo" 
+                                x:Name="ResetButton"
+                                Style="{StaticResource EVE_SecondaryButton}"
+                                Click="OnResetDemo"
+                                Margin="0,5"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Demo Canvas -->
+                <ScrollViewer Grid.Column="1" 
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Layer Showcase -->
+                        <TextBlock Grid.Row="0"
+                                   Text="DEPTH LAYER SHOWCASE" 
+                                   Style="{StaticResource DemoSectionTitle}" 
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,30"/>
+
+                        <!-- Holographic Depth Panel Demo -->
+                        <controls:HolographicDepthPanel x:Name="DepthDemoPanel"
+                                                       Grid.Row="1"
+                                                       EnableDepthEffects="True"
+                                                       EnableParallax="False"
+                                                       DepthIntensity="1.0"
+                                                       OptimizationLevel="2"
+                                                       Width="800"
+                                                       Height="600"
+                                                       HorizontalAlignment="Center">
+
+                            <!-- Deep Background Layer -->
+                            <Border Style="{StaticResource DepthLayerDemo}"
+                                    controls:HolographicDepthPanel.DepthLevel="DeepBackground"
+                                    controls:HolographicDepthPanel.EnableElementParallax="True"
+                                    Canvas.Left="50" Canvas.Top="400">
+                                <StackPanel Style="{StaticResource LayerContent}">
+                                    <TextBlock Text="DEEP BACKGROUND" 
+                                               Style="{StaticResource HoloText_DeepBackground}"
+                                               FontWeight="Bold"/>
+                                    <TextBlock Text="Depth: 0.05 | Heavy Blur" 
+                                               Style="{StaticResource HoloText_DeepBackground}"
+                                               FontSize="10"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Background Layer -->
+                            <Border Style="{StaticResource DepthLayerDemo}"
+                                    controls:HolographicDepthPanel.DepthLevel="Background"
+                                    controls:HolographicDepthPanel.EnableElementParallax="True"
+                                    Canvas.Left="200" Canvas.Top="350">
+                                <StackPanel Style="{StaticResource LayerContent}">
+                                    <TextBlock Text="BACKGROUND" 
+                                               Style="{StaticResource HoloText_Background}"
+                                               FontWeight="Bold"/>
+                                    <TextBlock Text="Depth: 0.2 | Medium Blur" 
+                                               Style="{StaticResource HoloText_Background}"
+                                               FontSize="10"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Background Secondary Layer -->
+                            <Border Style="{StaticResource DepthLayerDemo}"
+                                    controls:HolographicDepthPanel.DepthLevel="BackgroundSecondary"
+                                    Canvas.Left="500" Canvas.Top="380">
+                                <StackPanel Style="{StaticResource LayerContent}">
+                                    <TextBlock Text="BACKGROUND SEC" 
+                                               Style="{StaticResource HoloText_Background}"
+                                               FontWeight="Bold"/>
+                                    <TextBlock Text="Depth: 0.35 | Light Blur" 
+                                               Style="{StaticResource HoloText_Background}"
+                                               FontSize="10"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Mid-Layer -->
+                            <Border Style="{StaticResource DepthLayerDemo}"
+                                    controls:HolographicDepthPanel.DepthLevel="MidLayer"
+                                    Canvas.Left="150" Canvas.Top="200">
+                                <StackPanel Style="{StaticResource LayerContent}">
+                                    <controls:HolographicIcon IconType="ShipCruiser" 
+                                                            IconSize="Large"
+                                                            HorizontalAlignment="Center"/>
+                                    <TextBlock Text="MID-LAYER" 
+                                               Style="{StaticResource HoloText_MidLayer}"
+                                               FontWeight="Bold"/>
+                                    <TextBlock Text="Depth: 0.5 | Minimal Blur" 
+                                               Style="{StaticResource HoloText_MidLayer}"
+                                               FontSize="10"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Foreground Layer -->
+                            <Border Style="{StaticResource DepthLayerDemo}"
+                                    controls:HolographicDepthPanel.DepthLevel="Foreground"
+                                    Canvas.Left="400" Canvas.Top="150">
+                                <StackPanel Style="{StaticResource LayerContent}">
+                                    <controls:HolographicIcon IconType="Shield" 
+                                                            IconSize="Large"
+                                                            HorizontalAlignment="Center"/>
+                                    <TextBlock Text="FOREGROUND" 
+                                               Style="{StaticResource HoloText_Foreground}"
+                                               FontWeight="Bold"/>
+                                    <TextBlock Text="Depth: 0.65 | Crisp" 
+                                               Style="{StaticResource HoloText_Foreground}"
+                                               FontSize="10"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Surface Layer -->
+                            <Border Style="{StaticResource DepthLayerDemo}"
+                                    controls:HolographicDepthPanel.DepthLevel="Surface"
+                                    Canvas.Left="100" Canvas.Top="50">
+                                <StackPanel Style="{StaticResource LayerContent}">
+                                    <controls:HolographicIcon IconType="WeaponTurret" 
+                                                            IconSize="Large"
+                                                            HorizontalAlignment="Center"/>
+                                    <TextBlock Text="SURFACE" 
+                                               Style="{StaticResource HoloText_Surface}"
+                                               FontWeight="Bold"/>
+                                    <TextBlock Text="Depth: 0.8 | Enhanced Glow" 
+                                               Style="{StaticResource HoloText_Surface}"
+                                               FontSize="10"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Interactive Layer -->
+                            <Border Style="{StaticResource DepthLayerDemo}"
+                                    controls:HolographicDepthPanel.DepthLevel="Interactive"
+                                    Canvas.Left="350" Canvas.Top="50"
+                                    Cursor="Hand"
+                                    MouseEnter="OnDemoElementHover"
+                                    MouseLeave="OnDemoElementHover">
+                                <StackPanel Style="{StaticResource LayerContent}">
+                                    <controls:HolographicIcon IconType="Corporation" 
+                                                            IconSize="Large"
+                                                            IsInteractive="True"
+                                                            HorizontalAlignment="Center"/>
+                                    <TextBlock Text="INTERACTIVE" 
+                                               Style="{StaticResource HoloText_Interactive}"
+                                               FontWeight="Bold"/>
+                                    <TextBlock Text="Depth: 0.9 | Hover Effects" 
+                                               Style="{StaticResource HoloText_Interactive}"
+                                               FontSize="10"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Moveable Element for Testing -->
+                            <Border x:Name="MovableElement"
+                                    Style="{StaticResource DepthLayerDemo}"
+                                    controls:HolographicDepthPanel.DepthLevel="MidLayer"
+                                    Canvas.Left="600" Canvas.Top="250"
+                                    Background="{StaticResource Surface_Glass_DarkBrush}"
+                                    BorderBrush="{StaticResource EVEGold_CoreBrush}"
+                                    Cursor="Hand">
+                                <StackPanel Style="{StaticResource LayerContent}">
+                                    <controls:HolographicIcon IconType="Search" 
+                                                            IconSize="Large"
+                                                            HorizontalAlignment="Center"/>
+                                    <TextBlock Text="DEMO ELEMENT" 
+                                               Style="{StaticResource HoloText_Surface}"
+                                               FontWeight="Bold"/>
+                                    <TextBlock x:Name="MovableElementDepth"
+                                               Text="Depth: 0.5" 
+                                               Style="{StaticResource HoloText_Surface}"
+                                               FontSize="10"/>
+                                </StackPanel>
+                            </Border>
+
+                        </controls:HolographicDepthPanel>
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Status Bar -->
+            <Border Grid.Row="2" 
+                    Background="{StaticResource Surface_Glass_UltraBrush}"
+                    BorderBrush="{StaticResource Surface_Glass_LightBrush}"
+                    BorderThickness="0,1,0,0"
+                    Padding="20,10"
+                    Margin="0,30,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" 
+                               x:Name="StatusText"
+                               Text="Holographic depth system ready | Adjust controls to modify depth perception effects"
+                               Style="{StaticResource EVE_CaptionStyle}"
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <controls:HolographicIcon IconType="Settings" 
+                                                IconSize="Small"
+                                                IconState="Success"
+                                                Style="{StaticResource HolographicIcon_Status}"
+                                                VerticalAlignment="Center"
+                                                Margin="0,0,8,0"/>
+                        <TextBlock Text="Depth System Active" 
+                                   Style="{StaticResource EVE_CaptionStyle}" 
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+
+    <!-- Page entry animation -->
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                   From="0" To="1" Duration="0:0:0.8">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
+</Page>

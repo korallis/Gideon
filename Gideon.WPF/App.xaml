@@ -43,6 +43,9 @@
                 <ResourceDictionary Source="Presentation/Icons/HolographicGlyphs.xaml" />
                 <ResourceDictionary Source="Presentation/Styles/HolographicIcon.xaml" />
                 
+                <!-- Holographic Depth System -->
+                <ResourceDictionary Source="Presentation/Effects/HolographicDepthSystem.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
             
             <!-- Converters -->
