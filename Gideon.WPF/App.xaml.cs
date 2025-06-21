@@ -49,6 +49,12 @@ public partial class App : System.Windows.Application
             var notificationManager = _host.Services.GetRequiredService<NotificationManager>();
             await notificationManager.InitializeAsync();
 
+            var systemTrayService = _host.Services.GetRequiredService<SystemTrayService>();
+            await systemTrayService.InitializeAsync();
+
+            var jumpListService = _host.Services.GetRequiredService<WindowsJumpListService>();
+            await jumpListService.InitializeAsync();
+
             // Show main window
             var mainWindow = _host.Services.GetRequiredService<Presentation.Views.MainWindow>();
             mainWindow.Show();
@@ -103,6 +109,7 @@ public partial class App : System.Windows.Application
         // Register configuration options
         services.Configure<ApplicationModelConfiguration>(configuration.GetSection(ApplicationModelConfiguration.SectionName));
         services.Configure<NotificationConfiguration>(configuration.GetSection(NotificationConfiguration.SectionName));
+        services.Configure<SystemIntegrationConfiguration>(configuration.GetSection(SystemIntegrationConfiguration.SectionName));
         
         // Register Entity Framework
         services.AddDbContext<GideonDbContext>(options =>
@@ -127,6 +134,8 @@ public partial class App : System.Windows.Application
         services.AddSingleton<WindowsCredentialService>();
         services.AddSingleton<WindowsNotificationService>();
         services.AddSingleton<NotificationManager>();
+        services.AddSingleton<SystemTrayService>();
+        services.AddSingleton<WindowsJumpListService>();
         
         // Register HttpClient for API calls
         services.AddHttpClient<IAuthenticationService, AuthenticationService>();
