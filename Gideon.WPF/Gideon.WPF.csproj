@@ -94,6 +94,9 @@
     <PackageReference Include="FluentValidation" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     
+    <!-- Windows Platform Integration -->
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" />
     
   </ItemGroup>
 

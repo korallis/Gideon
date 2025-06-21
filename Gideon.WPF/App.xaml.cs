@@ -12,6 +12,7 @@ using Gideon.WPF.Infrastructure.Services;
 using Gideon.WPF.Core.Domain.Interfaces;
 using Gideon.WPF.Core.Application.Services;
 using Gideon.WPF.Presentation.ViewModels.Shared;
+using Gideon.WPF.Infrastructure.Configuration;
 using FluentValidation;
 
 namespace Gideon.WPF;
@@ -36,6 +37,14 @@ public partial class App : System.Windows.Application
 
             // Ensure database is created
             await EnsureDatabaseAsync();
+
+            // Initialize Windows services
+            var themeService = _host.Services.GetRequiredService<WindowsThemeService>();
+            themeService.Initialize();
+            themeService.ApplyCurrentTheme();
+
+            var applicationModelService = _host.Services.GetRequiredService<WindowsApplicationModelService>();
+            await applicationModelService.InitializeAsync();
 
             // Show main window
             var mainWindow = _host.Services.GetRequiredService<Presentation.Views.MainWindow>();
@@ -88,6 +97,9 @@ public partial class App : System.Windows.Application
 
     private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
+        // Register configuration options
+        services.Configure<ApplicationModelConfiguration>(configuration.GetSection(ApplicationModelConfiguration.SectionName));
+        
         // Register Entity Framework
         services.AddDbContext<GideonDbContext>(options =>
         {
@@ -104,6 +116,11 @@ public partial class App : System.Windows.Application
         // Register application services
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IShipFittingService, ShipFittingService>();
+        
+        // Register Windows integration services
+        services.AddSingleton<WindowsThemeService>();
+        services.AddSingleton<WindowsApplicationModelService>();
+        services.AddSingleton<WindowsCredentialService>();
         
         // Register HttpClient for API calls
         services.AddHttpClient<IAuthenticationService, AuthenticationService>();
