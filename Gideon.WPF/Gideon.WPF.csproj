@@ -27,6 +27,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
     
+    
     <!-- Windows 11 Features -->
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <UseRidGraph>true</UseRidGraph>
@@ -88,6 +89,7 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <PackageReference Include="System.Text.Json" />
     <PackageReference Include="Newtonsoft.Json" />
+    
     
   </ItemGroup>
 

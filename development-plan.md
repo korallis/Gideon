@@ -39,8 +39,8 @@ Building Gideon (EVE Online's AI Copilot) - a high-performance native Windows de
 - [x] **TASK-002** Configure project structure with Clean Architecture patterns ✅
 - [x] **TASK-003** Set up NuGet package management with Central Package Management ✅
 - [x] **TASK-004** Configure Cursor IDE with .NET 9 and WPF development extensions ✅
-- [ ] **TASK-005** Set up Git integration and development workflow
-- [ ] **TASK-006** Configure EditorConfig and .NET analyzers for code quality
+- [x] **TASK-005** Set up Git integration and development workflow ✅
+- [x] **TASK-006** Configure EditorConfig and .NET analyzers for code quality ✅
 - [ ] **TASK-007** Set up MSBuild targets for automated builds
 - [ ] **TASK-008** Configure application manifest for Windows 11 features
 

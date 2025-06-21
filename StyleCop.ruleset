@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Gideon Code Quality Rules" Description="Code analysis rules for Gideon WPF project" ToolsVersion="16.0">
+  <IncludeAll Action="Warning" />
+  
+  <!-- Microsoft.CodeAnalysis.NetAnalyzers -->
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.NetAnalyzers" RuleNamespace="Microsoft.CodeAnalysis.NetAnalyzers">
+    <!-- Performance Rules -->
+    <Rule Id="CA1822" Action="Info" /> <!-- Mark members as static -->
+    <Rule Id="CA1062" Action="Info" /> <!-- Validate arguments of public methods -->
+    <Rule Id="CA1031" Action="Info" /> <!-- Do not catch general exception types -->
+    <Rule Id="CA1303" Action="None" />       <!-- Do not pass literals as localized parameters -->
+    <Rule Id="CA2007" Action="None" />       <!-- Consider calling ConfigureAwait on the awaited task -->
+    
+    <!-- Design Rules -->
+    <Rule Id="CA1054" Action="Info" /> <!-- URI-like parameters should not be strings -->
+    <Rule Id="CA1056" Action="Info" /> <!-- URI-like properties should not be strings -->
+    <Rule Id="CA1724" Action="Info" /> <!-- Type names should not match namespaces -->
+    <Rule Id="CA1034" Action="Info" /> <!-- Nested types should not be visible -->
+    
+    <!-- Naming Rules -->
+    <Rule Id="CA1707" Action="Info" /> <!-- Identifiers should not contain underscores -->
+    <Rule Id="CA1708" Action="Info" /> <!-- Identifiers should differ by more than case -->
+    <Rule Id="CA1710" Action="Info" /> <!-- Identifiers should have correct suffix -->
+    <Rule Id="CA1711" Action="Info" /> <!-- Identifiers should not have incorrect suffix -->
+    
+    <!-- Usage Rules -->
+    <Rule Id="CA2227" Action="Info" /> <!-- Collection properties should be read only -->
+    <Rule Id="CA1002" Action="Info" /> <!-- Do not expose generic lists -->
+    <Rule Id="CA1819" Action="Info" /> <!-- Properties should not return arrays -->
+    
+    <!-- Security Rules -->
+    <Rule Id="CA3075" Action="Warning" />    <!-- Insecure DTD processing in XML -->
+    <Rule Id="CA5350" Action="Warning" />    <!-- Do Not Use Weak Cryptographic Algorithms -->
+    <Rule Id="CA5351" Action="Warning" />    <!-- Do Not Use Broken Cryptographic Algorithms -->
+    <Rule Id="CA5359" Action="Warning" />    <!-- Do Not Disable Certificate Validation -->
+    <Rule Id="CA5360" Action="Warning" />    <!-- Do Not Call Dangerous Methods In Deserialization -->
+  </Rules>
+  
+  <!-- StyleCop.Analyzers -->
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <!-- Documentation Rules -->
+    <Rule Id="SA1633" Action="None" />       <!-- File should have header -->
+    <Rule Id="SA1652" Action="None" />       <!-- Enable XML documentation output -->
+    <Rule Id="SA1600" Action="Info" /> <!-- Elements should be documented -->
+    <Rule Id="SA1601" Action="Info" /> <!-- Partial elements should be documented -->
+    <Rule Id="SA1602" Action="Info" /> <!-- Enumeration items should be documented -->
+    
+    <!-- Layout Rules -->
+    <Rule Id="SA1200" Action="None" />       <!-- Using directives should be placed correctly -->
+    <Rule Id="SA1208" Action="Info" /> <!-- System using directives should be placed before other using directives -->
+    <Rule Id="SA1210" Action="Info" /> <!-- Using directives should be ordered alphabetically by namespace -->
+    
+    <!-- Naming Rules -->
+    <Rule Id="SA1300" Action="Warning" />    <!-- Element should begin with upper-case letter -->
+    <Rule Id="SA1302" Action="Warning" />    <!-- Interface names should begin with I -->
+    <Rule Id="SA1303" Action="Warning" />    <!-- Const field names should begin with upper-case letter -->
+    <Rule Id="SA1304" Action="Warning" />    <!-- Non-private readonly fields should begin with upper-case letter -->
+    <Rule Id="SA1306" Action="Warning" />    <!-- Field names should begin with lower-case letter -->
+    <Rule Id="SA1307" Action="Warning" />    <!-- Accessible fields should begin with upper-case letter -->
+    <Rule Id="SA1308" Action="Warning" />    <!-- Variable names should not be prefixed -->
+    <Rule Id="SA1309" Action="None" />       <!-- Field names should not begin with underscore -->
+    <Rule Id="SA1310" Action="Warning" />    <!-- Field names should not contain underscore -->
+    <Rule Id="SA1311" Action="Warning" />    <!-- Static readonly fields should begin with upper-case letter -->
+    
+    <!-- Readability Rules -->
+    <Rule Id="SA1101" Action="None" />       <!-- Prefix local calls with this -->
+    <Rule Id="SA1116" Action="Info" /> <!-- Split parameters should start on line after declaration -->
+    <Rule Id="SA1117" Action="Info" /> <!-- Parameters should be on same line or separate lines -->
+    <Rule Id="SA1118" Action="Info" /> <!-- Parameter should not span multiple lines -->
+    <Rule Id="SA1127" Action="Info" /> <!-- Generic type constraints should be on their own line -->
+    <Rule Id="SA1128" Action="Info" /> <!-- Put constructor initializers on their own line -->
+    <Rule Id="SA1129" Action="Info" /> <!-- Do not use default value type constructor -->
+    <Rule Id="SA1133" Action="Info" /> <!-- Do not combine attributes -->
+    <Rule Id="SA1134" Action="Info" /> <!-- Attributes should not share line -->
+    <Rule Id="SA1135" Action="Info" /> <!-- Using directives should be qualified -->
+    <Rule Id="SA1136" Action="Info" /> <!-- Enum values should be on separate lines -->
+    <Rule Id="SA1137" Action="Info" /> <!-- Elements should have the same indentation -->
+    
+    <!-- Spacing Rules -->
+    <Rule Id="SA1000" Action="Warning" />    <!-- Keywords should be spaced correctly -->
+    <Rule Id="SA1001" Action="Warning" />    <!-- Commas should be spaced correctly -->
+    
+    <!-- Ordering Rules -->
+    <Rule Id="SA1201" Action="Info" /> <!-- Elements should appear in the correct order -->
+    <Rule Id="SA1202" Action="Info" /> <!-- Elements should be ordered by access -->
+    <Rule Id="SA1203" Action="Info" /> <!-- Constants should appear before fields -->
+    <Rule Id="SA1204" Action="Info" /> <!-- Static elements should appear before instance elements -->
+    <Rule Id="SA1214" Action="Info" /> <!-- Readonly fields should appear before non-readonly fields -->
+  </Rules>
+</RuleSet>
