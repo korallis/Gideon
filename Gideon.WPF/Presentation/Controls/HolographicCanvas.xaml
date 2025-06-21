@@ -1,0 +1,268 @@
+<!--
+=========================================================================
+HolographicCanvas.xaml - Layered Composition Container Control
+=========================================================================
+A specialized canvas for holographic UI composition with built-in layer
+management. Provides automatic depth sorting and layer effects for the
+Westworld-EVE fusion interface.
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<UserControl x:Class="Gideon.WPF.Presentation.Controls.HolographicCanvas"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <!-- Layer-specific styles and effects -->
+        
+        <!-- Background Layer Effects -->
+        <Style x:Key="BackgroundLayerStyle" TargetType="FrameworkElement">
+            <Setter Property="Opacity" Value="0.7"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <BlurEffect Radius="8"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        </Style>
+
+        <!-- Mid-Layer Effects -->
+        <Style x:Key="MidLayerStyle" TargetType="FrameworkElement">
+            <Setter Property="Opacity" Value="0.9"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <BlurEffect Radius="2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Foreground Layer Effects -->
+        <Style x:Key="ForegroundLayerStyle" TargetType="FrameworkElement">
+            <Setter Property="Opacity" Value="1.0"/>
+            <Setter Property="Effect" Value="{x:Null}"/>
+        </Style>
+
+        <!-- Overlay Layer Effects -->
+        <Style x:Key="OverlayLayerStyle" TargetType="FrameworkElement">
+            <Setter Property="Opacity" Value="1.0"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#FF000000" BlurRadius="12" ShadowDepth="4" Opacity="0.5"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Depth transition animations -->
+        <Storyboard x:Key="FadeToBackground" Storyboard.TargetProperty="Opacity">
+            <DoubleAnimation To="0.7" Duration="0:0:0.5">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="FadeToForeground" Storyboard.TargetProperty="Opacity">
+            <DoubleAnimation To="1.0" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- Holographic grid background -->
+        <DrawingBrush x:Key="HolographicGrid" 
+                      TileMode="Tile" 
+                      Viewport="0,0,50,50" 
+                      ViewportUnits="Absolute"
+                      Opacity="0.1">
+            <DrawingBrush.Drawing>
+                <GeometryDrawing>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="0,0,50,50"/>
+                    </GeometryDrawing.Geometry>
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="{StaticResource EVE_PrimaryBrush}" Thickness="0.5"/>
+                    </GeometryDrawing.Pen>
+                </GeometryDrawing>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </UserControl.Resources>
+
+    <!-- Main composition container -->
+    <Grid x:Name="MainContainer" 
+          Background="{StaticResource HolographicGrid}"
+          ClipToBounds="True">
+        
+        <!-- Background Layer (Z-Index: 0-999) -->
+        <Canvas x:Name="BackgroundLayer" 
+                Panel.ZIndex="0"
+                Background="Transparent">
+            <!-- Background elements are added here programmatically -->
+        </Canvas>
+
+        <!-- Mid Layer (Z-Index: 1000-1999) -->
+        <Canvas x:Name="MidLayer" 
+                Panel.ZIndex="1000"
+                Background="Transparent">
+            <!-- Primary content elements are added here -->
+        </Canvas>
+
+        <!-- Foreground Layer (Z-Index: 2000-2999) -->
+        <Canvas x:Name="ForegroundLayer" 
+                Panel.ZIndex="2000"
+                Background="Transparent">
+            <!-- Interactive and focused elements are added here -->
+        </Canvas>
+
+        <!-- Overlay Layer (Z-Index: 3000-3999) -->
+        <Canvas x:Name="OverlayLayer" 
+                Panel.ZIndex="3000"
+                Background="Transparent">
+            <!-- Tooltips, menus, and temporary elements are added here -->
+        </Canvas>
+
+        <!-- Topmost Layer (Z-Index: 4000+) -->
+        <Canvas x:Name="TopmostLayer" 
+                Panel.ZIndex="4000"
+                Background="Transparent">
+            <!-- Critical alerts and modal dialogs are added here -->
+        </Canvas>
+
+        <!-- Layer visualization overlay (for debugging) -->
+        <Canvas x:Name="DebugOverlay" 
+                Panel.ZIndex="5000"
+                Background="Transparent"
+                Visibility="Collapsed">
+            
+            <!-- Layer boundary indicators -->
+            <Rectangle x:Name="BackgroundIndicator"
+                       Stroke="{StaticResource EVE_ErrorBrush}"
+                       StrokeThickness="2"
+                       StrokeDashArray="5,5"
+                       Fill="Transparent"
+                       Opacity="0.5"/>
+            
+            <Rectangle x:Name="MidLayerIndicator"
+                       Stroke="{StaticResource EVE_WarningBrush}"
+                       StrokeThickness="2"
+                       StrokeDashArray="3,3"
+                       Fill="Transparent"
+                       Opacity="0.5"/>
+            
+            <Rectangle x:Name="ForegroundIndicator"
+                       Stroke="{StaticResource EVE_SuccessBrush}"
+                       StrokeThickness="2"
+                       StrokeDashArray="2,2"
+                       Fill="Transparent"
+                       Opacity="0.5"/>
+
+            <!-- Layer labels -->
+            <TextBlock x:Name="LayerDebugInfo"
+                       Text="Holographic Layer Debug Mode"
+                       Foreground="{StaticResource EVE_PrimaryBrush}"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Canvas.Top="10"
+                       Canvas.Left="10"
+                       Effect="{StaticResource CyanGlowSoft}"/>
+        </Canvas>
+
+        <!-- Performance monitoring overlay -->
+        <StackPanel x:Name="PerformanceOverlay"
+                    Panel.ZIndex="5001"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="10"
+                    Visibility="Collapsed">
+            
+            <Border Background="{StaticResource GlassUltraLight}"
+                    CornerRadius="4"
+                    Padding="8,4">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock x:Name="ElementCountText"
+                               Text="Elements: 0"
+                               Style="{StaticResource EVE_CaptionStyle}"
+                               FontSize="10"/>
+                    <TextBlock x:Name="LayerCountText"
+                               Text="Layers: 5"
+                               Style="{StaticResource EVE_CaptionStyle}"
+                               FontSize="10"/>
+                    <TextBlock x:Name="FrameRateText"
+                               Text="FPS: 60"
+                               Style="{StaticResource EVE_CaptionStyle}"
+                               FontSize="10"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- Holographic scan line overlay -->
+        <Canvas x:Name="ScanLineOverlay"
+                Panel.ZIndex="4500"
+                Background="Transparent"
+                IsHitTestVisible="False"
+                Opacity="0.2">
+            
+            <Rectangle x:Name="ScanLine"
+                       Width="{Binding ActualWidth, ElementName=MainContainer}"
+                       Height="2"
+                       Fill="{StaticResource HoloCyanGradient}"
+                       Effect="{StaticResource CyanGlowMedium}">
+                <Rectangle.RenderTransform>
+                    <TranslateTransform x:Name="ScanLineTransform"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+        </Canvas>
+    </Grid>
+
+    <!-- Animation triggers -->
+    <UserControl.Triggers>
+        <!-- Scan line animation -->
+        <EventTrigger RoutedEvent="UserControl.Loaded">
+            <BeginStoryboard>
+                <Storyboard RepeatBehavior="Forever">
+                    <DoubleAnimation Storyboard.TargetName="ScanLineTransform"
+                                   Storyboard.TargetProperty="Y"
+                                   From="-10"
+                                   To="{Binding ActualHeight, ElementName=MainContainer}"
+                                   Duration="0:0:8"
+                                   EasingFunction="{x:Null}"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+
+        <!-- Layer transition animations -->
+        <Trigger Property="IsMouseOver" Value="True">
+            <Trigger.EnterActions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="ScanLineOverlay"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="0.4" Duration="0:0:0.2"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </Trigger.EnterActions>
+            <Trigger.ExitActions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="ScanLineOverlay"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="0.2" Duration="0:0:0.3"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </Trigger.ExitActions>
+        </Trigger>
+    </UserControl.Triggers>
+</UserControl>

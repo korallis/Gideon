@@ -1,0 +1,331 @@
+<!--
+=========================================================================
+LayerDemo.xaml - Layered Composition System Demonstration
+=========================================================================
+Demonstrates the holographic layer composition system with interactive
+controls to show depth effects, layer transitions, and the complete
+Westworld-EVE fusion interface layering system.
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<Page x:Class="Gideon.WPF.Presentation.Views.LayerDemo"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="clr-namespace:Gideon.WPF.Presentation.Controls"
+      mc:Ignorable="d"
+      Title="Holographic Layer System Demo"
+      Background="{StaticResource EVE_BackgroundBrush}">
+
+    <Page.Resources>
+        <!-- Demo element styles -->
+        <Style x:Key="DemoButtonStyle" TargetType="Button" BasedOn="{StaticResource EVE_PrimaryButton}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style x:Key="DemoCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource GlassLight}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource HoloCyanGradient}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+
+        <!-- Animation storyboards -->
+        <Storyboard x:Key="ElementEntryAnimation">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                           From="0" To="1" Duration="0:0:0.6">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                           From="0.7" To="1.0" Duration="0:0:0.8">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.4"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                           From="0.7" To="1.0" Duration="0:0:0.8">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.4"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </Page.Resources>
+
+    <Page.RenderTransform>
+        <ScaleTransform ScaleX="1" ScaleY="1"/>
+    </Page.RenderTransform>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" 
+                Style="{StaticResource GlassMediumPanel}"
+                Margin="20,20,20,10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="HOLOGRAPHIC LAYER SYSTEM"
+                           Style="{StaticResource EVE_TitleStyle}"
+                           VerticalAlignment="Center"
+                           Effect="{StaticResource CyanGlowMedium}"/>
+                
+                <Rectangle Width="4" Height="30" 
+                           Fill="{StaticResource HoloCyanGradient}"
+                           Margin="20,0"
+                           Effect="{StaticResource CyanGlowSoft}"/>
+                
+                <TextBlock Text="Depth Composition Demo"
+                           Style="{StaticResource EVE_SubtitleStyle}"
+                           VerticalAlignment="Center"
+                           Opacity="0.8"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Demo Area -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Control Panel -->
+            <Border Grid.Column="0" 
+                    Style="{StaticResource GlassDarkPanel}"
+                    VerticalAlignment="Top">
+                <StackPanel Margin="15">
+                    <TextBlock Text="LAYER CONTROLS"
+                               Style="{StaticResource EVE_SubtitleStyle}"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,15"
+                               Foreground="{StaticResource EVE_SecondaryBrush}"/>
+
+                    <!-- Layer Control Buttons -->
+                    <Button x:Name="AddBackgroundBtn"
+                            Content="Add Background"
+                            Style="{StaticResource DemoButtonStyle}"
+                            Click="OnAddBackgroundElement"/>
+
+                    <Button x:Name="AddMidLayerBtn"
+                            Content="Add Mid-Layer"
+                            Style="{StaticResource DemoButtonStyle}"
+                            Click="OnAddMidLayerElement"/>
+
+                    <Button x:Name="AddForegroundBtn"
+                            Content="Add Foreground"
+                            Style="{StaticResource DemoButtonStyle}"
+                            Click="OnAddForegroundElement"/>
+
+                    <Button x:Name="AddOverlayBtn"
+                            Content="Add Overlay"
+                            Style="{StaticResource DemoButtonStyle}"
+                            Click="OnAddOverlayElement"/>
+
+                    <Separator Margin="0,15" Background="{StaticResource EVE_BorderBrush}"/>
+
+                    <!-- Animation Controls -->
+                    <TextBlock Text="ANIMATIONS"
+                               Style="{StaticResource EVE_CaptionStyle}"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10"/>
+
+                    <Button x:Name="TransitionToBackBtn"
+                            Content="→ Background"
+                            Style="{StaticResource DemoButtonStyle}"
+                            Click="OnTransitionToBackground"/>
+
+                    <Button x:Name="TransitionToFrontBtn"
+                            Content="→ Foreground"
+                            Style="{StaticResource DemoButtonStyle}"
+                            Click="OnTransitionToForeground"/>
+
+                    <Separator Margin="0,15" Background="{StaticResource EVE_BorderBrush}"/>
+
+                    <!-- Clear Controls -->
+                    <Button x:Name="ClearAllBtn"
+                            Content="Clear All"
+                            Style="{StaticResource EVE_SecondaryButton}"
+                            Click="OnClearAll"/>
+
+                    <!-- Debug Toggle -->
+                    <CheckBox x:Name="DebugModeCheckbox"
+                              Content="Debug Mode"
+                              IsChecked="False"
+                              Foreground="{StaticResource EVE_TextSecondaryBrush}"
+                              Margin="0,15,0,0"
+                              Checked="OnDebugModeToggled"
+                              Unchecked="OnDebugModeToggled"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Holographic Canvas Demo Area -->
+            <controls:HolographicCanvas x:Name="DemoCanvas"
+                                       Grid.Column="1"
+                                       Background="#10000000"
+                                       Margin="20,0"
+                                       ShowDebugOverlay="False"
+                                       ShowPerformanceOverlay="False"
+                                       EnableScanLines="True">
+                
+                <!-- Initial demo elements will be added programmatically -->
+                
+            </controls:HolographicCanvas>
+
+            <!-- Information Panel -->
+            <Border Grid.Column="2" 
+                    Style="{StaticResource GlassLightPanel}"
+                    VerticalAlignment="Top">
+                <StackPanel Margin="15">
+                    <TextBlock Text="LAYER INFO"
+                               Style="{StaticResource EVE_SubtitleStyle}"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,15"
+                               Foreground="{StaticResource EVE_PrimaryBrush}"/>
+
+                    <!-- Layer Statistics -->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Background:" Style="{StaticResource EVE_BodyStyle}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="BackgroundCountText" Text="0" Foreground="{StaticResource EVE_ErrorBrush}"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Mid-Layer:" Style="{StaticResource EVE_BodyStyle}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="MidLayerCountText" Text="0" Foreground="{StaticResource EVE_WarningBrush}"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Foreground:" Style="{StaticResource EVE_BodyStyle}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="ForegroundCountText" Text="0" Foreground="{StaticResource EVE_SuccessBrush}"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Overlay:" Style="{StaticResource EVE_BodyStyle}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="OverlayCountText" Text="0" Foreground="{StaticResource EVE_PrimaryBrush}"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Total:" Style="{StaticResource EVE_BodyStyle}" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="TotalCountText" Text="0" Foreground="{StaticResource EVE_TextPrimaryBrush}" FontWeight="Bold"/>
+
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="FPS:" Style="{StaticResource EVE_BodyStyle}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" x:Name="FpsText" Text="60" Foreground="{StaticResource EVE_AccentBrush}"/>
+                    </Grid>
+
+                    <Separator Margin="0,15" Background="{StaticResource EVE_BorderBrush}"/>
+
+                    <!-- Layer Explanation -->
+                    <TextBlock Text="LAYER STRUCTURE"
+                               Style="{StaticResource EVE_CaptionStyle}"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10"/>
+
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource EVE_ErrorBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text=" Background" Style="{StaticResource EVE_CaptionStyle}" Margin="5,0"/>
+                        </StackPanel>
+                        <TextBlock Text="  Deep elements, blurred" Style="{StaticResource EVE_CaptionStyle}" FontSize="9" Opacity="0.7"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,2">
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource EVE_WarningBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text=" Mid-Layer" Style="{StaticResource EVE_CaptionStyle}" Margin="5,0"/>
+                        </StackPanel>
+                        <TextBlock Text="  Primary content" Style="{StaticResource EVE_CaptionStyle}" FontSize="9" Opacity="0.7"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,2">
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource EVE_SuccessBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text=" Foreground" Style="{StaticResource EVE_CaptionStyle}" Margin="5,0"/>
+                        </StackPanel>
+                        <TextBlock Text="  Interactive elements" Style="{StaticResource EVE_CaptionStyle}" FontSize="9" Opacity="0.7"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,2">
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource EVE_PrimaryBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text=" Overlay" Style="{StaticResource EVE_CaptionStyle}" Margin="5,0"/>
+                        </StackPanel>
+                        <TextBlock Text="  Tooltips, menus" Style="{StaticResource EVE_CaptionStyle}" FontSize="9" Opacity="0.7"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="2" 
+                Background="{StaticResource GlassUltraLight}"
+                BorderBrush="{StaticResource EVE_BorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="20,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" 
+                           x:Name="StatusText"
+                           Text="Layer system ready"
+                           Style="{StaticResource EVE_CaptionStyle}"
+                           VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0">
+                    <Ellipse Width="8" Height="8" 
+                             Fill="{StaticResource EVE_SuccessBrush}"
+                             VerticalAlignment="Center"
+                             Effect="{StaticResource CyanGlowSoft}">
+                        <Ellipse.Triggers>
+                            <EventTrigger RoutedEvent="Ellipse.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                       From="0.3" To="1.0" Duration="0:0:1.5"
+                                                       AutoReverse="True">
+                                            <DoubleAnimation.EasingFunction>
+                                                <SineEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Ellipse.Triggers>
+                    </Ellipse>
+                    <TextBlock Text="System Online" 
+                               Style="{StaticResource EVE_CaptionStyle}" 
+                               Margin="5,0"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <TextBlock Grid.Column="2" 
+                           x:Name="TimestampText"
+                           Text="00:00:00"
+                           Style="{StaticResource EVE_CaptionStyle}"
+                           VerticalAlignment="Center"
+                           FontFamily="Consolas"/>
+            </Grid>
+        </Border>
+    </Grid>
+
+    <!-- Page entry animation -->
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource ElementEntryAnimation}"/>
+        </EventTrigger>
+    </Page.Triggers>
+</Page>
