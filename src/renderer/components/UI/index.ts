@@ -13,6 +13,7 @@ export * from './DropdownMenu';
 export * from './Grid';
 export * from './Input';
 export * from './LoadingSpinner';
+export * from './MicroInteractions';
 export * from './Select';
 export * from './Stack';
 export * from './Switch';
