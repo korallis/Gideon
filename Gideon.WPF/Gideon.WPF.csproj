@@ -104,6 +104,14 @@
     <Resource Include="Resources\**\*" />
   </ItemGroup>
 
+  <!-- HLSL Shader Files -->
+  <ItemGroup>
+    <Resource Include="Resources\Shaders\**\*.fx" />
+    <None Include="Resources\Shaders\**\*.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <!-- Configuration Files -->
   <ItemGroup>
     <None Update="app.manifest">
