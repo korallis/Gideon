@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { BabylonCanvas } from './BabylonCanvas';
+import { ModelLoadDemo } from './ModelLoadDemo';
 import { Button } from '../UI';
 import { useSceneManager } from '../../hooks';
 import { cn } from '../../utils';
@@ -70,7 +71,7 @@ export const ShipViewer: React.FC<ShipViewerProps> = ({
   };
 
   return (
-    <div className={cn('relative flex flex-col', className)}>
+    <div className={cn('relative flex flex-col gap-6', className)}>
       {/* 3D Canvas */}
       <div className="relative flex-1">
         <BabylonCanvas
@@ -84,6 +85,9 @@ export const ShipViewer: React.FC<ShipViewerProps> = ({
           className="rounded-lg border border-primary-border"
         />
       </div>
+
+      {/* Model Loading Demo */}
+      <ModelLoadDemo />
 
       {/* Controls Panel */}
       {showControls && (

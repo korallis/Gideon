@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { sceneManager, SceneState, ShipModel } from '../services/babylon';
+import { sceneManager, SceneState, ShipModel, ModelLoadOptions, ModelLoadProgress } from '../services/babylon';
 
 export interface UseSceneManagerOptions {
   autoInitialize?: boolean;
@@ -22,7 +22,13 @@ export interface UseSceneManagerReturn {
   
   // Actions
   initializeScene: () => Promise<boolean>;
-  loadShip: (shipId: string, modelPath: string, shipName: string) => Promise<boolean>;
+  loadShip: (
+    shipId: string, 
+    modelPath: string, 
+    shipName: string, 
+    options?: ModelLoadOptions,
+    onProgress?: (progress: ModelLoadProgress) => void
+  ) => Promise<boolean>;
   focusOnShip: (shipId: string) => void;
   selectObject: (objectId: string) => void;
   clearSelection: () => void;
@@ -93,7 +99,9 @@ export const useSceneManager = (options: UseSceneManagerOptions = {}): UseSceneM
   const loadShip = useCallback(async (
     shipId: string,
     modelPath: string,
-    shipName: string
+    shipName: string,
+    options: ModelLoadOptions = {},
+    onProgress?: (progress: ModelLoadProgress) => void
   ): Promise<boolean> => {
     if (!isInitialized) {
       console.warn('Cannot load ship: Scene manager not initialized');
@@ -104,7 +112,7 @@ export const useSceneManager = (options: UseSceneManagerOptions = {}): UseSceneM
     setError(null);
 
     try {
-      const shipModel = await sceneManager.loadShipModel(shipId, modelPath, shipName);
+      const shipModel = await sceneManager.loadShipModel(shipId, modelPath, shipName, options, onProgress);
       
       if (!mountedRef.current) return false;
 

@@ -22,6 +22,7 @@ import {
 } from '@babylonjs/core';
 import { SceneLoader } from '@babylonjs/loaders';
 import { babylonEngine } from './engine';
+import { ModelLoader, LoadedModel, ModelLoadOptions, ModelLoadProgress } from './modelLoader';
 
 export interface ShipModel {
   id: string;
@@ -58,6 +59,7 @@ export interface SceneState {
 
 export class SceneManager {
   private scene: Scene | null = null;
+  private modelLoader: ModelLoader | null = null;
   private loadedModels = new Map<string, ShipModel>();
   private sceneObjects = new Map<string, SceneObject>();
   private assetContainers = new Map<string, AssetContainer>();
@@ -91,6 +93,9 @@ export class SceneManager {
       console.error('Cannot initialize SceneManager: No active Babylon.js scene');
       return false;
     }
+
+    // Initialize model loader
+    this.modelLoader = new ModelLoader(this.scene);
 
     this.setupEnvironment();
     this.setupEventHandlers();
@@ -158,58 +163,49 @@ export class SceneManager {
   }
 
   /**
-   * Load a ship model from file path
+   * Load a ship model from file path with advanced options
    */
   async loadShipModel(
     shipId: string,
     modelPath: string,
-    shipName: string
+    shipName: string,
+    options: ModelLoadOptions = {},
+    onProgress?: (progress: ModelLoadProgress) => void
   ): Promise<ShipModel | null> {
-    if (!this.scene) {
-      console.error('Cannot load ship: Scene not initialized');
+    if (!this.scene || !this.modelLoader) {
+      console.error('Cannot load ship: Scene or ModelLoader not initialized');
       return null;
     }
 
     try {
       console.log(`Loading ship model: ${shipName} from ${modelPath}`);
 
-      // Load the model using SceneLoader
-      const result = await SceneLoader.ImportMeshAsync(
-        '',
-        '',
+      // Use the advanced model loader
+      const loadedModel = await this.modelLoader.loadModel(
+        shipId,
         modelPath,
-        this.scene
+        shipName,
+        {
+          enablePBR: true,
+          optimizeForPerformance: true,
+          enableAnimations: true,
+          ...options
+        },
+        onProgress
       );
 
-      if (!result.meshes.length) {
-        throw new Error('No meshes found in model file');
+      if (!loadedModel) {
+        throw new Error('Failed to load model through ModelLoader');
       }
 
-      // Get the root mesh
-      const rootMesh = result.meshes[0];
-      rootMesh.name = `ship_${shipId}`;
-
-      // Calculate bounding info for camera positioning
-      const boundingInfo = rootMesh.getBoundingInfo();
-
-      // Process materials for EVE aesthetic
-      const materials = this.processMaterials(result.meshes);
-
-      // Store animation groups if any
-      if (result.animationGroups?.length) {
-        result.animationGroups.forEach((group, index) => {
-          this.animationGroups.set(`${shipId}_anim_${index}`, group);
-        });
-      }
-
-      // Create ship model object
+      // Convert LoadedModel to ShipModel format
       const shipModel: ShipModel = {
         id: shipId,
         name: shipName,
-        mesh: rootMesh,
-        boundingInfo,
-        animations: result.animationGroups,
-        materials,
+        mesh: loadedModel.rootMesh,
+        boundingInfo: loadedModel.boundingInfo,
+        animations: loadedModel.animations,
+        materials: loadedModel.materials,
       };
 
       // Store the model
@@ -219,22 +215,18 @@ export class SceneManager {
       const sceneObject: SceneObject = {
         id: shipId,
         type: 'ship',
-        node: rootMesh,
+        node: loadedModel.rootMesh,
         visible: true,
         interactive: true,
       };
       this.sceneObjects.set(shipId, sceneObject);
 
-      // Store asset container for cleanup
-      if (result.meshes.length > 0) {
-        const container = this.scene!.createAssetContainer();
-        result.meshes.forEach(mesh => container.meshes.push(mesh));
-        result.materials.forEach(material => container.materials.push(material));
-        result.textures.forEach(texture => container.textures.push(texture));
-        this.assetContainers.set(shipId, container);
-      }
+      // Store animations
+      loadedModel.animations.forEach((group, index) => {
+        this.animationGroups.set(`${shipId}_anim_${index}`, group);
+      });
 
-      console.log(`Ship model loaded successfully: ${shipName}`);
+      console.log(`Ship model loaded successfully: ${shipName} (${loadedModel.metadata.polyCount} polygons, ${loadedModel.metadata.loadTime.toFixed(2)}ms)`);
       return shipModel;
     } catch (error) {
       console.error(`Failed to load ship model ${shipName}:`, error);
@@ -242,30 +234,6 @@ export class SceneManager {
     }
   }
 
-  /**
-   * Process and enhance materials for EVE aesthetic
-   */
-  private processMaterials(meshes: AbstractMesh[]): (StandardMaterial | PBRMaterial)[] {
-    const materials: (StandardMaterial | PBRMaterial)[] = [];
-
-    meshes.forEach(mesh => {
-      if (mesh.material) {
-        // Enhance materials with EVE-style properties
-        if (mesh.material instanceof StandardMaterial) {
-          mesh.material.specularPower = 64;
-          mesh.material.emissiveColor = new Color3(0.1, 0.1, 0.2);
-          materials.push(mesh.material);
-        } else if (mesh.material instanceof PBRMaterial) {
-          mesh.material.metallicFactor = 0.8;
-          mesh.material.roughnessFactor = 0.3;
-          mesh.material.emissiveColor = new Color3(0.1, 0.1, 0.2);
-          materials.push(mesh.material);
-        }
-      }
-    });
-
-    return materials;
-  }
 
   /**
    * Focus camera on specific ship
@@ -389,24 +357,28 @@ export class SceneManager {
     const shipModel = this.loadedModels.get(shipId);
     if (!shipModel) return;
 
-    // Remove from scene
-    shipModel.mesh.dispose();
-
-    // Clean up asset container
-    const container = this.assetContainers.get(shipId);
-    if (container) {
-      container.dispose();
-      this.assetContainers.delete(shipId);
+    // Use model loader to properly clean up resources
+    if (this.modelLoader) {
+      this.modelLoader.removeModel(shipId);
+    } else {
+      // Fallback cleanup if model loader not available
+      shipModel.mesh.dispose();
+      shipModel.animations?.forEach(animGroup => {
+        animGroup.dispose();
+      });
     }
 
-    // Clean up animations
-    shipModel.animations?.forEach(animGroup => {
-      animGroup.dispose();
-    });
-
-    // Remove from maps
+    // Clean up scene manager state
     this.loadedModels.delete(shipId);
     this.sceneObjects.delete(shipId);
+
+    // Clean up animations
+    const animKeys = Array.from(this.animationGroups.keys()).filter(key => 
+      key.startsWith(`${shipId}_anim_`)
+    );
+    animKeys.forEach(key => {
+      this.animationGroups.delete(key);
+    });
 
     // Update state if this was the active ship
     if (this.currentState.activeShip === shipId) {
@@ -420,9 +392,15 @@ export class SceneManager {
    * Clear entire scene
    */
   clearScene(): void {
-    // Remove all loaded models
-    const shipIds = Array.from(this.loadedModels.keys());
-    shipIds.forEach(id => this.removeShipModel(id));
+    // Clear all models through model loader
+    if (this.modelLoader) {
+      this.modelLoader.clearAllModels();
+    }
+
+    // Clear scene manager state
+    this.loadedModels.clear();
+    this.sceneObjects.clear();
+    this.animationGroups.clear();
 
     // Reset state
     this.currentState = {
@@ -469,11 +447,31 @@ export class SceneManager {
   }
 
   /**
+   * Get memory usage statistics
+   */
+  getMemoryStats() {
+    if (this.modelLoader) {
+      return this.modelLoader.getMemoryStats();
+    }
+    return {
+      totalMemory: 0,
+      modelCount: 0,
+      models: []
+    };
+  }
+
+  /**
    * Dispose of all resources
    */
   dispose(): void {
     // Clear scene first
     this.clearScene();
+
+    // Dispose model loader
+    if (this.modelLoader) {
+      this.modelLoader.dispose();
+      this.modelLoader = null;
+    }
 
     // Clean up any remaining resources
     this.assetContainers.forEach(container => container.dispose());

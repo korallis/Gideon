@@ -5,3 +5,4 @@
 
 export * from './BabylonCanvas';
 export * from './ShipViewer';
+export * from './ModelLoadDemo';
