@@ -2,32 +2,37 @@
 <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
   <assemblyIdentity version="2.0.0.0" name="Gideon.WPF"/>
   
-  <!-- Windows 11 Compatibility -->
+  <!-- Windows Version Compatibility -->
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
     <application>
-      <!-- Windows 11 -->
+      <!-- Windows 11 22H2 and later -->
       <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
-      <!-- Windows 10 -->
+      <!-- Windows 10 version 1903+ -->
       <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
-      <!-- Windows 8.1 -->
-      <supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />
-      <!-- Windows 8 -->
-      <supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />
-      <!-- Windows 7 -->
-      <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />
     </application>
   </compatibility>
 
-  <!-- DPI Awareness -->
+  <!-- Windows 11 Application Settings -->
   <application xmlns="urn:schemas-microsoft-com:asm.v3">
     <windowsSettings>
+      <!-- High DPI Support -->
       <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true/PM</dpiAware>
-      <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2, PerMonitor</dpiAwareness>
+      <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2</dpiAwareness>
+      
+      <!-- Windows 11 Features -->
       <longPathAware xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">true</longPathAware>
+      <printerDriverIsolation xmlns="http://schemas.microsoft.com/SMI/2011/WindowsSettings">true</printerDriverIsolation>
+      <ultraHighResolutionScrolling xmlns="http://schemas.microsoft.com/SMI/2013/WindowsSettings">true</ultraHighResolutionScrolling>
+      
+      <!-- Windows 10/11 Fluent Design Support -->
+      <heapType xmlns="http://schemas.microsoft.com/SMI/2020/WindowsSettings">SegmentHeap</heapType>
+      
+      <!-- Windows 11 Mica and Theme Support -->
+      <useMicaAltFrameColor xmlns="http://schemas.microsoft.com/SMI/2022/WindowsSettings">true</useMicaAltFrameColor>
     </windowsSettings>
   </application>
 
-  <!-- Windows 11 Features -->
+  <!-- Modern Windows Controls -->
   <dependency>
     <dependentAssembly>
       <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" language="*" />
@@ -43,12 +48,19 @@
     </security>
   </trustInfo>
 
-  <!-- Application Properties -->
+  <!-- Application Execution Properties -->
   <application xmlns="urn:schemas-microsoft-com:asm.v3">
     <windowsSettings>
+      <!-- Command-line execution alias -->
       <appExecutionAlias xmlns="http://schemas.microsoft.com/SMI/2019/WindowsSettings">
         <executionAlias alias="gideon.exe" />
       </appExecutionAlias>
+      
+      <!-- Windows 11 Dark Mode Support -->
+      <darkModeAware xmlns="http://schemas.microsoft.com/SMI/2019/WindowsSettings">true</darkModeAware>
+      
+      <!-- Windows 11 Rounded Corners -->
+      <useWindowsRoundedCorners xmlns="http://schemas.microsoft.com/SMI/2022/WindowsSettings">true</useWindowsRoundedCorners>
     </windowsSettings>
   </application>
 </assembly> 
