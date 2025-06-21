@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useAppStore } from '@/stores/appStore';
+import { useAppStore } from '../../stores';
 
 export const Topbar: React.FC = () => {
   const { ui, updateUI } = useAppStore();

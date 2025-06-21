@@ -168,7 +168,7 @@ export class ESIClient {
     this.client.interceptors.request.use(
       (config) => {
         // Add timestamp for rate limiting
-        config.metadata = { startTime: Date.now() };
+        (config as any).metadata = { startTime: Date.now() };
         return config;
       },
       (error) => Promise.reject(error)

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { AppConfig, UIState } from '@/types';
+import { AppConfig, UIState } from '../../shared/types';
 
 interface AppState {
   // App configuration
@@ -16,7 +16,7 @@ interface AppState {
   // Actions
   initializeApp: () => Promise<void>;
   setLoading: (loading: boolean) => void;
-  updateConfig: (config: Partial<AppConfig>) => void;
+  updateConfig: (config: Partial<AppConfig>) => Promise<void>;
   updateUI: (ui: Partial<UIState>) => void;
   addNotification: (notification: Omit<UIState['notifications'][0], 'id' | 'timestamp'>) => void;
   removeNotification: (id: string) => void;
@@ -59,14 +59,53 @@ export const useAppStore = create<AppState>()(
         set({ isLoading: true });
         
         try {
-          // Simulate initialization tasks
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          // Initialize database first
+          const { initializeDatabase } = await import('../database');
+          const dbInitialized = await initializeDatabase();
           
-          // Load saved configuration
+          if (!dbInitialized) {
+            throw new Error('Database initialization failed');
+          }
+          
+          // Load saved configuration from database
+          const { db } = await import('../database');
+          const savedTheme = await db.getSetting('app.theme', defaultConfig.theme);
+          const savedLanguage = await db.getSetting('app.language', defaultConfig.language);
+          const savedAutoUpdate = await db.getSetting('app.autoUpdate', defaultConfig.autoUpdate);
+          const savedTelemetry = await db.getSetting('app.telemetry', defaultConfig.telemetry);
+          
+          const savedConfig = {
+            ...defaultConfig,
+            theme: savedTheme,
+            language: savedLanguage,
+            autoUpdate: savedAutoUpdate,
+            telemetry: savedTelemetry,
+          };
+          
+          set({ config: savedConfig });
+          
+          // Also try to load from Electron config file as fallback/migration
           if (window.electronAPI) {
-            const savedConfig = await window.electronAPI.retrieveData('app-config');
-            if (savedConfig) {
-              set({ config: { ...defaultConfig, ...savedConfig } });
+            try {
+              const configPath = await window.electronAPI.app.getPath('userData');
+              const configFile = `${configPath}/app-config.json`;
+              const configExists = await window.electronAPI.fs.exists(configFile);
+              if (configExists) {
+                const result = await window.electronAPI.fs.readFile(configFile);
+                if (result.success && result.content) {
+                  const electronConfig = JSON.parse(result.content);
+                  // Migrate any settings that aren't in database yet
+                  for (const [key, value] of Object.entries(electronConfig)) {
+                    const dbKey = `app.${key}`;
+                    const existing = await db.getSetting(dbKey);
+                    if (existing === undefined) {
+                      await db.setSetting(dbKey, value);
+                    }
+                  }
+                }
+              }
+            } catch (error) {
+              console.warn('Failed to load/migrate Electron configuration:', error);
             }
           }
           
@@ -85,13 +124,32 @@ export const useAppStore = create<AppState>()(
 
       setLoading: (loading) => set({ isLoading: loading }),
 
-      updateConfig: (configUpdate) => {
+      updateConfig: async (configUpdate) => {
         const newConfig = { ...get().config, ...configUpdate };
         set({ config: newConfig });
         
-        // Persist configuration
+        // Persist configuration to database
+        try {
+          const { db } = await import('../database');
+          
+          // Save each config property to database
+          for (const [key, value] of Object.entries(configUpdate)) {
+            const dbKey = `app.${key}`;
+            await db.setSetting(dbKey, value);
+          }
+        } catch (error) {
+          console.warn('Failed to save configuration to database:', error);
+        }
+        
+        // Also persist to Electron config file as backup
         if (window.electronAPI) {
-          window.electronAPI.storeData('app-config', newConfig);
+          try {
+            const configPath = await window.electronAPI.app.getPath('userData');
+            const configFile = `${configPath}/app-config.json`;
+            await window.electronAPI.fs.writeFile(configFile, JSON.stringify(newConfig, null, 2));
+          } catch (error) {
+            console.warn('Failed to save configuration to file:', error);
+          }
         }
       },
 
@@ -101,7 +159,7 @@ export const useAppStore = create<AppState>()(
 
       addNotification: (notification) => {
         const id = Math.random().toString(36).substr(2, 9);
-        const timestamp = new Date().toISOString();
+        const timestamp = new Date();
         const newNotification = { ...notification, id, timestamp };
         
         set((state) => ({
@@ -123,7 +181,7 @@ export const useAppStore = create<AppState>()(
         set((state) => ({
           ui: {
             ...state.ui,
-            notifications: state.ui.notifications.filter(n => n.id !== id),
+            notifications: state.ui.notifications.filter((n: any) => n.id !== id),
           },
         }));
       },

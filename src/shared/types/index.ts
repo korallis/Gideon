@@ -5,10 +5,28 @@
 
 // Application Types
 export interface AppConfig {
-  version: string;
-  environment: 'development' | 'production' | 'test';
-  features: FeatureFlags;
-  api: ApiConfig;
+  theme: 'dark' | 'light' | 'auto';
+  language: string;
+  autoUpdate: boolean;
+  telemetry: boolean;
+  cache: {
+    maxSize: number;
+    ttl: number;
+    cleanupInterval: number;
+  };
+  performance: {
+    maxMemory: number;
+    renderFPS: number;
+    backgroundTasks: boolean;
+  };
+}
+
+export interface UIState {
+  sidebarOpen: boolean;
+  activeModule: string;
+  notifications: Notification[];
+  loading: boolean;
+  error: string | null;
 }
 
 export interface FeatureFlags {

@@ -87,3 +87,27 @@ Based on the PRD, the application should be structured with:
 **Next Milestone:** Complete project setup and tooling (Tasks 1-9)
 
 The project has comprehensive planning documentation and a detailed 144-task development plan ready for execution.
+
+## Dependency Management & Compatibility
+
+### NPM Package Compatibility Requirements
+**CRITICAL:** Ensure full compatibility with all modules and dependencies for this application. When adding or updating packages:
+
+1. **Version Compatibility**: All packages must use compatible versions to avoid version conflicts
+2. **Peer Dependencies**: Verify peer dependency requirements are met
+3. **Node.js Version**: Maintain compatibility with Node.js 18+ as specified in package.json engines
+4. **Electron Compatibility**: All packages must be compatible with Electron 34.0.0
+5. **TypeScript Support**: Prefer packages with native TypeScript support or @types packages
+
+### Dependency Resolution Strategy
+- Use `npm ci` for clean installs in production/CI environments
+- Use `npm install --legacy-peer-deps` if peer dependency conflicts arise
+- Clear npm cache (`npm cache clean --force`) before troubleshooting install issues
+- Remove node_modules and package-lock.json if persistent version conflicts occur
+- Use exact versions (no ^ or ~) for critical dependencies to ensure reproducible builds
+
+### Package Management Commands
+- **Clean Install**: `rm -rf node_modules package-lock.json && npm install`
+- **Legacy Mode**: `npm install --legacy-peer-deps`
+- **Force Resolution**: `npm install --force` (use with caution)
+- **Audit**: `npm audit --audit-level moderate`

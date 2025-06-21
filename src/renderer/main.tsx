@@ -1,23 +1,12 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter } from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from '@emotion/react';
 import { App } from './App';
 import { theme } from './styles/theme';
+import { queryClient } from './queries';
 import './styles/global.css';
-
-// Create a client for React Query
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      cacheTime: 10 * 60 * 1000, // 10 minutes
-      retry: 3,
-      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-    },
-  },
-});
 
 // Get the root element
 const container = document.getElementById('root');
@@ -44,9 +33,11 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <App />
+        {/* React Query DevTools temporarily disabled due to version conflict */}
+        {/* {process.env.NODE_ENV === 'development' && (
+          <ReactQueryDevtools initialIsOpen={false} />
+        )} */}
       </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>

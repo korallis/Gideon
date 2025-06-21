@@ -1,5 +1,9 @@
 /* Global styles for Gideon */
 
+/* Import utility and component styles */
+@import './utilities.css';
+@import './components.css';
+
 /* CSS Custom Properties for theme consistency */
 :root {
   /* Colors */

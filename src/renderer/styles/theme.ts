@@ -1,32 +1,61 @@
-import { THEME_COLORS, ANIMATIONS } from '@/constants';
+/**
+ * Enhanced Theme Configuration for Gideon EVE Online Application
+ * Re-export from comprehensive theme configuration
+ */
 
-export const theme = {
+export {
+  theme,
+  colors,
+  spacing,
+  radius,
+  typography,
+  duration,
+  shadows,
+  zIndex,
+  breakpoints,
+  components,
+  themeVariants,
+  generateCSSVariables,
+  getColor,
+  getSpacing,
+  getRadius,
+  getShadow,
+} from './theme.config';
+
+export type {
+  Theme,
+  ThemeColors,
+  ThemeSpacing,
+} from './theme.config';
+
+// Legacy exports for backward compatibility
+export const theme_legacy = {
   colors: {
     primary: {
-      bg: THEME_COLORS.PRIMARY_BG,
-      surface: THEME_COLORS.SECONDARY_BG,
+      bg: '#0a0e1a',
+      surface: '#1a1f2e',
     },
     accent: {
-      blue: THEME_COLORS.ACCENT_BLUE,
-      orange: THEME_COLORS.ACCENT_ORANGE,
-      green: THEME_COLORS.SUCCESS_GREEN,
-      yellow: THEME_COLORS.WARNING_YELLOW,
-      red: THEME_COLORS.ERROR_RED,
+      blue: '#00d4ff',
+      orange: '#ff8c00',
+      green: '#00ff88',
+      yellow: '#ffcc00',
+      red: '#ff4444',
     },
     text: {
-      primary: THEME_COLORS.TEXT_PRIMARY,
-      secondary: THEME_COLORS.TEXT_SECONDARY,
+      primary: '#ffffff',
+      secondary: '#a0a8b8',
     },
     border: {
-      primary: THEME_COLORS.BORDER_PRIMARY,
-      accent: THEME_COLORS.BORDER_ACCENT,
+      primary: '#2a3441',
+      accent: '#3a4552',
     },
   },
   animations: {
-    fast: ANIMATIONS.FAST,
-    normal: ANIMATIONS.NORMAL,
-    slow: ANIMATIONS.SLOW,
-    verySlow: ANIMATIONS.VERY_SLOW,
+    fast: '150ms',
+    normal: '300ms',
+    slow: '500ms',
+    verySlow: '1000ms',
   },
   fonts: {
     primary: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
@@ -70,5 +99,3 @@ export const theme = {
     loading: 5000,
   },
 };
-
-export type Theme = typeof theme;

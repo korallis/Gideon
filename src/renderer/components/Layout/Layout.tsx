@@ -1,7 +1,7 @@
 import React from 'react';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
-import { useAppStore } from '@/stores/appStore';
+import { useAppStore } from '../../stores';
 
 interface LayoutProps {
   children: React.ReactNode;

@@ -1,21 +1,30 @@
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Layout } from './components/Layout/Layout';
-import { ShipFittingModule } from './components/ShipFitting/ShipFittingModule';
-import { CharacterModule } from './components/Character/CharacterModule';
-import { MarketModule } from './components/Market/MarketModule';
-import { SettingsModule } from './components/Settings/SettingsModule';
+import { motion } from 'framer-motion';
 import { NotificationProvider } from './components/Notifications/NotificationProvider';
-import { useAppStore } from './stores/appStore';
+import { AppRouter, RouteProvider } from './router';
+import { useAppStore, initializeStores } from './stores';
+import { usePrefetchCriticalData } from './queries';
 
 export const App: React.FC = () => {
   const { initializeApp, isInitialized } = useAppStore();
+  const { prefetchAll } = usePrefetchCriticalData();
 
   useEffect(() => {
-    // Initialize the application
-    initializeApp();
-  }, [initializeApp]);
+    // Initialize the application and all stores
+    const initialize = async () => {
+      await initializeStores();
+      await initializeApp();
+      
+      // Prefetch critical data after initialization
+      try {
+        await prefetchAll();
+      } catch (error) {
+        console.warn('Failed to prefetch critical data:', error);
+      }
+    };
+    
+    initialize();
+  }, [initializeApp, prefetchAll]);
 
   if (!isInitialized) {
     return (
@@ -43,77 +52,9 @@ export const App: React.FC = () => {
 
   return (
     <NotificationProvider>
-      <Layout>
-        <AnimatePresence mode="wait">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ShipFittingModule />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/fitting"
-              element={
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ShipFittingModule />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/character"
-              element={
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <CharacterModule />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/market"
-              element={
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <MarketModule />
-                </motion.div>
-              }
-            />
-            <Route
-              path="/settings"
-              element={
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <SettingsModule />
-                </motion.div>
-              }
-            />
-          </Routes>
-        </AnimatePresence>
-      </Layout>
+      <RouteProvider>
+        <AppRouter />
+      </RouteProvider>
     </NotificationProvider>
   );
 };

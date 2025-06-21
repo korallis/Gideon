@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAppStore } from '@/stores/appStore';
+import { useAppStore } from '../../stores';
 
 interface NotificationProviderProps {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
       {/* Notification Container */}
       <div className="fixed top-4 right-4 z-notification space-y-2 max-w-sm">
         <AnimatePresence>
-          {ui.notifications.map((notification) => (
+          {ui.notifications.map((notification: any) => (
             <motion.div
               key={notification.id}
               initial={{ opacity: 0, x: 300, scale: 0.3 }}

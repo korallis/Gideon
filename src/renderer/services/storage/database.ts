@@ -94,7 +94,7 @@ export class GideonDatabase extends Dexie {
     });
 
     // Hook for data cleanup on open
-    this.ready.then(() => {
+    this.open().then(() => {
       this.cleanupExpiredCache();
     });
   }

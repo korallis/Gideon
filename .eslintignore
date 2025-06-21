@@ -1,0 +1,9 @@
+dist/
+node_modules/
+coverage/
+*.config.js
+*.config.ts
+tests/
+src/workers/
+src/test/
+src/shared/utils/__tests__/

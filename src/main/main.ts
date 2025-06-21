@@ -23,7 +23,6 @@ const createWindow = (): void => {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
-      enableRemoteModule: false,
       webSecurity: true,
       sandbox: false, // Required for some Electron APIs
       allowRunningInsecureContent: false,
@@ -33,7 +32,7 @@ const createWindow = (): void => {
     show: false, // Don't show until ready-to-show
     backgroundColor: '#0D1117', // Dark theme background
     title: APP_NAME,
-    vibrancy: process.platform === 'darwin' ? 'dark' : undefined,
+    vibrancy: process.platform === 'darwin' ? 'under-window' : undefined,
   });
 
   // Load the appropriate URL based on environment
