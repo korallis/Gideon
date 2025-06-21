@@ -12,6 +12,7 @@ using Gideon.WPF.Infrastructure.Services;
 using Gideon.WPF.Core.Domain.Interfaces;
 using Gideon.WPF.Core.Application.Services;
 using Gideon.WPF.Presentation.ViewModels.Shared;
+using FluentValidation;
 
 namespace Gideon.WPF;
 
@@ -106,6 +107,9 @@ public partial class App : System.Windows.Application
         
         // Register HttpClient for API calls
         services.AddHttpClient<IAuthenticationService, AuthenticationService>();
+        
+        // Register FluentValidation
+        services.AddValidatorsFromAssemblyContaining<App>();
 
         // Register ViewModels
         services.AddTransient<MainWindowViewModel>();

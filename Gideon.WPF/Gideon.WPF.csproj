@@ -90,6 +90,10 @@
     <PackageReference Include="System.Text.Json" />
     <PackageReference Include="Newtonsoft.Json" />
     
+    <!-- Validation -->
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    
     
   </ItemGroup>
 

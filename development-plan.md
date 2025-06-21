@@ -49,10 +49,10 @@ Building Gideon (EVE Online's AI Copilot) - a high-performance native Windows de
 - [x] **TASK-010** Set up Microsoft.Extensions.DependencyInjection for IoC ✅
 - [x] **TASK-011** Configure Microsoft.Extensions.Hosting for application lifecycle ✅
 - [x] **TASK-012** Install MaterialDesignInXamlToolkit 5.1+ for modern UI ✅
-- [ ] **TASK-013** Set up HelixToolkit.Wpf 2024.6+ for 3D ship visualization
-- [ ] **TASK-014** Configure Serilog 8.0+ for structured logging
-- [ ] **TASK-015** Install Microsoft.Toolkit.Win32.UI.Controls for modern controls
-- [ ] **TASK-016** Set up FluentValidation 11.9+ for form validation
+- [x] **TASK-013** Set up HelixToolkit.Wpf for 3D ship visualization ✅
+- [x] **TASK-014** Configure Serilog 8.0+ for structured logging ✅
+- [x] **TASK-015** Install Microsoft.Toolkit.Win32.UI.Controls for modern controls ✅
+- [x] **TASK-016** Set up FluentValidation 11.9+ for form validation ✅
 
 #### 1.3 Windows Integration Foundation
 - [ ] **TASK-017** Configure Windows 11 Fluent Design System integration

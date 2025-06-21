@@ -1,0 +1,93 @@
+<UserControl x:Class="Gideon.WPF.Presentation.UserControls.ShipViewer3D"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helix="http://helix-toolkit.org/wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    
+    <materialDesign:Card Style="{StaticResource EVE_CardStyle}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Header -->
+            <TextBlock Grid.Row="0" 
+                       Text="3D Ship Viewer" 
+                       Style="{StaticResource EVE_SubtitleStyle}"
+                       Margin="0,0,0,16"/>
+            
+            <!-- 3D Viewport -->
+            <Border Grid.Row="1" 
+                    Background="{StaticResource EVE_BackgroundBrush}"
+                    BorderBrush="{StaticResource EVE_BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                
+                <!-- Fallback content when HelixToolkit is not available -->
+                <Grid x:Name="FallbackContent">
+                    <StackPanel VerticalAlignment="Center" 
+                                HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="CubeOutline" 
+                                                 Width="64" 
+                                                 Height="64"
+                                                 Foreground="{StaticResource EVE_TextSecondaryBrush}"
+                                                 HorizontalAlignment="Center"
+                                                 Margin="0,0,0,16"/>
+                        <TextBlock Text="3D Ship Viewer" 
+                                   Style="{StaticResource EVE_BodyStyle}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,8"/>
+                        <TextBlock Text="Ship model visualization will be displayed here" 
+                                   Style="{StaticResource EVE_CaptionStyle}"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="200"/>
+                    </StackPanel>
+                </Grid>
+                
+                <!-- HelixToolkit 3D Viewport (will be enabled when compatible version is available) -->
+                <!--
+                <helix:HelixViewport3D x:Name="Viewport3D" 
+                                       Background="{StaticResource EVE_BackgroundBrush}"
+                                       ShowCoordinateSystem="False"
+                                       ShowFieldOfView="False"
+                                       ShowFrameRate="False">
+                    
+                    <helix:DefaultLights/>
+                    
+                    <ModelVisual3D x:Name="ModelContainer"/>
+                    
+                </helix:HelixViewport3D>
+                -->
+            </Border>
+            
+            <!-- Controls -->
+            <StackPanel Grid.Row="1" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Margin="8">
+                
+                <Button Style="{StaticResource MaterialDesignIconButton}"
+                        ToolTip="Reset Camera"
+                        Margin="4">
+                    <materialDesign:PackIcon Kind="CameraRotate"/>
+                </Button>
+                
+                <Button Style="{StaticResource MaterialDesignIconButton}"
+                        ToolTip="Toggle Wireframe"
+                        Margin="4">
+                    <materialDesign:PackIcon Kind="VectorLine"/>
+                </Button>
+                
+                <Button Style="{StaticResource MaterialDesignIconButton}"
+                        ToolTip="Toggle Lighting"
+                        Margin="4">
+                    <materialDesign:PackIcon Kind="Lightbulb"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>
