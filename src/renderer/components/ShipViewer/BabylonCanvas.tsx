@@ -5,6 +5,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { babylonEngine } from '../../services/babylon/engine';
+import { useSceneManager } from '../../hooks';
 import { LoadingSpinner } from '../UI';
 import { cn } from '../../utils';
 
@@ -13,6 +14,7 @@ interface BabylonCanvasProps {
   height?: string | number;
   className?: string;
   onEngineReady?: () => void;
+  onSceneReady?: () => void;
   onError?: (error: Error) => void;
   enableShadows?: boolean;
   antialias?: boolean;
@@ -23,6 +25,7 @@ export const BabylonCanvas: React.FC<BabylonCanvasProps> = ({
   height = '400px',
   className,
   onEngineReady,
+  onSceneReady,
   onError,
   enableShadows = true,
   antialias = true,
@@ -31,6 +34,19 @@ export const BabylonCanvas: React.FC<BabylonCanvasProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [engineReady, setEngineReady] = useState(false);
+
+  // Use scene manager hook
+  const sceneManager = useSceneManager({
+    autoInitialize: false,
+    onSceneReady: () => {
+      console.log('Scene manager ready');
+      onSceneReady?.();
+    },
+    onError: (err) => {
+      setError(err.message);
+      onError?.(err);
+    }
+  });
 
   useEffect(() => {
     let mounted = true;
@@ -61,6 +77,9 @@ export const BabylonCanvas: React.FC<BabylonCanvasProps> = ({
         if (success) {
           setEngineReady(true);
           onEngineReady?.();
+          
+          // Initialize scene manager after engine is ready
+          await sceneManager.initializeScene();
         } else {
           throw new Error('Failed to initialize Babylon.js engine');
         }
@@ -84,7 +103,7 @@ export const BabylonCanvas: React.FC<BabylonCanvasProps> = ({
       mounted = false;
       babylonEngine.dispose();
     };
-  }, [antialias, enableShadows, onEngineReady, onError]);
+  }, [antialias, enableShadows, onEngineReady, onError, sceneManager]);
 
   // Handle canvas resize
   useEffect(() => {
@@ -149,7 +168,7 @@ export const BabylonCanvas: React.FC<BabylonCanvasProps> = ({
       {/* Debug info (development only) */}
       {process.env.NODE_ENV === 'development' && engineReady && (
         <div className="absolute top-2 left-2 text-xs text-text-tertiary bg-primary-surface/80 px-2 py-1 rounded">
-          Babylon.js {engineReady ? 'Ready' : 'Loading'}
+          Engine: {engineReady ? 'Ready' : 'Loading'} | Scene: {sceneManager.isInitialized ? 'Ready' : 'Loading'}
         </div>
       )}
     </div>
