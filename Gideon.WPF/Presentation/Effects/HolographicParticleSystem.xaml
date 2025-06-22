@@ -1,0 +1,422 @@
+<!--
+=========================================================================
+HolographicParticleSystem.xaml - Market Data Particle System
+=========================================================================
+Advanced particle system for visualizing market data streams in the 
+Westworld-EVE fusion interface. Provides animated data visualization
+with particle effects for price movements, volume flows, and market trends.
+
+Features:
+- Market data stream particles
+- Price fluctuation animations
+- Volume flow visualization
+- Trade activity indicators
+- Performance-optimized rendering
+- Configurable particle behaviors
+- Real-time data binding support
+
+Particle Types:
+- Data Stream: Continuous flow particles for live data
+- Price Pulse: Reaction particles for price changes
+- Volume Burst: Expansion particles for volume spikes
+- Trade Flash: Brief particles for individual trades
+- Trend Flow: Directional particles for market trends
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =============================================================== -->
+    <!--                    PARTICLE GEOMETRIES                        -->
+    <!-- =============================================================== -->
+
+    <!-- Data Stream Particle -->
+    <EllipseGeometry x:Key="DataStreamParticle" RadiusX="2" RadiusY="2"/>
+    
+    <!-- Price Pulse Particle -->
+    <EllipseGeometry x:Key="PricePulseParticle" RadiusX="3" RadiusY="3"/>
+    
+    <!-- Volume Burst Particle -->
+    <EllipseGeometry x:Key="VolumeBurstParticle" RadiusX="4" RadiusY="4"/>
+    
+    <!-- Trade Flash Particle -->
+    <EllipseGeometry x:Key="TradeFlashParticle" RadiusX="1.5" RadiusY="1.5"/>
+    
+    <!-- Trend Arrow Particle -->
+    <PathGeometry x:Key="TrendArrowParticle">
+        <PathFigure StartPoint="0,0" IsClosed="True">
+            <LineSegment Point="8,0"/>
+            <LineSegment Point="6,2"/>
+            <LineSegment Point="8,0"/>
+            <LineSegment Point="6,-2"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- Diamond Particle -->
+    <PathGeometry x:Key="DiamondParticle">
+        <PathFigure StartPoint="0,-3" IsClosed="True">
+            <LineSegment Point="3,0"/>
+            <LineSegment Point="0,3"/>
+            <LineSegment Point="-3,0"/>
+        </PathFigure>
+    </PathGeometry>
+
+    <!-- =============================================================== -->
+    <!--                    PARTICLE BRUSHES & EFFECTS                 -->
+    <!-- =============================================================== -->
+
+    <!-- Data Stream Brushes -->
+    <LinearGradientBrush x:Key="DataStreamBrush_Positive" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource EVE_Success}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="DataStreamBrush_Negative" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource EVEAlert_Red}" Offset="0"/>
+        <GradientStop Color="{StaticResource EVEWarning_Orange}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="DataStreamBrush_Neutral" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource ElectricBlue_Soft}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Volume Brushes -->
+    <RadialGradientBrush x:Key="VolumeBrush_High">
+        <GradientStop Color="{StaticResource EVEGold_Core}" Offset="0"/>
+        <GradientStop Color="{StaticResource EVEGold_Bright}" Offset="0.5"/>
+        <GradientStop Color="#00FFD700" Offset="1"/>
+    </RadialGradientBrush>
+
+    <RadialGradientBrush x:Key="VolumeBrush_Medium">
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Bright}" Offset="0.5"/>
+        <GradientStop Color="#0000FFFF" Offset="1"/>
+    </RadialGradientBrush>
+
+    <RadialGradientBrush x:Key="VolumeBrush_Low">
+        <GradientStop Color="{StaticResource ElectricBlue_Soft}" Offset="0"/>
+        <GradientStop Color="{StaticResource ElectricBlue_Core}" Offset="0.7"/>
+        <GradientStop Color="#0000CCFF" Offset="1"/>
+    </RadialGradientBrush>
+
+    <!-- Particle Glow Effects -->
+    <DropShadowEffect x:Key="ParticleGlow_Soft" 
+                      Color="{StaticResource ElectricBlue_Core}" 
+                      BlurRadius="6" 
+                      ShadowDepth="0" 
+                      Opacity="0.6"/>
+
+    <DropShadowEffect x:Key="ParticleGlow_Medium" 
+                      Color="{StaticResource ElectricBlue_Core}" 
+                      BlurRadius="10" 
+                      ShadowDepth="0" 
+                      Opacity="0.8"/>
+
+    <DropShadowEffect x:Key="ParticleGlow_Strong" 
+                      Color="{StaticResource ElectricBlue_Bright}" 
+                      BlurRadius="15" 
+                      ShadowDepth="0" 
+                      Opacity="1.0"/>
+
+    <DropShadowEffect x:Key="ParticleGlow_Success" 
+                      Color="{StaticResource EVE_Success}" 
+                      BlurRadius="8" 
+                      ShadowDepth="0" 
+                      Opacity="0.8"/>
+
+    <DropShadowEffect x:Key="ParticleGlow_Error" 
+                      Color="{StaticResource EVEAlert_Red}" 
+                      BlurRadius="8" 
+                      ShadowDepth="0" 
+                      Opacity="0.8"/>
+
+    <DropShadowEffect x:Key="ParticleGlow_Gold" 
+                      Color="{StaticResource EVEGold_Core}" 
+                      BlurRadius="12" 
+                      ShadowDepth="0" 
+                      Opacity="0.9"/>
+
+    <!-- =============================================================== -->
+    <!--                    PARTICLE ANIMATION RESOURCES               -->
+    <!-- =============================================================== -->
+
+    <!-- Data Stream Flow Animation -->
+    <Storyboard x:Key="DataStreamFlow" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                        From="0" To="300" Duration="0:0:3">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0" To="1" Duration="0:0:0.5"/>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="1" To="0" Duration="0:0:0.5"
+                        BeginTime="0:0:2.5"/>
+    </Storyboard>
+
+    <!-- Price Pulse Animation -->
+    <Storyboard x:Key="PricePulse">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="0.5" To="2.0" Duration="0:0:0.6"
+                        AutoReverse="True">
+            <DoubleAnimation.EasingFunction>
+                <ElasticEase EasingMode="EaseOut" Oscillations="2"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="0.5" To="2.0" Duration="0:0:0.6"
+                        AutoReverse="True">
+            <DoubleAnimation.EasingFunction>
+                <ElasticEase EasingMode="EaseOut" Oscillations="2"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="1.0" To="0.0" Duration="0:0:1.2"/>
+    </Storyboard>
+
+    <!-- Volume Burst Animation -->
+    <Storyboard x:Key="VolumeBurst">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="0" To="3.0" Duration="0:0:0.8">
+            <DoubleAnimation.EasingFunction>
+                <CircleEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="0" To="3.0" Duration="0:0:0.8">
+            <DoubleAnimation.EasingFunction>
+                <CircleEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="1.0" To="0.0" Duration="0:0:0.8"/>
+    </Storyboard>
+
+    <!-- Trade Flash Animation -->
+    <Storyboard x:Key="TradeFlash">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0" To="1" Duration="0:0:0.1"/>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="1" To="0" Duration="0:0:0.2"
+                        BeginTime="0:0:0.1"/>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="1" To="1.5" Duration="0:0:0.3"/>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="1" To="1.5" Duration="0:0:0.3"/>
+    </Storyboard>
+
+    <!-- Trend Flow Animation -->
+    <Storyboard x:Key="TrendFlowUp" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="50" To="-50" Duration="0:0:2">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        Values="0;1;1;0" KeyTimes="0;0.2;0.8;1" Duration="0:0:2"/>
+    </Storyboard>
+
+    <Storyboard x:Key="TrendFlowDown" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="-50" To="50" Duration="0:0:2">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        Values="0;1;1;0" KeyTimes="0;0.2;0.8;1" Duration="0:0:2"/>
+    </Storyboard>
+
+    <!-- Floating Animation for Ambient Particles -->
+    <Storyboard x:Key="FloatingParticle" RepeatBehavior="Forever" AutoReverse="True">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                        From="-10" To="10" Duration="0:0:4">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="-5" To="5" Duration="0:0:6">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.3" To="0.8" Duration="0:0:3">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- =============================================================== -->
+    <!--                    PARTICLE TEMPLATES                         -->
+    <!-- =============================================================== -->
+
+    <!-- Data Stream Particle Template -->
+    <DataTemplate x:Key="DataStreamParticleTemplate">
+        <Path Data="{StaticResource DataStreamParticle}"
+              Fill="{StaticResource DataStreamBrush_Neutral}"
+              Effect="{StaticResource ParticleGlow_Soft}"
+              RenderTransform="{StaticResource IdentityTransform}"
+              RenderTransformOrigin="0.5,0.5"/>
+    </DataTemplate>
+
+    <!-- Price Pulse Particle Template -->
+    <DataTemplate x:Key="PricePulseParticleTemplate">
+        <Path Data="{StaticResource PricePulseParticle}"
+              Fill="{StaticResource DataStreamBrush_Positive}"
+              Effect="{StaticResource ParticleGlow_Medium}"
+              RenderTransform="{StaticResource ScaleTransform}"
+              RenderTransformOrigin="0.5,0.5"/>
+    </DataTemplate>
+
+    <!-- Volume Burst Particle Template -->
+    <DataTemplate x:Key="VolumeBurstParticleTemplate">
+        <Path Data="{StaticResource VolumeBurstParticle}"
+              Fill="{StaticResource VolumeBrush_High}"
+              Effect="{StaticResource ParticleGlow_Gold}"
+              RenderTransform="{StaticResource ScaleTransform}"
+              RenderTransformOrigin="0.5,0.5"/>
+    </DataTemplate>
+
+    <!-- Trade Flash Particle Template -->
+    <DataTemplate x:Key="TradeFlashParticleTemplate">
+        <Path Data="{StaticResource TradeFlashParticle}"
+              Fill="{StaticResource ElectricBlue_CoreBrush}"
+              Effect="{StaticResource ParticleGlow_Strong}"
+              RenderTransform="{StaticResource ScaleTransform}"
+              RenderTransformOrigin="0.5,0.5"/>
+    </DataTemplate>
+
+    <!-- Trend Arrow Particle Template -->
+    <DataTemplate x:Key="TrendArrowParticleTemplate">
+        <Path Data="{StaticResource TrendArrowParticle}"
+              Fill="{StaticResource EVE_SuccessBrush}"
+              Effect="{StaticResource ParticleGlow_Success}"
+              RenderTransform="{StaticResource CompositeTransform}"
+              RenderTransformOrigin="0.5,0.5"/>
+    </DataTemplate>
+
+    <!-- =============================================================== -->
+    <!--                    PARTICLE SYSTEM STYLES                     -->
+    <!-- =============================================================== -->
+
+    <!-- Base Particle Style -->
+    <Style x:Key="BaseParticle" TargetType="Path">
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+    </Style>
+
+    <!-- Data Stream Particle Style -->
+    <Style x:Key="DataStreamParticle" TargetType="Path" BasedOn="{StaticResource BaseParticle}">
+        <Setter Property="Data" Value="{StaticResource DataStreamParticle}"/>
+        <Setter Property="Fill" Value="{StaticResource DataStreamBrush_Neutral}"/>
+        <Setter Property="Effect" Value="{StaticResource ParticleGlow_Soft}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding PriceDirection}" Value="Up">
+                <Setter Property="Fill" Value="{StaticResource DataStreamBrush_Positive}"/>
+                <Setter Property="Effect" Value="{StaticResource ParticleGlow_Success}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding PriceDirection}" Value="Down">
+                <Setter Property="Fill" Value="{StaticResource DataStreamBrush_Negative}"/>
+                <Setter Property="Effect" Value="{StaticResource ParticleGlow_Error}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Volume Burst Particle Style -->
+    <Style x:Key="VolumeBurstParticle" TargetType="Path" BasedOn="{StaticResource BaseParticle}">
+        <Setter Property="Data" Value="{StaticResource VolumeBurstParticle}"/>
+        <Setter Property="Fill" Value="{StaticResource VolumeBrush_Low}"/>
+        <Setter Property="Effect" Value="{StaticResource ParticleGlow_Soft}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding VolumeLevel}" Value="High">
+                <Setter Property="Fill" Value="{StaticResource VolumeBrush_High}"/>
+                <Setter Property="Effect" Value="{StaticResource ParticleGlow_Gold}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding VolumeLevel}" Value="Medium">
+                <Setter Property="Fill" Value="{StaticResource VolumeBrush_Medium}"/>
+                <Setter Property="Effect" Value="{StaticResource ParticleGlow_Medium}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Trade Flash Particle Style -->
+    <Style x:Key="TradeFlashParticle" TargetType="Path" BasedOn="{StaticResource BaseParticle}">
+        <Setter Property="Data" Value="{StaticResource TradeFlashParticle}"/>
+        <Setter Property="Fill" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource ParticleGlow_Strong}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding TradeType}" Value="Buy">
+                <Setter Property="Fill" Value="{StaticResource EVE_SuccessBrush}"/>
+                <Setter Property="Effect" Value="{StaticResource ParticleGlow_Success}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding TradeType}" Value="Sell">
+                <Setter Property="Fill" Value="{StaticResource EVEAlert_RedBrush}"/>
+                <Setter Property="Effect" Value="{StaticResource ParticleGlow_Error}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- =============================================================== -->
+    <!--                    PARTICLE CONTAINER STYLES                  -->
+    <!-- =============================================================== -->
+
+    <!-- Particle Field Container -->
+    <Style x:Key="ParticleField" TargetType="Canvas">
+        <Setter Property="ClipToBounds" Value="True"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <!-- Market Data Visualization Container -->
+    <Style x:Key="MarketDataContainer" TargetType="Border">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Surface_Glass_LightBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="ClipToBounds" Value="True"/>
+    </Style>
+
+    <!-- =============================================================== -->
+    <!--                    PERFORMANCE OPTIMIZATION                   -->
+    <!-- =============================================================== -->
+
+    <!-- Low Quality Particle Brushes (for performance) -->
+    <SolidColorBrush x:Key="LowQuality_DataStream" Color="{StaticResource ElectricBlue_Core}"/>
+    <SolidColorBrush x:Key="LowQuality_Volume" Color="{StaticResource EVEGold_Core}"/>
+    <SolidColorBrush x:Key="LowQuality_Trade" Color="{StaticResource EVE_Success}"/>
+
+    <!-- Simplified Particle Geometries -->
+    <RectangleGeometry x:Key="SimpleParticle" Rect="0,0,2,2"/>
+    <EllipseGeometry x:Key="SimpleCircle" RadiusX="1" RadiusY="1"/>
+
+    <!-- Performance-Optimized Particle Style -->
+    <Style x:Key="PerformanceParticle" TargetType="Path">
+        <Setter Property="Data" Value="{StaticResource SimpleParticle}"/>
+        <Setter Property="Fill" Value="{StaticResource LowQuality_DataStream}"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TranslateTransform X="0" Y="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

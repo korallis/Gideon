@@ -1,0 +1,55 @@
+<!--
+=========================================================================
+ParticleSystemDemo.xaml - Market Data Particle System Demo
+=========================================================================
+Interactive demonstration of the market data particle system with
+real-time controls and visualization options.
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<Page x:Class="Gideon.WPF.Presentation.Views.ParticleSystemDemo"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="clr-namespace:Gideon.WPF.Presentation.Controls"
+      Title="Particle System Demo"
+      Background="{StaticResource Surface_BackgroundBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Control Panel -->
+        <Border Grid.Column="0" Style="{StaticResource GlassDarkPanel}" Margin="20">
+            <StackPanel Margin="20">
+                <TextBlock Text="PARTICLE CONTROLS" Style="{StaticResource EVE_SubtitleStyle}" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                
+                <Button Content="Create Price Pulse" Click="OnCreatePricePulse" Style="{StaticResource EVE_PrimaryButton}" Margin="0,5"/>
+                <Button Content="Create Volume Burst" Click="OnCreateVolumeBurst" Style="{StaticResource EVE_PrimaryButton}" Margin="0,5"/>
+                <Button Content="Create Trade Flash" Click="OnCreateTradeFlash" Style="{StaticResource EVE_PrimaryButton}" Margin="0,5"/>
+                <Button Content="Create Trend Flow" Click="OnCreateTrendFlow" Style="{StaticResource EVE_PrimaryButton}" Margin="0,5"/>
+                
+                <CheckBox x:Name="EnableAnimationsCheck" Content="Enable Animations" IsChecked="True" Margin="0,10"/>
+                <CheckBox x:Name="PerformanceModeCheck" Content="Performance Mode" IsChecked="False" Margin="0,5"/>
+                
+                <Slider x:Name="ParticleRateSlider" Minimum="1" Maximum="20" Value="5" Margin="0,10"/>
+                <TextBlock Text="Particle Rate" Style="{StaticResource EVE_CaptionStyle}"/>
+                
+                <Button Content="Clear Particles" Click="OnClearParticles" Style="{StaticResource EVE_SecondaryButton}" Margin="0,20,0,5"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Particle Display Area -->
+        <Border Grid.Column="1" Style="{StaticResource MarketDataContainer}" Margin="20">
+            <controls:HolographicParticleEngine x:Name="ParticleEngine"
+                                               MaxParticles="100"
+                                               ParticleRate="5"
+                                               EnableAnimations="True"
+                                               PerformanceMode="False"/>
+        </Border>
+    </Grid>
+</Page>

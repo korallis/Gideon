@@ -1,0 +1,310 @@
+<UserControl x:Class="Gideon.WPF.Presentation.Controls.HoloButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="50" d:DesignWidth="150">
+    
+    <UserControl.Resources>
+        <!-- Holographic Glow Effects -->
+        <DropShadowEffect x:Key="HoloButtonGlow" 
+                          Color="#FF00D4FF" 
+                          BlurRadius="12" 
+                          ShadowDepth="0" 
+                          Opacity="0.8" />
+        
+        <DropShadowEffect x:Key="HoloButtonGlowHover" 
+                          Color="#FF00D4FF" 
+                          BlurRadius="16" 
+                          ShadowDepth="0" 
+                          Opacity="1.0" />
+        
+        <DropShadowEffect x:Key="HoloButtonGlowPressed" 
+                          Color="#FF0078D4" 
+                          BlurRadius="8" 
+                          ShadowDepth="0" 
+                          Opacity="1.0" />
+        
+        <DropShadowEffect x:Key="EVEGoldGlow" 
+                          Color="#FFFFD700" 
+                          BlurRadius="12" 
+                          ShadowDepth="0" 
+                          Opacity="0.8" />
+        
+        <DropShadowEffect x:Key="DisabledGlow" 
+                          Color="#FF666666" 
+                          BlurRadius="6" 
+                          ShadowDepth="0" 
+                          Opacity="0.4" />
+        
+        <!-- Background Brushes -->
+        <LinearGradientBrush x:Key="HoloButtonBackground" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#30000000" Offset="0" />
+            <GradientStop Color="#20000000" Offset="0.5" />
+            <GradientStop Color="#40000000" Offset="1" />
+        </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="HoloButtonBackgroundHover" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#4000D4FF" Offset="0" />
+            <GradientStop Color="#3000D4FF" Offset="0.5" />
+            <GradientStop Color="#5000D4FF" Offset="1" />
+        </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="HoloButtonBackgroundPressed" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#600078D4" Offset="0" />
+            <GradientStop Color="#500078D4" Offset="0.5" />
+            <GradientStop Color="#700078D4" Offset="1" />
+        </LinearGradientBrush>
+        
+        <!-- Border Brushes -->
+        <LinearGradientBrush x:Key="HoloButtonBorder" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF00D4FF" Offset="0" />
+            <GradientStop Color="#FF0078D4" Offset="0.5" />
+            <GradientStop Color="#FF004080" Offset="1" />
+        </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="EVEButtonBorder" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFD700" Offset="0" />
+            <GradientStop Color="#FFFF8800" Offset="0.5" />
+            <GradientStop Color="#FFCC6600" Offset="1" />
+        </LinearGradientBrush>
+        
+        <!-- Animation Storyboards -->
+        <Storyboard x:Key="HoverInStoryboard">
+            <DoubleAnimation Storyboard.TargetName="MainBorder"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                           To="1.05" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="MainBorder"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                           To="1.05" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="GlowRing"
+                           Storyboard.TargetProperty="Opacity"
+                           To="1.0" Duration="0:0:0.15"/>
+        </Storyboard>
+        
+        <Storyboard x:Key="HoverOutStoryboard">
+            <DoubleAnimation Storyboard.TargetName="MainBorder"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                           To="1.0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="MainBorder"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                           To="1.0" Duration="0:0:0.15">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="GlowRing"
+                           Storyboard.TargetProperty="Opacity"
+                           To="0.0" Duration="0:0:0.15"/>
+        </Storyboard>
+        
+        <Storyboard x:Key="PressedStoryboard">
+            <DoubleAnimation Storyboard.TargetName="MainBorder"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                           To="0.95" Duration="0:0:0.08">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="MainBorder"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                           To="0.95" Duration="0:0:0.08">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="PressFlash"
+                           Storyboard.TargetProperty="Opacity"
+                           From="0" To="1" Duration="0:0:0.08"/>
+        </Storyboard>
+        
+        <Storyboard x:Key="ReleasedStoryboard">
+            <DoubleAnimation Storyboard.TargetName="MainBorder"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                           To="1.05" Duration="0:0:0.12">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="MainBorder"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                           To="1.05" Duration="0:0:0.12">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="PressFlash"
+                           Storyboard.TargetProperty="Opacity"
+                           To="0" Duration="0:0:0.2"/>
+        </Storyboard>
+        
+        <Storyboard x:Key="PulseStoryboard" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="PulseRing"
+                           Storyboard.TargetProperty="Opacity"
+                           Values="0;0.6;0" KeyTimes="0;0.5;1" Duration="0:0:2"/>
+            <DoubleAnimation Storyboard.TargetName="PulseRing"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                           From="1" To="1.2" Duration="0:0:2"/>
+            <DoubleAnimation Storyboard.TargetName="PulseRing"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                           From="1" To="1.2" Duration="0:0:2"/>
+        </Storyboard>
+    </UserControl.Resources>
+    
+    <UserControl.RenderTransform>
+        <ScaleTransform ScaleX="1" ScaleY="1"/>
+    </UserControl.RenderTransform>
+    
+    <!-- Main Button Container -->
+    <Grid>
+        <!-- Pulse Ring (for notifications/attention) -->
+        <Ellipse x:Name="PulseRing"
+                 Fill="Transparent"
+                 Stroke="{StaticResource HoloButtonBorder}"
+                 StrokeThickness="2"
+                 Opacity="0"
+                 Visibility="Collapsed">
+            <Ellipse.RenderTransform>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        
+        <!-- Glow Ring (hover effect) -->
+        <Ellipse x:Name="GlowRing"
+                 Fill="Transparent"
+                 Stroke="{StaticResource HoloButtonBorder}"
+                 StrokeThickness="3"
+                 Opacity="0"
+                 Effect="{StaticResource HoloButtonGlowHover}"
+                 Margin="-5"/>
+        
+        <!-- Main Button Border -->
+        <Border x:Name="MainBorder"
+                Background="{StaticResource HoloButtonBackground}"
+                BorderBrush="{StaticResource HoloButtonBorder}"
+                BorderThickness="2"
+                CornerRadius="8"
+                Effect="{StaticResource HoloButtonGlow}">
+            
+            <Border.RenderTransform>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Border.RenderTransform>
+            
+            <!-- Press Flash Overlay -->
+            <Grid>
+                <Border x:Name="PressFlash"
+                        Background="#4000D4FF"
+                        CornerRadius="6"
+                        Opacity="0"/>
+                
+                <!-- Content Container -->
+                <Grid Margin="12,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Icon -->
+                    <ContentPresenter x:Name="IconPresenter"
+                                      Grid.Column="0"
+                                      Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Icon}"
+                                      Margin="0,0,8,0"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed"/>
+                    
+                    <!-- Text Content -->
+                    <TextBlock x:Name="ContentText"
+                               Grid.Column="1"
+                               Text="Button"
+                               FontSize="14"
+                               FontWeight="Medium"
+                               Foreground="#FF00D4FF"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    
+                    <!-- Badge -->
+                    <Border x:Name="BadgeContainer"
+                            Grid.Column="2"
+                            Background="#FFFF0000"
+                            CornerRadius="8"
+                            Padding="4,2"
+                            Margin="8,0,0,0"
+                            Visibility="Collapsed">
+                        <TextBlock x:Name="BadgeText"
+                                   Text="!"
+                                   FontSize="10"
+                                   FontWeight="Bold"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+        
+        <!-- Corner Accents -->
+        <Canvas x:Name="CornerAccents">
+            <!-- Top-left corner -->
+            <Path Canvas.Left="8" Canvas.Top="8"
+                  Data="M0,12 L0,0 L12,0"
+                  Stroke="{StaticResource HoloButtonBorder}"
+                  StrokeThickness="2"
+                  Opacity="0.6"/>
+            
+            <!-- Top-right corner -->
+            <Path Canvas.Right="8" Canvas.Top="8"
+                  Data="M0,0 L12,0 L12,12"
+                  Stroke="{StaticResource HoloButtonBorder}"
+                  StrokeThickness="2"
+                  Opacity="0.6"/>
+            
+            <!-- Bottom-left corner -->
+            <Path Canvas.Left="8" Canvas.Bottom="8"
+                  Data="M0,0 L0,12 L12,12"
+                  Stroke="{StaticResource HoloButtonBorder}"
+                  StrokeThickness="2"
+                  Opacity="0.6"/>
+            
+            <!-- Bottom-right corner -->
+            <Path Canvas.Right="8" Canvas.Bottom="8"
+                  Data="M12,0 L12,12 L0,12"
+                  Stroke="{StaticResource HoloButtonBorder}"
+                  StrokeThickness="2"
+                  Opacity="0.6"/>
+        </Canvas>
+    </Grid>
+    
+    <!-- Event Triggers -->
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="UserControl.MouseEnter">
+            <BeginStoryboard Storyboard="{StaticResource HoverInStoryboard}"/>
+        </EventTrigger>
+        
+        <EventTrigger RoutedEvent="UserControl.MouseLeave">
+            <BeginStoryboard Storyboard="{StaticResource HoverOutStoryboard}"/>
+        </EventTrigger>
+        
+        <EventTrigger RoutedEvent="UserControl.PreviewMouseLeftButtonDown">
+            <BeginStoryboard Storyboard="{StaticResource PressedStoryboard}"/>
+        </EventTrigger>
+        
+        <EventTrigger RoutedEvent="UserControl.PreviewMouseLeftButtonUp">
+            <BeginStoryboard Storyboard="{StaticResource ReleasedStoryboard}"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+</UserControl>

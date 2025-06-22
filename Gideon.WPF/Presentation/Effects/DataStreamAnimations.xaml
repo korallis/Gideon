@@ -1,0 +1,52 @@
+<!--
+=========================================================================
+DataStreamAnimations.xaml - Real-time Data Stream Animations
+=========================================================================
+Advanced animations for real-time information display with flowing
+data streams, live updates, and information flow visualization.
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Live Data Stream Animation -->
+    <Storyboard x:Key="LiveDataStream" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                        From="-100" To="100" Duration="0:0:2">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        Values="0;1;1;0" KeyTimes="0;0.2;0.8;1" Duration="0:0:2"/>
+    </Storyboard>
+
+    <!-- Information Flow Animation -->
+    <Storyboard x:Key="InformationFlow" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="50" To="-50" Duration="0:0:3">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Real-time Update Pulse -->
+    <Storyboard x:Key="RealtimeUpdatePulse">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.5" To="1" Duration="0:0:0.3" AutoReverse="True">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="1" To="1.05" Duration="0:0:0.3" AutoReverse="True"/>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="1" To="1.05" Duration="0:0:0.3" AutoReverse="True"/>
+    </Storyboard>
+
+</ResourceDictionary>

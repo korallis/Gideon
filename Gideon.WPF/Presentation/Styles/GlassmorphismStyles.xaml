@@ -1,0 +1,256 @@
+<!--
+=========================================================================
+GlassmorphismStyles.xaml - Glassmorphism Card Layout Styles
+=========================================================================
+Complete glassmorphism styling system with transparency effects,
+blur backgrounds, and holographic styling for EVE interface cards.
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Gideon.WPF.Presentation.Controls">
+
+    <!-- Default Glassmorphism Card Style -->
+    <Style x:Key="DefaultGlassmorphismCard" TargetType="{x:Type controls:GlassmorphismCard}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="BlurRadius" Value="10"/>
+        <Setter Property="GlassOpacity" Value="0.3"/>
+        <Setter Property="BorderGlow" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:GlassmorphismCard}">
+                    <Grid>
+                        <!-- Glass Background -->
+                        <Border x:Name="PART_GlassBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                            <Border.Effect>
+                                <BlurEffect Radius="15"/>
+                            </Border.Effect>
+                        </Border>
+
+                        <!-- Content Container -->
+                        <Border x:Name="PART_ContentBorder"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                Padding="{TemplateBinding Padding}">
+                            
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Header Section -->
+                                <Grid x:Name="PART_HeaderGrid" Grid.Row="0"
+                                      Margin="0,0,0,8"
+                                      Visibility="{Binding HeaderText, RelativeSource={RelativeSource TemplatedParent}, 
+                                                  Converter={StaticResource StringToVisibilityConverter}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Header Icon -->
+                                    <Path Grid.Column="0"
+                                          Data="{TemplateBinding HeaderIcon}"
+                                          Fill="{TemplateBinding BorderBrush}"
+                                          Width="16" Height="16"
+                                          Margin="0,0,8,0"
+                                          VerticalAlignment="Center"
+                                          Visibility="{Binding HeaderIcon, RelativeSource={RelativeSource TemplatedParent}, 
+                                                      Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                                    <!-- Header Text -->
+                                    <TextBlock Grid.Column="1"
+                                              Text="{TemplateBinding HeaderText}"
+                                              FontFamily="Consolas"
+                                              FontSize="12"
+                                              FontWeight="Bold"
+                                              Foreground="{TemplateBinding BorderBrush}"
+                                              VerticalAlignment="Center"/>
+                                </Grid>
+
+                                <!-- Content -->
+                                <ContentPresenter Grid.Row="1"
+                                                Content="{TemplateBinding Content}"
+                                                ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <!-- State Transitions -->
+                        <Trigger Property="CardState" Value="Hover">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_GlassBorder"
+                                                       Storyboard.TargetProperty="Opacity"
+                                                       To="0.4" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_GlassBorder"
+                                                       Storyboard.TargetProperty="Opacity"
+                                                       To="0.3" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+                        <Trigger Property="CardState" Value="Selected">
+                            <Setter TargetName="PART_GlassBorder" Property="BorderThickness" Value="2"/>
+                        </Trigger>
+
+                        <Trigger Property="CardState" Value="Disabled">
+                            <Setter TargetName="PART_GlassBorder" Property="Opacity" Value="0.1"/>
+                            <Setter TargetName="PART_ContentBorder" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Standard Glass Card -->
+    <Style x:Key="StandardGlassCard" TargetType="{x:Type controls:GlassmorphismCard}" 
+           BasedOn="{StaticResource DefaultGlassmorphismCard}">
+        <Setter Property="GlassStyle" Value="Standard"/>
+    </Style>
+
+    <!-- Market Glass Card -->
+    <Style x:Key="MarketGlassCard" TargetType="{x:Type controls:GlassmorphismCard}" 
+           BasedOn="{StaticResource DefaultGlassmorphismCard}">
+        <Setter Property="GlassStyle" Value="Market"/>
+        <Setter Property="BlurRadius" Value="12"/>
+    </Style>
+
+    <!-- Combat Glass Card -->
+    <Style x:Key="CombatGlassCard" TargetType="{x:Type controls:GlassmorphismCard}" 
+           BasedOn="{StaticResource DefaultGlassmorphismCard}">
+        <Setter Property="GlassStyle" Value="Combat"/>
+        <Setter Property="BlurRadius" Value="8"/>
+    </Style>
+
+    <!-- Character Glass Card -->
+    <Style x:Key="CharacterGlassCard" TargetType="{x:Type controls:GlassmorphismCard}" 
+           BasedOn="{StaticResource DefaultGlassmorphismCard}">
+        <Setter Property="GlassStyle" Value="Character"/>
+        <Setter Property="BlurRadius" Value="15"/>
+    </Style>
+
+    <!-- Crystal Glass Card -->
+    <Style x:Key="CrystalGlassCard" TargetType="{x:Type controls:GlassmorphismCard}" 
+           BasedOn="{StaticResource DefaultGlassmorphismCard}">
+        <Setter Property="GlassStyle" Value="Crystal"/>
+        <Setter Property="GlassOpacity" Value="0.2"/>
+        <Setter Property="BlurRadius" Value="20"/>
+    </Style>
+
+    <!-- Ethereal Glass Card -->
+    <Style x:Key="EtherealGlassCard" TargetType="{x:Type controls:GlassmorphismCard}" 
+           BasedOn="{StaticResource DefaultGlassmorphismCard}">
+        <Setter Property="GlassStyle" Value="Ethereal"/>
+        <Setter Property="GlassOpacity" Value="0.25"/>
+        <Setter Property="BlurRadius" Value="18"/>
+    </Style>
+
+    <!-- Compact Glass Card -->
+    <Style x:Key="CompactGlassCard" TargetType="{x:Type controls:GlassmorphismCard}" 
+           BasedOn="{StaticResource DefaultGlassmorphismCard}">
+        <Setter Property="Padding" Value="8"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="BlurRadius" Value="6"/>
+    </Style>
+
+    <!-- Large Glass Card -->
+    <Style x:Key="LargeGlassCard" TargetType="{x:Type controls:GlassmorphismCard}" 
+           BasedOn="{StaticResource DefaultGlassmorphismCard}">
+        <Setter Property="Padding" Value="24"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="BlurRadius" Value="16"/>
+    </Style>
+
+    <!-- Glass Card Panel -->
+    <Style x:Key="GlassCardPanel" TargetType="StackPanel">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="8"/>
+    </Style>
+
+    <!-- Glass Card Grid -->
+    <Style x:Key="GlassCardGrid" TargetType="Grid">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="4"/>
+    </Style>
+
+    <!-- Glass Card Content Styles -->
+    <Style x:Key="GlassCardTitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+    </Style>
+
+    <Style x:Key="GlassCardSubtitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="{StaticResource ElectricBlue_SoftBrush}"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+
+    <Style x:Key="GlassCardContent" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="Foreground" Value="#FFCCCCCC"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="LineHeight" Value="16"/>
+    </Style>
+
+    <!-- Glass Card Animations -->
+    <Storyboard x:Key="GlassCardFadeIn">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0" To="1" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="0.9" To="1" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <BackEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="0.9" To="1" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <BackEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Key="GlassCardFadeOut">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="1" To="0" Duration="0:0:0.2">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+</ResourceDictionary>

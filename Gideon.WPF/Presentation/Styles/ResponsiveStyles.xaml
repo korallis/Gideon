@@ -1,0 +1,257 @@
+<!--
+=========================================================================
+ResponsiveStyles.xaml - Responsive Grid System Styles
+=========================================================================
+Complete responsive styling system with breakpoints, adaptive layouts,
+and screen size optimizations for different display configurations.
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Gideon.WPF.Presentation.Controls">
+
+    <!-- Default Responsive Grid Style -->
+    <Style x:Key="DefaultResponsiveGrid" TargetType="{x:Type controls:ResponsiveGrid}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="MaxColumns" Value="12"/>
+        <Setter Property="MinColumnWidth" Value="200"/>
+        <Setter Property="ColumnGap" Value="16"/>
+        <Setter Property="RowGap" Value="16"/>
+        <Setter Property="AutoFit" Value="True"/>
+    </Style>
+
+    <!-- Compact Responsive Grid -->
+    <Style x:Key="CompactResponsiveGrid" TargetType="{x:Type controls:ResponsiveGrid}" 
+           BasedOn="{StaticResource DefaultResponsiveGrid}">
+        <Setter Property="MinColumnWidth" Value="150"/>
+        <Setter Property="ColumnGap" Value="8"/>
+        <Setter Property="RowGap" Value="8"/>
+    </Style>
+
+    <!-- Wide Responsive Grid -->
+    <Style x:Key="WideResponsiveGrid" TargetType="{x:Type controls:ResponsiveGrid}" 
+           BasedOn="{StaticResource DefaultResponsiveGrid}">
+        <Setter Property="MinColumnWidth" Value="300"/>
+        <Setter Property="ColumnGap" Value="24"/>
+        <Setter Property="RowGap" Value="24"/>
+    </Style>
+
+    <!-- Card Grid Layout -->
+    <Style x:Key="CardGridLayout" TargetType="{x:Type controls:ResponsiveGrid}" 
+           BasedOn="{StaticResource DefaultResponsiveGrid}">
+        <Setter Property="MinColumnWidth" Value="280"/>
+        <Setter Property="ColumnGap" Value="20"/>
+        <Setter Property="RowGap" Value="20"/>
+        <Setter Property="MaxColumns" Value="6"/>
+    </Style>
+
+    <!-- Dashboard Grid Layout -->
+    <Style x:Key="DashboardGridLayout" TargetType="{x:Type controls:ResponsiveGrid}" 
+           BasedOn="{StaticResource DefaultResponsiveGrid}">
+        <Setter Property="MinColumnWidth" Value="320"/>
+        <Setter Property="ColumnGap" Value="16"/>
+        <Setter Property="RowGap" Value="16"/>
+        <Setter Property="MaxColumns" Value="4"/>
+    </Style>
+
+    <!-- Module Grid Layout -->
+    <Style x:Key="ModuleGridLayout" TargetType="{x:Type controls:ResponsiveGrid}" 
+           BasedOn="{StaticResource DefaultResponsiveGrid}">
+        <Setter Property="MinColumnWidth" Value="400"/>
+        <Setter Property="ColumnGap" Value="32"/>
+        <Setter Property="RowGap" Value="32"/>
+        <Setter Property="MaxColumns" Value="3"/>
+    </Style>
+
+    <!-- Responsive Container Styles -->
+    <Style x:Key="ResponsiveContainer" TargetType="Border">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="Margin" Value="8"/>
+        <!-- Responsive padding based on screen size -->
+        <Style.Triggers>
+            <!-- Small screens -->
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XSmall">
+                <Setter Property="Padding" Value="8"/>
+                <Setter Property="Margin" Value="4"/>
+            </DataTrigger>
+            <!-- Large screens -->
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XLarge">
+                <Setter Property="Padding" Value="24"/>
+                <Setter Property="Margin" Value="12"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Responsive Text Styles -->
+    <Style x:Key="ResponsiveHeading1" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Foreground" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XSmall">
+                <Setter Property="FontSize" Value="16"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XLarge">
+                <Setter Property="FontSize" Value="24"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ResponsiveHeading2" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{StaticResource ElectricBlue_SoftBrush}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XSmall">
+                <Setter Property="FontSize" Value="14"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XLarge">
+                <Setter Property="FontSize" Value="18"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ResponsiveBodyText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="#FFCCCCCC"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XSmall">
+                <Setter Property="FontSize" Value="10"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XLarge">
+                <Setter Property="FontSize" Value="14"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Responsive Button Styles -->
+    <Style x:Key="ResponsiveButton" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="16,8"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XSmall">
+                <Setter Property="Padding" Value="12,6"/>
+                <Setter Property="FontSize" Value="10"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XLarge">
+                <Setter Property="Padding" Value="20,10"/>
+                <Setter Property="FontSize" Value="12"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Responsive Icon Styles -->
+    <Style x:Key="ResponsiveIcon" TargetType="Path">
+        <Setter Property="Fill" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XSmall">
+                <Setter Property="Width" Value="14"/>
+                <Setter Property="Height" Value="14"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XLarge">
+                <Setter Property="Width" Value="20"/>
+                <Setter Property="Height" Value="20"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Responsive Card Spacing -->
+    <Style x:Key="ResponsiveCardSpacing" TargetType="controls:GlassmorphismCard">
+        <Setter Property="Margin" Value="8"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XSmall">
+                <Setter Property="Margin" Value="4"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XLarge">
+                <Setter Property="Margin" Value="12"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Breakpoint-specific Visibility -->
+    <Style x:Key="HideOnSmallScreens" TargetType="FrameworkElement">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XSmall">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="Small">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ShowOnlyOnLargeScreens" TargetType="FrameworkElement">
+        <Setter Property="Visibility" Value="Collapsed"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="Large">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Window}, 
+                                   Converter={StaticResource SizeToScreenSizeConverter}}" 
+                         Value="XLarge">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Responsive Layout Animations -->
+    <Storyboard x:Key="ResponsiveLayoutTransition">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.5" To="1" Duration="0:0:0.3">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+</ResourceDictionary>

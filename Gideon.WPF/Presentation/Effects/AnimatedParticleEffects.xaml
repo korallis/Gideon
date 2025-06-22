@@ -1,0 +1,55 @@
+<!--
+=========================================================================
+AnimatedParticleEffects.xaml - Animated Particle Effects for Price Fluctuations
+=========================================================================
+Advanced animated particle effects specifically for price fluctuation
+visualization with dynamic behaviors and market data binding.
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Price Fluctuation Particle Animations -->
+    <Storyboard x:Key="PriceUpFluctuation" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="0" To="-20" Duration="0:0:1" AutoReverse="True">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <ColorAnimation Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                       From="LimeGreen" To="Green" Duration="0:0:1" AutoReverse="True"/>
+    </Storyboard>
+
+    <Storyboard x:Key="PriceDownFluctuation" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="0" To="20" Duration="0:0:1" AutoReverse="True">
+            <DoubleAnimation.EasingFunction>
+                <SineEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <ColorAnimation Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                       From="Red" To="DarkRed" Duration="0:0:1" AutoReverse="True"/>
+    </Storyboard>
+
+    <!-- Market Volatility Effects -->
+    <Storyboard x:Key="HighVolatilityEffect" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="1" To="1.2" Duration="0:0:0.5" AutoReverse="True">
+            <DoubleAnimation.EasingFunction>
+                <ElasticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="1" To="1.2" Duration="0:0:0.5" AutoReverse="True">
+            <DoubleAnimation.EasingFunction>
+                <ElasticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+</ResourceDictionary>

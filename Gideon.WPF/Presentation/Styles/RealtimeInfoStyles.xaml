@@ -1,0 +1,226 @@
+<!--
+=========================================================================
+RealtimeInfoStyles.xaml - Real-time Information Display Styles
+=========================================================================
+Complete styling system for real-time information display with
+EVE-themed layouts, holographic effects, and priority indicators.
+
+Author: Gideon Development Team
+Created: June 21, 2025
+=========================================================================
+-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Gideon.WPF.Presentation.Controls">
+
+    <!-- Real-time Info Display Style -->
+    <Style x:Key="RealtimeInfoDisplayStyle" TargetType="{x:Type controls:RealtimeInfoDisplay}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#08001122" Offset="0"/>
+                    <GradientStop Color="#12001133" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_SoftBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Effect" Value="{StaticResource CyanGlowSoft}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:RealtimeInfoDisplay}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                        <Grid>
+                            <!-- Header -->
+                            <Border Height="30" VerticalAlignment="Top"
+                                    Background="{StaticResource ElectricBlue_CoreBrush}"
+                                    Opacity="0.2"/>
+                            
+                            <TextBlock Text="REAL-TIME UPDATES" 
+                                      VerticalAlignment="Top"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,8,0,0"
+                                      FontFamily="Consolas"
+                                      FontSize="10"
+                                      FontWeight="Bold"
+                                      Foreground="{StaticResource ElectricBlue_CoreBrush}"/>
+                            
+                            <!-- Content Area -->
+                            <ContentPresenter Margin="5,35,5,5"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Info Item Container Style -->
+    <Style x:Key="InfoItemContainer" TargetType="Border">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#20000000" Offset="0"/>
+                    <GradientStop Color="#30001122" Offset="0.5"/>
+                    <GradientStop Color="#20000000" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderBrush" Value="{StaticResource ElectricBlue_SoftBrush}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="Margin" Value="2,1"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#40001122" Offset="0"/>
+                            <GradientStop Color="#50002244" Offset="0.5"/>
+                            <GradientStop Color="#40001122" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Effect" Value="{StaticResource CyanGlowSoft}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Priority Indicator Styles -->
+    <Style x:Key="LowPriorityIndicator" TargetType="Ellipse">
+        <Setter Property="Fill" Value="#FF404040"/>
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="Height" Value="8"/>
+    </Style>
+
+    <Style x:Key="NormalPriorityIndicator" TargetType="Ellipse">
+        <Setter Property="Fill" Value="{StaticResource ElectricBlue_CoreBrush}"/>
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="Height" Value="8"/>
+    </Style>
+
+    <Style x:Key="HighPriorityIndicator" TargetType="Ellipse">
+        <Setter Property="Fill" Value="#FFFF8800"/>
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="Height" Value="8"/>
+        <Setter Property="Effect" Value="{StaticResource ParticleGlow_Warning}"/>
+    </Style>
+
+    <Style x:Key="CriticalPriorityIndicator" TargetType="Ellipse">
+        <Setter Property="Fill" Value="{StaticResource EVEAlert_RedBrush}"/>
+        <Setter Property="Width" Value="10"/>
+        <Setter Property="Height" Value="10"/>
+        <Setter Property="Effect" Value="{StaticResource ParticleGlow_Error}"/>
+    </Style>
+
+    <Style x:Key="EmergencyPriorityIndicator" TargetType="Ellipse">
+        <Setter Property="Fill" Value="#FFFF0000"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Effect" Value="{StaticResource ParticleGlow_Error}"/>
+        <Style.Triggers>
+            <Trigger Property="IsLoaded" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                           From="1" To="0.3" Duration="0:0:0.5"
+                                           AutoReverse="True"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Update Type Styles -->
+    <Style x:Key="MarketUpdateStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#FF00FFFF"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+    </Style>
+
+    <Style x:Key="CharacterUpdateStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#FF00FF00"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+    </Style>
+
+    <Style x:Key="ShipStatusStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#FFFFFF00"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+    </Style>
+
+    <Style x:Key="SystemAlertStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#FFFF8800"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="NewsUpdateStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#FFFFFFFF"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+    </Style>
+
+    <Style x:Key="CorporationUpdateStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#FF8000FF"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+    </Style>
+
+    <!-- Scroll Viewer Style for Info Display -->
+    <Style x:Key="InfoScrollViewerStyle" TargetType="ScrollViewer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <ScrollContentPresenter Grid.Column="0"/>
+                        
+                        <ScrollBar Grid.Column="1" 
+                                  Name="PART_VerticalScrollBar"
+                                  Orientation="Vertical"
+                                  Value="{TemplateBinding VerticalOffset}"
+                                  Maximum="{TemplateBinding ScrollableHeight}"
+                                  ViewportSize="{TemplateBinding ViewportHeight}"
+                                  Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                  Style="{StaticResource HolographicScrollBarStyle}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Holographic Scroll Bar Style -->
+    <Style x:Key="HolographicScrollBarStyle" TargetType="ScrollBar">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource ElectricBlue_SoftBrush}"/>
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollBar">
+                    <Border Background="{TemplateBinding Background}" Width="8">
+                        <Track Name="PART_Track" IsDirectionReversed="True">
+                            <Track.Thumb>
+                                <Thumb>
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Border Background="{StaticResource ElectricBlue_CoreBrush}"
+                                                   Opacity="0.6"
+                                                   CornerRadius="4"/>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
