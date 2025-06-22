@@ -43,6 +43,22 @@ namespace Gideon.WPF.Presentation.Controls
             DependencyProperty.Register(nameof(Intensity), typeof(double), typeof(DataStreamAnimationControl),
                 new PropertyMetadata(1.0));
 
+        public static readonly DependencyProperty RealTimeDataProperty =
+            DependencyProperty.Register(nameof(RealTimeData), typeof(ObservableCollection<StreamDataPoint>), typeof(DataStreamAnimationControl),
+                new PropertyMetadata(null, OnRealTimeDataChanged));
+
+        public static readonly DependencyProperty StreamTemplateProperty =
+            DependencyProperty.Register(nameof(StreamTemplate), typeof(DataTemplate), typeof(DataStreamAnimationControl),
+                new PropertyMetadata(null));
+
+        public static readonly DependencyProperty MaxElementsProperty =
+            DependencyProperty.Register(nameof(MaxElements), typeof(int), typeof(DataStreamAnimationControl),
+                new PropertyMetadata(50, OnMaxElementsChanged));
+
+        public static readonly DependencyProperty HolographicModeProperty =
+            DependencyProperty.Register(nameof(HolographicMode), typeof(bool), typeof(DataStreamAnimationControl),
+                new PropertyMetadata(true, OnHolographicModeChanged));
+
         public double StreamSpeed
         {
             get => (double)GetValue(StreamSpeedProperty);
@@ -77,6 +93,30 @@ namespace Gideon.WPF.Presentation.Controls
         {
             get => (double)GetValue(IntensityProperty);
             set => SetValue(IntensityProperty, value);
+        }
+
+        public ObservableCollection<StreamDataPoint> RealTimeData
+        {
+            get => (ObservableCollection<StreamDataPoint>)GetValue(RealTimeDataProperty);
+            set => SetValue(RealTimeDataProperty, value);
+        }
+
+        public DataTemplate StreamTemplate
+        {
+            get => (DataTemplate)GetValue(StreamTemplateProperty);
+            set => SetValue(StreamTemplateProperty, value);
+        }
+
+        public int MaxElements
+        {
+            get => (int)GetValue(MaxElementsProperty);
+            set => SetValue(MaxElementsProperty, value);
+        }
+
+        public bool HolographicMode
+        {
+            get => (bool)GetValue(HolographicModeProperty);
+            set => SetValue(HolographicModeProperty, value);
         }
 
         public DataStreamAnimationControl()
@@ -121,11 +161,141 @@ namespace Gideon.WPF.Presentation.Controls
             if (!IsActive || ActualWidth <= 0 || ActualHeight <= 0)
                 return;
 
-            // Spawn rate based on density
-            var spawnChance = StreamDensity * 0.3;
-            if (_random.NextDouble() < spawnChance)
+            // Clean up excess elements
+            if (_streamElements.Count >= MaxElements)
             {
-                SpawnDataElement();
+                CleanupOldestElements();
+            }
+
+            // Spawn from real-time data if available
+            if (RealTimeData != null && RealTimeData.Any())
+            {
+                SpawnRealTimeDataElement();
+            }
+            else
+            {
+                // Fallback to procedural generation
+                var spawnChance = StreamDensity * 0.3;
+                if (_random.NextDouble() < spawnChance)
+                {
+                    SpawnDataElement();
+                }
+            }
+        }
+
+        private void SpawnRealTimeDataElement()
+        {
+            var recentData = RealTimeData
+                .Where(d => DateTime.Now - d.Timestamp < TimeSpan.FromSeconds(5))
+                .OrderByDescending(d => d.Timestamp)
+                .Take(5)
+                .ToList();
+
+            if (recentData.Any())
+            {
+                var dataPoint = recentData[_random.Next(recentData.Count)];
+                var element = CreateRealTimeElement(dataPoint);
+                _streamElements.Add(element);
+                Children.Add(element.Visual);
+            }
+        }
+
+        private DataStreamElement CreateRealTimeElement(StreamDataPoint dataPoint)
+        {
+            var element = new DataStreamElement
+            {
+                Visual = CreateRealTimeVisual(dataPoint),
+                Speed = (50 + dataPoint.Priority * 50) * StreamSpeed,
+                Life = 1.0,
+                MaxLife = 2.0 + dataPoint.Priority,
+                DataPoint = dataPoint
+            };
+
+            SetElementPosition(element);
+            ApplyHolographicEffects(element);
+
+            Canvas.SetLeft(element.Visual, element.X);
+            Canvas.SetTop(element.Visual, element.Y);
+
+            return element;
+        }
+
+        private FrameworkElement CreateRealTimeVisual(StreamDataPoint dataPoint)
+        {
+            if (StreamTemplate != null)
+            {
+                var content = StreamTemplate.LoadContent() as FrameworkElement;
+                if (content != null)
+                {
+                    content.DataContext = dataPoint;
+                    return content;
+                }
+            }
+
+            return CreateDataBasedVisual(dataPoint);
+        }
+
+        private FrameworkElement CreateDataBasedVisual(StreamDataPoint dataPoint)
+        {
+            var container = new Border
+            {
+                Background = new SolidColorBrush(Color.FromArgb(40, 0, 0, 0)),
+                BorderBrush = GetDataTypeColor(dataPoint.Type),
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(2),
+                Padding = new Thickness(5, 2, 5, 2)
+            };
+
+            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
+
+            // Priority indicator
+            var priorityIcon = new Ellipse
+            {
+                Width = 6,
+                Height = 6,
+                Fill = GetPriorityColor(dataPoint.Priority),
+                Margin = new Thickness(0, 0, 5, 0)
+            };
+            stackPanel.Children.Add(priorityIcon);
+
+            // Data content
+            var content = new TextBlock
+            {
+                Text = dataPoint.Content,
+                Foreground = GetDataTypeColor(dataPoint.Type),
+                FontSize = 8,
+                FontFamily = new FontFamily("Consolas"),
+                MaxWidth = 80,
+                TextTrimming = TextTrimming.CharacterEllipsis
+            };
+            stackPanel.Children.Add(content);
+
+            // Timestamp
+            var timestamp = new TextBlock
+            {
+                Text = dataPoint.Timestamp.ToString("HH:mm:ss"),
+                Foreground = new SolidColorBrush(Color.FromArgb(150, 128, 128, 128)),
+                FontSize = 6,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 0, 0, 0)
+            };
+            stackPanel.Children.Add(timestamp);
+
+            container.Child = stackPanel;
+            return container;
+        }
+
+        private void CleanupOldestElements()
+        {
+            var elementsToRemove = _streamElements
+                .OrderBy(e => e.Life)
+                .Take(_streamElements.Count - MaxElements + 5)
+                .ToList();
+
+            foreach (var element in elementsToRemove)
+            {
+                Children.Remove(element.Visual);
+                _streamElements.Remove(element);
             }
         }
 
@@ -146,6 +316,17 @@ namespace Gideon.WPF.Presentation.Controls
                 MaxLife = 3.0 + _random.NextDouble() * 2
             };
 
+            SetElementPosition(element);
+            ApplyHolographicEffects(element);
+
+            Canvas.SetLeft(element.Visual, element.X);
+            Canvas.SetTop(element.Visual, element.Y);
+
+            return element;
+        }
+
+        private void SetElementPosition(DataStreamElement element)
+        {
             // Set initial position based on direction
             switch (StreamDirection)
             {
@@ -181,7 +362,6 @@ namespace Gideon.WPF.Presentation.Controls
                     var centerX = ActualWidth / 2;
                     var centerY = ActualHeight / 2;
                     var angle = _random.NextDouble() * Math.PI * 2;
-                    var distance = 50 + _random.NextDouble() * 100;
                     
                     element.X = centerX;
                     element.Y = centerY;
@@ -189,11 +369,50 @@ namespace Gideon.WPF.Presentation.Controls
                     element.VelocityY = Math.Sin(angle) * element.Speed;
                     break;
             }
+        }
 
-            Canvas.SetLeft(element.Visual, element.X);
-            Canvas.SetTop(element.Visual, element.Y);
+        private void ApplyHolographicEffects(DataStreamElement element)
+        {
+            if (!HolographicMode) return;
 
-            return element;
+            // Apply scanline effect
+            var scanlineTransform = new TransformGroup();
+            scanlineTransform.Children.Add(new ScaleTransform(1, 0.95 + _random.NextDouble() * 0.1));
+            scanlineTransform.Children.Add(new SkewTransform(_random.NextDouble() * 2 - 1, 0));
+            element.Visual.RenderTransform = scanlineTransform;
+
+            // Apply holographic flicker
+            var flickerAnimation = new DoubleAnimation
+            {
+                From = 0.7,
+                To = 1.0,
+                Duration = TimeSpan.FromMilliseconds(100 + _random.Next(200)),
+                AutoReverse = true,
+                RepeatBehavior = RepeatBehavior.Forever
+            };
+            element.Visual.BeginAnimation(UIElement.OpacityProperty, flickerAnimation);
+        }
+
+        private SolidColorBrush GetDataTypeColor(DataStreamType type)
+        {
+            return type switch
+            {
+                DataStreamType.MarketData => new SolidColorBrush(Color.FromArgb(200, 50, 205, 50)),
+                DataStreamType.CharacterData => new SolidColorBrush(Color.FromArgb(200, 64, 224, 255)),
+                DataStreamType.ShipData => new SolidColorBrush(Color.FromArgb(200, 255, 215, 0)),
+                DataStreamType.NetworkTraffic => new SolidColorBrush(Color.FromArgb(200, 138, 43, 226)),
+                DataStreamType.SystemStatus => new SolidColorBrush(Color.FromArgb(200, 50, 205, 50)),
+                DataStreamType.Combat => new SolidColorBrush(Color.FromArgb(200, 255, 64, 64)),
+                DataStreamType.Navigation => new SolidColorBrush(Color.FromArgb(200, 0, 255, 0)),
+                _ => new SolidColorBrush(Color.FromArgb(200, 128, 128, 128))
+            };
+        }
+
+        private SolidColorBrush GetPriorityColor(double priority)
+        {
+            if (priority >= 0.8) return new SolidColorBrush(Color.FromArgb(200, 255, 64, 64)); // High - Red
+            if (priority >= 0.5) return new SolidColorBrush(Color.FromArgb(200, 255, 215, 0)); // Medium - Yellow
+            return new SolidColorBrush(Color.FromArgb(200, 50, 205, 50)); // Low - Green
         }
 
         private FrameworkElement CreateElementVisual()
@@ -419,23 +638,115 @@ namespace Gideon.WPF.Presentation.Controls
             {
                 var element = _streamElements[i];
 
-                // Update position
-                element.X += element.VelocityX * deltaTime;
-                element.Y += element.VelocityY * deltaTime;
+                // Update position with flow dynamics
+                UpdateElementPosition(element, deltaTime);
 
-                // Update life
-                element.Life -= deltaTime / element.MaxLife;
+                // Update life and appearance
+                UpdateElementLife(element, deltaTime);
 
-                // Update visual
+                // Apply real-time effects
+                if (HolographicMode)
+                {
+                    ApplyRealtimeHolographicEffects(element, deltaTime);
+                }
+
+                // Update visual position
                 Canvas.SetLeft(element.Visual, element.X);
                 Canvas.SetTop(element.Visual, element.Y);
-                element.Visual.Opacity = Math.Max(0, element.Life);
 
                 // Remove if dead or out of bounds
                 if (element.Life <= 0 || IsOutOfBounds(element))
                 {
                     Children.Remove(element.Visual);
                     _streamElements.RemoveAt(i);
+                }
+            }
+        }
+
+        private void UpdateElementPosition(DataStreamElement element, double deltaTime)
+        {
+            // Apply stream-specific physics
+            switch (StreamDirection)
+            {
+                case DataStreamDirection.Radial:
+                    // Accelerate outward
+                    element.VelocityX *= 1.02;
+                    element.VelocityY *= 1.02;
+                    break;
+
+                case DataStreamDirection.LeftToRight:
+                case DataStreamDirection.RightToLeft:
+                    // Slight vertical drift for organic feel
+                    element.VelocityY += Math.Sin(DateTime.Now.Millisecond * 0.01 + element.X * 0.01) * 5 * deltaTime;
+                    break;
+
+                case DataStreamDirection.TopToBottom:
+                case DataStreamDirection.BottomToTop:
+                    // Slight horizontal drift
+                    element.VelocityX += Math.Cos(DateTime.Now.Millisecond * 0.01 + element.Y * 0.01) * 5 * deltaTime;
+                    break;
+            }
+
+            // Update position
+            element.X += element.VelocityX * deltaTime;
+            element.Y += element.VelocityY * deltaTime;
+        }
+
+        private void UpdateElementLife(DataStreamElement element, double deltaTime)
+        {
+            element.Life -= deltaTime / element.MaxLife;
+
+            // Fade based on life and data importance
+            var baseOpacity = Math.Max(0, element.Life);
+            if (element.DataPoint != null)
+            {
+                // Important data fades slower
+                baseOpacity = Math.Max(0.2, baseOpacity + element.DataPoint.Priority * 0.3);
+            }
+
+            element.Visual.Opacity = baseOpacity * Intensity;
+        }
+
+        private void ApplyRealtimeHolographicEffects(DataStreamElement element, double deltaTime)
+        {
+            // Scanline distortion
+            if (element.Visual.RenderTransform is TransformGroup group)
+            {
+                foreach (var transform in group.Children)
+                {
+                    if (transform is SkewTransform skew)
+                    {
+                        skew.AngleX += Math.Sin(DateTime.Now.Millisecond * 0.02) * 0.5;
+                    }
+                }
+            }
+
+            // Data corruption effect for old elements
+            if (element.Life < 0.3 && _random.NextDouble() < 0.1)
+            {
+                ApplyCorruptionEffect(element);
+            }
+        }
+
+        private void ApplyCorruptionEffect(DataStreamElement element)
+        {
+            if (element.Visual is Border border && border.Child is StackPanel panel)
+            {
+                foreach (var child in panel.Children.OfType<TextBlock>())
+                {
+                    var text = child.Text;
+                    if (!string.IsNullOrEmpty(text) && _random.NextDouble() < 0.3)
+                    {
+                        var chars = text.ToCharArray();
+                        for (int i = 0; i < chars.Length; i++)
+                        {
+                            if (_random.NextDouble() < 0.2)
+                            {
+                                chars[i] = (char)('A' + _random.Next(26));
+                            }
+                        }
+                        child.Text = new string(chars);
+                    }
                 }
             }
         }
@@ -476,6 +787,68 @@ namespace Gideon.WPF.Presentation.Controls
                 control.ClearStreamElements();
         }
 
+        private static void OnRealTimeDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DataStreamAnimationControl control)
+            {
+                if (e.OldValue is ObservableCollection<StreamDataPoint> oldCollection)
+                {
+                    oldCollection.CollectionChanged -= control.OnRealTimeDataCollectionChanged;
+                }
+                if (e.NewValue is ObservableCollection<StreamDataPoint> newCollection)
+                {
+                    newCollection.CollectionChanged += control.OnRealTimeDataCollectionChanged;
+                }
+            }
+        }
+
+        private static void OnMaxElementsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DataStreamAnimationControl control)
+                control.CleanupOldestElements();
+        }
+
+        private static void OnHolographicModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DataStreamAnimationControl control)
+                control.RefreshHolographicEffects();
+        }
+
+        private void OnRealTimeDataCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            // React to new data being added to the collection
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                foreach (StreamDataPoint newItem in e.NewItems)
+                {
+                    // Immediately create a stream element for new high-priority data
+                    if (newItem.Priority > 0.7)
+                    {
+                        var element = CreateRealTimeElement(newItem);
+                        _streamElements.Add(element);
+                        Children.Add(element.Visual);
+                    }
+                }
+            }
+        }
+
+        private void RefreshHolographicEffects()
+        {
+            foreach (var element in _streamElements)
+            {
+                if (HolographicMode)
+                {
+                    ApplyHolographicEffects(element);
+                }
+                else
+                {
+                    // Remove holographic effects
+                    element.Visual.RenderTransform = null;
+                    element.Visual.BeginAnimation(UIElement.OpacityProperty, null);
+                }
+            }
+        }
+
         protected override Size MeasureOverride(Size constraint)
         {
             return constraint;
@@ -497,6 +870,21 @@ namespace Gideon.WPF.Presentation.Controls
         public double Speed { get; set; }
         public double Life { get; set; }
         public double MaxLife { get; set; }
+        public StreamDataPoint DataPoint { get; set; }
+    }
+
+    public class StreamDataPoint
+    {
+        public DateTime Timestamp { get; set; } = DateTime.Now;
+        public string Content { get; set; } = string.Empty;
+        public DataStreamType Type { get; set; }
+        public double Priority { get; set; } = 0.5; // 0.0 to 1.0
+        public string Source { get; set; } = string.Empty;
+        public Dictionary<string, object> Metadata { get; set; } = new();
+        public bool IsEncrypted { get; set; }
+        public int Size { get; set; } // Data size in bytes
+        public string Destination { get; set; } = string.Empty;
+        public Color Color { get; set; } = Colors.Transparent;
     }
 
     public enum DataStreamDirection
@@ -514,6 +902,11 @@ namespace Gideon.WPF.Presentation.Controls
         CharacterData,
         ShipData,
         NetworkTraffic,
-        SystemStatus
+        SystemStatus,
+        Combat,
+        Navigation,
+        Communications,
+        Sensors,
+        Intelligence
     }
 }

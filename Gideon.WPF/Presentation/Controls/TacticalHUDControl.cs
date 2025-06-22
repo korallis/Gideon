@@ -39,6 +39,22 @@ namespace Gideon.WPF.Presentation.Controls
             DependencyProperty.Register(nameof(Contacts), typeof(ObservableCollection<TacticalContact>), typeof(TacticalHUDControl),
                 new PropertyMetadata(new ObservableCollection<TacticalContact>(), OnContactsChanged));
 
+        public static readonly DependencyProperty HolographicIntensityProperty =
+            DependencyProperty.Register(nameof(HolographicIntensity), typeof(double), typeof(TacticalHUDControl),
+                new PropertyMetadata(1.0, OnHolographicIntensityChanged));
+
+        public static readonly DependencyProperty ShowThreatAssessmentProperty =
+            DependencyProperty.Register(nameof(ShowThreatAssessment), typeof(bool), typeof(TacticalHUDControl),
+                new PropertyMetadata(true, OnShowThreatAssessmentChanged));
+
+        public static readonly DependencyProperty ShowNavigationAidsProperty =
+            DependencyProperty.Register(nameof(ShowNavigationAids), typeof(bool), typeof(TacticalHUDControl),
+                new PropertyMetadata(true, OnShowNavigationAidsChanged));
+
+        public static readonly DependencyProperty ScanModeProperty =
+            DependencyProperty.Register(nameof(ScanMode), typeof(ScanMode), typeof(TacticalHUDControl),
+                new PropertyMetadata(ScanMode.Passive, OnScanModeChanged));
+
         public double RadarRange
         {
             get => (double)GetValue(RadarRangeProperty);
@@ -61,6 +77,30 @@ namespace Gideon.WPF.Presentation.Controls
         {
             get => (ObservableCollection<TacticalContact>)GetValue(ContactsProperty);
             set => SetValue(ContactsProperty, value);
+        }
+
+        public double HolographicIntensity
+        {
+            get => (double)GetValue(HolographicIntensityProperty);
+            set => SetValue(HolographicIntensityProperty, value);
+        }
+
+        public bool ShowThreatAssessment
+        {
+            get => (bool)GetValue(ShowThreatAssessmentProperty);
+            set => SetValue(ShowThreatAssessmentProperty, value);
+        }
+
+        public bool ShowNavigationAids
+        {
+            get => (bool)GetValue(ShowNavigationAidsProperty);
+            set => SetValue(ShowNavigationAidsProperty, value);
+        }
+
+        public ScanMode ScanMode
+        {
+            get => (ScanMode)GetValue(ScanModeProperty);
+            set => SetValue(ScanModeProperty, value);
         }
 
         public TacticalHUDControl()
@@ -204,6 +244,23 @@ namespace Gideon.WPF.Presentation.Controls
 
             // Navigation compass
             CreateNavigationCompass();
+
+            // Threat assessment overlay
+            if (ShowThreatAssessment)
+                CreateThreatAssessmentOverlay();
+
+            // Navigation aids
+            if (ShowNavigationAids)
+                CreateNavigationAids();
+
+            // Scan mode indicators
+            CreateScanModeIndicators();
+
+            // EVE-style holographic grid
+            CreateHolographicGrid();
+
+            // Tactical information panels
+            CreateTacticalInfoPanels();
         }
 
         private void CreateStatusDisplay()
@@ -374,6 +431,494 @@ namespace Gideon.WPF.Presentation.Controls
             _hudOverlay.Children.Add(compass);
         }
 
+        private void CreateThreatAssessmentOverlay()
+        {
+            var threatPanel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                Background = new SolidColorBrush(Color.FromArgb(60, 139, 0, 0))
+            };
+
+            var threatBorder = new Border
+            {
+                BorderBrush = new SolidColorBrush(Color.FromArgb(180, 255, 64, 64)),
+                BorderThickness = new Thickness(1),
+                Child = threatPanel,
+                Effect = new DropShadowEffect
+                {
+                    Color = Color.FromRgb(255, 64, 64),
+                    BlurRadius = 8,
+                    ShadowDepth = 0,
+                    Opacity = HolographicIntensity * 0.6
+                }
+            };
+
+            var threatHeader = new TextBlock
+            {
+                Text = "THREAT ASSESSMENT",
+                Foreground = new SolidColorBrush(Color.FromRgb(255, 64, 64)),
+                FontSize = 10,
+                FontWeight = FontWeights.Bold,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 5, 5, 2)
+            };
+            threatPanel.Children.Add(threatHeader);
+
+            var threatLevel = new TextBlock
+            {
+                Text = "LEVEL: MODERATE",
+                Foreground = new SolidColorBrush(Color.FromRgb(255, 215, 0)),
+                FontSize = 9,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 0, 5, 2)
+            };
+            threatPanel.Children.Add(threatLevel);
+
+            var hostileCount = new TextBlock
+            {
+                Text = $"HOSTILES: {Contacts?.Count(c => c.Type == ContactType.Hostile) ?? 0}",
+                Foreground = new SolidColorBrush(Color.FromRgb(255, 64, 64)),
+                FontSize = 9,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 0, 5, 5)
+            };
+            threatPanel.Children.Add(hostileCount);
+
+            Canvas.SetLeft(threatBorder, 10);
+            Canvas.SetBottom(threatBorder, 10);
+            _hudOverlay.Children.Add(threatBorder);
+        }
+
+        private void CreateNavigationAids()
+        {
+            // Waypoint indicators
+            CreateWaypointIndicators();
+
+            // Jump gate indicators  
+            CreateJumpGateIndicators();
+
+            // Station indicators
+            CreateStationIndicators();
+        }
+
+        private void CreateWaypointIndicators()
+        {
+            // Sample waypoint at 45 degrees, 75km
+            var waypoint = new Canvas();
+            
+            var waypointIcon = new Polygon
+            {
+                Points = new PointCollection 
+                { 
+                    new Point(0, 0), new Point(10, 5), new Point(0, 10), new Point(3, 5) 
+                },
+                Fill = new SolidColorBrush(Color.FromArgb(150, 0, 255, 0)),
+                Stroke = new SolidColorBrush(Color.FromArgb(200, 0, 255, 0)),
+                StrokeThickness = 1,
+                Effect = new DropShadowEffect
+                {
+                    Color = Color.FromRgb(0, 255, 0),
+                    BlurRadius = 6,
+                    ShadowDepth = 0,
+                    Opacity = HolographicIntensity * 0.7
+                }
+            };
+            waypoint.Children.Add(waypointIcon);
+
+            var centerX = Width / 2;
+            var centerY = Height / 2;
+            var distance = 75; // km
+            var bearing = 45; // degrees
+            var radarRadius = (distance / RadarRange) * (Width / 2 - 20);
+            
+            var x = centerX + radarRadius * Math.Cos(bearing * Math.PI / 180);
+            var y = centerY + radarRadius * Math.Sin(bearing * Math.PI / 180);
+
+            Canvas.SetLeft(waypoint, x - 5);
+            Canvas.SetTop(waypoint, y - 5);
+            _radarCanvas.Children.Add(waypoint);
+        }
+
+        private void CreateJumpGateIndicators()
+        {
+            // Sample jump gate at 120 degrees, 50km
+            var centerX = Width / 2;
+            var centerY = Height / 2;
+            var distance = 50;
+            var bearing = 120;
+            var radarRadius = (distance / RadarRange) * (Width / 2 - 20);
+            
+            var x = centerX + radarRadius * Math.Cos(bearing * Math.PI / 180);
+            var y = centerY + radarRadius * Math.Sin(bearing * Math.PI / 180);
+
+            var jumpGate = new Ellipse
+            {
+                Width = 12,
+                Height = 12,
+                Fill = Brushes.Transparent,
+                Stroke = new SolidColorBrush(Color.FromArgb(180, 138, 43, 226)),
+                StrokeThickness = 2,
+                StrokeDashArray = new DoubleCollection { 3, 3 },
+                Effect = new DropShadowEffect
+                {
+                    Color = Color.FromRgb(138, 43, 226),
+                    BlurRadius = 8,
+                    ShadowDepth = 0,
+                    Opacity = HolographicIntensity * 0.8
+                }
+            };
+
+            Canvas.SetLeft(jumpGate, x - 6);
+            Canvas.SetTop(jumpGate, y - 6);
+            _radarCanvas.Children.Add(jumpGate);
+        }
+
+        private void CreateStationIndicators()
+        {
+            // Sample station at 270 degrees, 30km
+            var centerX = Width / 2;
+            var centerY = Height / 2;
+            var distance = 30;
+            var bearing = 270;
+            var radarRadius = (distance / RadarRange) * (Width / 2 - 20);
+            
+            var x = centerX + radarRadius * Math.Cos(bearing * Math.PI / 180);
+            var y = centerY + radarRadius * Math.Sin(bearing * Math.PI / 180);
+
+            var station = new Rectangle
+            {
+                Width = 8,
+                Height = 8,
+                Fill = new SolidColorBrush(Color.FromArgb(150, 255, 215, 0)),
+                Stroke = new SolidColorBrush(Color.FromArgb(200, 255, 215, 0)),
+                StrokeThickness = 1,
+                Effect = new DropShadowEffect
+                {
+                    Color = Color.FromRgb(255, 215, 0),
+                    BlurRadius = 6,
+                    ShadowDepth = 0,
+                    Opacity = HolographicIntensity * 0.7
+                }
+            };
+
+            Canvas.SetLeft(station, x - 4);
+            Canvas.SetTop(station, y - 4);
+            _radarCanvas.Children.Add(station);
+        }
+
+        private void CreateScanModeIndicators()
+        {
+            var scanPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Background = new SolidColorBrush(Color.FromArgb(40, 0, 0, 0))
+            };
+
+            var scanBorder = new Border
+            {
+                BorderBrush = new SolidColorBrush(Color.FromArgb(120, 64, 224, 255)),
+                BorderThickness = new Thickness(1),
+                Child = scanPanel,
+                Effect = new DropShadowEffect
+                {
+                    Color = Color.FromRgb(64, 224, 255),
+                    BlurRadius = 5,
+                    ShadowDepth = 0,
+                    Opacity = HolographicIntensity * 0.5
+                }
+            };
+
+            var scanModeText = new TextBlock
+            {
+                Text = $"SCAN: {ScanMode}",
+                Foreground = new SolidColorBrush(Color.FromRgb(64, 224, 255)),
+                FontSize = 10,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5)
+            };
+            scanPanel.Children.Add(scanModeText);
+
+            // Scan strength indicator
+            var scanStrength = new Rectangle
+            {
+                Width = 50,
+                Height = 8,
+                Fill = new LinearGradientBrush
+                {
+                    StartPoint = new Point(0, 0),
+                    EndPoint = new Point(1, 0),
+                    GradientStops = new GradientStopCollection
+                    {
+                        new GradientStop(Color.FromArgb(200, 0, 255, 0), 0.0),
+                        new GradientStop(Color.FromArgb(200, 255, 255, 0), 0.5),
+                        new GradientStop(Color.FromArgb(200, 255, 0, 0), 1.0)
+                    }
+                },
+                Margin = new Thickness(5, 8, 5, 8)
+            };
+            scanPanel.Children.Add(scanStrength);
+
+            Canvas.SetLeft(scanBorder, Width - 120);
+            Canvas.SetBottom(scanBorder, 10);
+            _hudOverlay.Children.Add(scanBorder);
+        }
+
+        private void CreateHolographicGrid()
+        {
+            // Additional holographic grid overlay for EVE-style appearance
+            var gridCanvas = new Canvas
+            {
+                Width = Width,
+                Height = Height,
+                IsHitTestVisible = false
+            };
+
+            // Diagonal grid lines
+            for (int i = -4; i <= 4; i++)
+            {
+                var line1 = new Line
+                {
+                    X1 = 0,
+                    Y1 = Height / 2 + i * 30,
+                    X2 = Width,
+                    Y2 = Height / 2 + i * 30,
+                    Stroke = new SolidColorBrush(Color.FromArgb((byte)(20 * HolographicIntensity), 64, 224, 255)),
+                    StrokeThickness = 0.5,
+                    StrokeDashArray = new DoubleCollection { 5, 10 }
+                };
+                gridCanvas.Children.Add(line1);
+
+                var line2 = new Line
+                {
+                    X1 = Width / 2 + i * 30,
+                    Y1 = 0,
+                    X2 = Width / 2 + i * 30,
+                    Y2 = Height,
+                    Stroke = new SolidColorBrush(Color.FromArgb((byte)(20 * HolographicIntensity), 64, 224, 255)),
+                    StrokeThickness = 0.5,
+                    StrokeDashArray = new DoubleCollection { 5, 10 }
+                };
+                gridCanvas.Children.Add(line2);
+            }
+
+            _radarCanvas.Children.Insert(0, gridCanvas);
+        }
+
+        private void CreateTacticalInfoPanels()
+        {
+            // System information panel
+            CreateSystemInfoPanel();
+
+            // Fleet status panel (if applicable)
+            CreateFleetStatusPanel();
+
+            // Capacitor and shield status
+            CreateStatusBars();
+        }
+
+        private void CreateSystemInfoPanel()
+        {
+            var sysPanel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                Background = new SolidColorBrush(Color.FromArgb(50, 0, 20, 40))
+            };
+
+            var sysBorder = new Border
+            {
+                BorderBrush = new SolidColorBrush(Color.FromArgb(120, 100, 149, 237)),
+                BorderThickness = new Thickness(1),
+                Child = sysPanel,
+                Effect = new DropShadowEffect
+                {
+                    Color = Color.FromRgb(100, 149, 237),
+                    BlurRadius = 6,
+                    ShadowDepth = 0,
+                    Opacity = HolographicIntensity * 0.4
+                }
+            };
+
+            var sysHeader = new TextBlock
+            {
+                Text = "SYSTEM STATUS",
+                Foreground = new SolidColorBrush(Color.FromRgb(100, 149, 237)),
+                FontSize = 9,
+                FontWeight = FontWeights.Bold,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 3, 5, 1)
+            };
+            sysPanel.Children.Add(sysHeader);
+
+            var secStatus = new TextBlock
+            {
+                Text = "SEC: 0.5",
+                Foreground = new SolidColorBrush(Color.FromRgb(255, 215, 0)),
+                FontSize = 8,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 0, 5, 1)
+            };
+            sysPanel.Children.Add(secStatus);
+
+            var pilots = new TextBlock
+            {
+                Text = "PILOTS: 47",
+                Foreground = new SolidColorBrush(Color.FromRgb(64, 224, 255)),
+                FontSize = 8,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 0, 5, 3)
+            };
+            sysPanel.Children.Add(pilots);
+
+            Canvas.SetRight(sysBorder, 10);
+            Canvas.SetBottom(sysBorder, 60);
+            _hudOverlay.Children.Add(sysBorder);
+        }
+
+        private void CreateFleetStatusPanel()
+        {
+            var fleetPanel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                Background = new SolidColorBrush(Color.FromArgb(50, 0, 40, 0))
+            };
+
+            var fleetBorder = new Border
+            {
+                BorderBrush = new SolidColorBrush(Color.FromArgb(120, 50, 205, 50)),
+                BorderThickness = new Thickness(1),
+                Child = fleetPanel,
+                Effect = new DropShadowEffect
+                {
+                    Color = Color.FromRgb(50, 205, 50),
+                    BlurRadius = 6,
+                    ShadowDepth = 0,
+                    Opacity = HolographicIntensity * 0.4
+                }
+            };
+
+            var fleetHeader = new TextBlock
+            {
+                Text = "FLEET",
+                Foreground = new SolidColorBrush(Color.FromRgb(50, 205, 50)),
+                FontSize = 9,
+                FontWeight = FontWeights.Bold,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 3, 5, 1)
+            };
+            fleetPanel.Children.Add(fleetHeader);
+
+            var members = new TextBlock
+            {
+                Text = "MEMBERS: 12",
+                Foreground = new SolidColorBrush(Color.FromRgb(64, 224, 255)),
+                FontSize = 8,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 0, 5, 1)
+            };
+            fleetPanel.Children.Add(members);
+
+            var status = new TextBlock
+            {
+                Text = "STATUS: ACTIVE",
+                Foreground = new SolidColorBrush(Color.FromRgb(50, 205, 50)),
+                FontSize = 8,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 0, 5, 3)
+            };
+            fleetPanel.Children.Add(status);
+
+            Canvas.SetRight(fleetBorder, 10);
+            Canvas.SetBottom(fleetBorder, 120);
+            _hudOverlay.Children.Add(fleetBorder);
+        }
+
+        private void CreateStatusBars()
+        {
+            var statusCanvas = new Canvas();
+
+            // Shield bar
+            var shieldBar = CreateStatusBar("SHIELD", 85, Color.FromRgb(64, 224, 255), 0);
+            statusCanvas.Children.Add(shieldBar);
+
+            // Armor bar  
+            var armorBar = CreateStatusBar("ARMOR", 92, Color.FromRgb(255, 215, 0), 20);
+            statusCanvas.Children.Add(armorBar);
+
+            // Hull bar
+            var hullBar = CreateStatusBar("HULL", 100, Color.FromRgb(255, 64, 64), 40);
+            statusCanvas.Children.Add(hullBar);
+
+            Canvas.SetLeft(statusCanvas, 10);
+            Canvas.SetBottom(statusCanvas, 60);
+            _hudOverlay.Children.Add(statusCanvas);
+        }
+
+        private Border CreateStatusBar(string label, double percentage, Color color, double yOffset)
+        {
+            var panel = new StackPanel { Orientation = Orientation.Horizontal };
+            
+            var labelText = new TextBlock
+            {
+                Text = label,
+                Foreground = new SolidColorBrush(color),
+                FontSize = 8,
+                FontFamily = new FontFamily("Consolas"),
+                Width = 40,
+                Margin = new Thickness(2)
+            };
+            panel.Children.Add(labelText);
+
+            var barBackground = new Rectangle
+            {
+                Width = 100,
+                Height = 6,
+                Fill = new SolidColorBrush(Color.FromArgb(50, color.R, color.G, color.B)),
+                Stroke = new SolidColorBrush(color),
+                StrokeThickness = 1,
+                Margin = new Thickness(2)
+            };
+            panel.Children.Add(barBackground);
+
+            var barFill = new Rectangle
+            {
+                Width = percentage,
+                Height = 6,
+                Fill = new SolidColorBrush(Color.FromArgb(180, color.R, color.G, color.B)),
+                Margin = new Thickness(2),
+                Effect = new DropShadowEffect
+                {
+                    Color = color,
+                    BlurRadius = 4,
+                    ShadowDepth = 0,
+                    Opacity = HolographicIntensity * 0.6
+                }
+            };
+
+            var overlayCanvas = new Canvas();
+            overlayCanvas.Children.Add(barBackground);
+            overlayCanvas.Children.Add(barFill);
+            panel.Children.Add(overlayCanvas);
+
+            var percentText = new TextBlock
+            {
+                Text = $"{percentage:F0}%",
+                Foreground = new SolidColorBrush(color),
+                FontSize = 8,
+                FontFamily = new FontFamily("Consolas"),
+                Margin = new Thickness(5, 2, 2, 2)
+            };
+            panel.Children.Add(percentText);
+
+            var border = new Border
+            {
+                Child = panel,
+                Background = new SolidColorBrush(Color.FromArgb(30, 0, 0, 0))
+            };
+
+            Canvas.SetTop(border, yOffset);
+            return border;
+        }
+
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             if (IsActive)
@@ -520,6 +1065,54 @@ namespace Gideon.WPF.Presentation.Controls
             if (d is TacticalHUDControl hud)
                 hud.UpdateContacts();
         }
+
+        private static void OnHolographicIntensityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TacticalHUDControl hud)
+                hud.UpdateHolographicEffects();
+        }
+
+        private static void OnShowThreatAssessmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TacticalHUDControl hud)
+                hud.RefreshHUD();
+        }
+
+        private static void OnShowNavigationAidsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TacticalHUDControl hud)
+                hud.RefreshHUD();
+        }
+
+        private static void OnScanModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TacticalHUDControl hud)
+                hud.UpdateScanModeDisplay();
+        }
+
+        private void UpdateHolographicEffects()
+        {
+            // Update all holographic effects based on intensity
+            foreach (var child in _hudOverlay.Children.OfType<Border>())
+            {
+                if (child.Effect is DropShadowEffect effect)
+                {
+                    effect.Opacity = effect.Opacity * HolographicIntensity;
+                }
+            }
+        }
+
+        private void RefreshHUD()
+        {
+            _hudOverlay.Children.Clear();
+            CreateHUDElements();
+        }
+
+        private void UpdateScanModeDisplay()
+        {
+            // Update scan mode display - would be enhanced with real scan data
+            // Currently just updates the display text
+        }
     }
 
     public enum TacticalHUDMode
@@ -535,7 +1128,18 @@ namespace Gideon.WPF.Presentation.Controls
         Friendly,
         Hostile,
         Neutral,
-        Unknown
+        Unknown,
+        Station,
+        Gate,
+        Celestial
+    }
+
+    public enum ScanMode
+    {
+        Passive,
+        Active,
+        Combat,
+        Directional
     }
 
     public class TacticalContact
@@ -545,5 +1149,11 @@ namespace Gideon.WPF.Presentation.Controls
         public double Bearing { get; set; }
         public ContactType Type { get; set; }
         public string Details { get; set; } = string.Empty;
+        public double Velocity { get; set; }
+        public string ShipType { get; set; } = string.Empty;
+        public int ThreatLevel { get; set; } // 0-10 scale
+        public DateTime LastSeen { get; set; } = DateTime.Now;
+        public bool IsLocked { get; set; }
+        public double SignalStrength { get; set; } = 1.0;
     }
 }

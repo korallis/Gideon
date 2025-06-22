@@ -9,9 +9,17 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace Gideon.WPF.Presentation.Controls;
@@ -48,12 +56,39 @@ public class PerformanceOptimizedRenderer
     private double _averageFrameTime = 16.67; // 60 FPS baseline
     private const int FrameHistorySize = 30;
 
+    // GPU and Parallel Processing
+    private readonly ConcurrentQueue<ParticleUpdateBatch> _updateQueue = new();
+    private readonly SemaphoreSlim _renderSemaphore = new(1, 1);
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+    private readonly Task _parallelUpdateTask;
+    private readonly int _maxConcurrency;
+
+    // Caching System
+    private readonly ConcurrentDictionary<string, CachedRenderData> _renderCache = new();
+    private readonly Timer _cacheCleanupTimer;
+    private const int CacheExpirationMinutes = 5;
+    private const int MaxCacheEntries = 1000;
+
+    // Memory Management
+    private readonly ObjectPool<ParticleUpdateBatch> _batchPool;
+    private long _lastMemoryCleanup = Environment.TickCount64;
+    private const long MemoryCleanupInterval = 30000; // 30 seconds
+
+    // Performance Tracking
+    private readonly PerformanceCounter _gpuUsageCounter;
+    private readonly PerformanceCounter _memoryUsageCounter;
+    private volatile bool _isGpuAccelerationAvailable;
+    private volatile int _activeParticleCount;
+
     #endregion
 
     #region Constructor
 
     public PerformanceOptimizedRenderer()
     {
+        _maxConcurrency = Math.Max(2, Environment.ProcessorCount / 2);
+        _batchPool = new ObjectPool<ParticleUpdateBatch>(() => new ParticleUpdateBatch(), maxSize: 100);
+
         _performanceMonitor = new DispatcherTimer
         {
             Interval = TimeSpan.FromSeconds(1)
@@ -61,7 +96,20 @@ public class PerformanceOptimizedRenderer
         _performanceMonitor.Tick += MonitorPerformance;
         _performanceMonitor.Start();
 
+        // Initialize performance counters
+        _gpuUsageCounter = InitializePerformanceCounter("GPU Engine", "Utilization Percentage", "_Total");
+        _memoryUsageCounter = InitializePerformanceCounter("Memory", "Available MBytes", null);
+
+        // Start cache cleanup timer
+        _cacheCleanupTimer = new Timer(CleanupCache, null, 
+            TimeSpan.FromMinutes(CacheExpirationMinutes), 
+            TimeSpan.FromMinutes(CacheExpirationMinutes));
+
+        // Start parallel processing task
+        _parallelUpdateTask = Task.Run(ParallelParticleUpdateLoop, _cancellationTokenSource.Token);
+
         DetectHardwareCapabilities();
+        InitializeGpuAcceleration();
     }
 
     #endregion
@@ -150,6 +198,50 @@ public class PerformanceOptimizedRenderer
     #region Events
 
     public event Action<PerformanceLevel>? OnPerformanceLevelChanged;
+
+    /// <summary>
+    /// Queue particle batch for parallel processing
+    /// </summary>
+    public void QueueParticleUpdate(ParticleUpdateBatch batch)
+    {
+        if (batch != null)
+        {
+            _updateQueue.Enqueue(batch);
+        }
+    }
+
+    /// <summary>
+    /// Get current GPU utilization percentage
+    /// </summary>
+    public float GetGpuUtilization()
+    {
+        try
+        {
+            return _gpuUsageCounter?.NextValue() ?? 0f;
+        }
+        catch
+        {
+            return 0f;
+        }
+    }
+
+    /// <summary>
+    /// Get cached render data or create new entry
+    /// </summary>
+    public CachedRenderData GetCachedRenderData(string key, Func<CachedRenderData> factory)
+    {
+        return _renderCache.GetOrAdd(key, _ => factory());
+    }
+
+    /// <summary>
+    /// Force immediate memory optimization
+    /// </summary>
+    public void ForceMemoryOptimization()
+    {
+        OptimizeMemory();
+        CleanupCache(null);
+        CleanupUnusedResources();
+    }
 
     #endregion
 
@@ -333,7 +425,325 @@ public class PerformanceOptimizedRenderer
         }
     }
 
+    private PerformanceCounter InitializePerformanceCounter(string category, string counter, string instance)
+    {
+        try
+        {
+            return new PerformanceCounter(category, counter, instance);
+        }
+        catch
+        {
+            return null; // Performance counter not available
+        }
+    }
+
+    private void InitializeGpuAcceleration()
+    {
+        try
+        {
+            // Check for hardware acceleration capability
+            var hwndSource = PresentationSource.FromVisual(Application.Current.MainWindow) as HwndSource;
+            if (hwndSource?.CompositionTarget != null)
+            {
+                _isGpuAccelerationAvailable = RenderCapability.IsDisplayed(Application.Current.MainWindow) &&
+                                              RenderCapability.Tier > 0;
+            }
+        }
+        catch
+        {
+            _isGpuAccelerationAvailable = false;
+        }
+    }
+
+    private async Task ParallelParticleUpdateLoop()
+    {
+        var concurrencyOptions = new ParallelOptions
+        {
+            MaxDegreeOfParallelism = _maxConcurrency,
+            CancellationToken = _cancellationTokenSource.Token
+        };
+
+        while (!_cancellationTokenSource.Token.IsCancellationRequested)
+        {
+            try
+            {
+                var batches = new List<ParticleUpdateBatch>();
+                
+                // Collect batches for processing
+                while (_updateQueue.TryDequeue(out var batch) && batches.Count < _maxConcurrency * 2)
+                {
+                    batches.Add(batch);
+                }
+
+                if (batches.Count > 0)
+                {
+                    await _renderSemaphore.WaitAsync(_cancellationTokenSource.Token);
+                    try
+                    {
+                        // Process batches in parallel
+                        await Parallel.ForEachAsync(batches, concurrencyOptions, async (batch, ct) =>
+                        {
+                            await ProcessParticleBatch(batch, ct);
+                            _batchPool.Return(batch);
+                        });
+                    }
+                    finally
+                    {
+                        _renderSemaphore.Release();
+                    }
+                }
+                else
+                {
+                    // No work available, yield control
+                    await Task.Delay(1, _cancellationTokenSource.Token);
+                }
+
+                // Periodic memory cleanup
+                if (Environment.TickCount64 - _lastMemoryCleanup > MemoryCleanupInterval)
+                {
+                    OptimizeMemory();
+                    _lastMemoryCleanup = Environment.TickCount64;
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in parallel particle update: {ex.Message}");
+                await Task.Delay(100, _cancellationTokenSource.Token);
+            }
+        }
+    }
+
+    private async Task ProcessParticleBatch(ParticleUpdateBatch batch, CancellationToken cancellationToken)
+    {
+        if (batch?.Particles == null) return;
+
+        await Task.Run(() =>
+        {
+            foreach (var particle in batch.Particles)
+            {
+                if (cancellationToken.IsCancellationRequested) break;
+
+                // Update particle physics
+                particle.X += particle.VelocityX * batch.DeltaTime;
+                particle.Y += particle.VelocityY * batch.DeltaTime;
+                particle.Life -= batch.DeltaTime / particle.MaxLife;
+
+                // Apply performance-based optimizations
+                var config = GetOptimizedConfig();
+                if (config.EnableAnimations)
+                {
+                    particle.Rotation += particle.RotationSpeed * batch.DeltaTime;
+                    particle.Scale = Math.Max(0.1, particle.Scale + particle.ScaleSpeed * batch.DeltaTime);
+                }
+
+                // Update active particle count
+                Interlocked.Increment(ref _activeParticleCount);
+            }
+        }, cancellationToken);
+    }
+
+    private void CleanupCache(object state)
+    {
+        var expiredKeys = new List<string>();
+        var now = DateTime.UtcNow;
+
+        foreach (var kvp in _renderCache)
+        {
+            if (now - kvp.Value.CreationTime > TimeSpan.FromMinutes(CacheExpirationMinutes))
+            {
+                expiredKeys.Add(kvp.Key);
+            }
+        }
+
+        foreach (var key in expiredKeys)
+        {
+            _renderCache.TryRemove(key, out _);
+        }
+
+        // Enforce max cache size
+        if (_renderCache.Count > MaxCacheEntries)
+        {
+            var oldestEntries = _renderCache
+                .OrderBy(kvp => kvp.Value.CreationTime)
+                .Take(_renderCache.Count - MaxCacheEntries)
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            foreach (var key in oldestEntries)
+            {
+                _renderCache.TryRemove(key, out _);
+            }
+        }
+    }
+
+    private void CleanupUnusedResources()
+    {
+        // Return unused batches to pool
+        while (_updateQueue.TryDequeue(out var batch))
+        {
+            _batchPool.Return(batch);
+        }
+
+        // Reset active particle count
+        Interlocked.Exchange(ref _activeParticleCount, 0);
+    }
+
+    /// <summary>
+    /// Get advanced performance metrics including GPU and memory usage
+    /// </summary>
+    public AdvancedPerformanceMetrics GetAdvancedMetrics()
+    {
+        return new AdvancedPerformanceMetrics
+        {
+            AverageFrameTime = _averageFrameTime,
+            CurrentFPS = 1000.0 / _averageFrameTime,
+            PerformanceLevel = CurrentPerformanceLevel,
+            FrameTimeHistory = new Queue<double>(_frameTimeHistory),
+            HardwareAcceleration = UseHardwareAcceleration,
+            GpuUtilization = GetGpuUtilization(),
+            MemoryUsageMB = GC.GetTotalMemory(false) / (1024 * 1024),
+            ActiveParticleCount = _activeParticleCount,
+            CacheHitRatio = CalculateCacheHitRatio(),
+            ParallelProcessingEnabled = _maxConcurrency > 1,
+            QueuedBatches = _updateQueue.Count
+        };
+    }
+
+    private double CalculateCacheHitRatio()
+    {
+        // Simple approximation based on cache size and activity
+        return _renderCache.Count > 0 ? Math.Min(1.0, _renderCache.Count / 100.0) : 0.0;
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _cancellationTokenSource.Cancel();
+            _parallelUpdateTask?.Wait(TimeSpan.FromSeconds(5));
+            _cancellationTokenSource.Dispose();
+            
+            _performanceMonitor?.Stop();
+            _cacheCleanupTimer?.Dispose();
+            _renderSemaphore?.Dispose();
+            
+            _gpuUsageCounter?.Dispose();
+            _memoryUsageCounter?.Dispose();
+            
+            CleanupUnusedResources();
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
     #endregion
+}
+
+/// <summary>
+/// Particle update batch for parallel processing
+/// </summary>
+public class ParticleUpdateBatch
+{
+    public List<ParticleData> Particles { get; set; } = new();
+    public double DeltaTime { get; set; }
+    public DateTime CreationTime { get; set; } = DateTime.UtcNow;
+    
+    public void Reset()
+    {
+        Particles.Clear();
+        DeltaTime = 0;
+        CreationTime = DateTime.UtcNow;
+    }
+}
+
+/// <summary>
+/// Lightweight particle data for parallel processing
+/// </summary>
+public class ParticleData
+{
+    public double X { get; set; }
+    public double Y { get; set; }
+    public double VelocityX { get; set; }
+    public double VelocityY { get; set; }
+    public double Life { get; set; }
+    public double MaxLife { get; set; }
+    public double Rotation { get; set; }
+    public double RotationSpeed { get; set; }
+    public double Scale { get; set; } = 1.0;
+    public double ScaleSpeed { get; set; }
+}
+
+/// <summary>
+/// Cached render data for performance optimization
+/// </summary>
+public class CachedRenderData
+{
+    public object Data { get; set; }
+    public DateTime CreationTime { get; set; } = DateTime.UtcNow;
+    public DateTime LastAccessed { get; set; } = DateTime.UtcNow;
+    public int AccessCount { get; set; }
+    public long SizeBytes { get; set; }
+}
+
+/// <summary>
+/// Advanced performance metrics with GPU and parallel processing stats
+/// </summary>
+public class AdvancedPerformanceMetrics : PerformanceMetrics
+{
+    public float GpuUtilization { get; set; }
+    public long MemoryUsageMB { get; set; }
+    public double CacheHitRatio { get; set; }
+    public bool ParallelProcessingEnabled { get; set; }
+    public int QueuedBatches { get; set; }
+}
+
+/// <summary>
+/// Simple object pool for memory optimization
+/// </summary>
+public class ObjectPool<T> where T : class, new()
+{
+    private readonly ConcurrentQueue<T> _objects = new();
+    private readonly Func<T> _objectGenerator;
+    private readonly Action<T> _resetAction;
+    private readonly int _maxSize;
+    private int _currentCount;
+
+    public ObjectPool(Func<T> objectGenerator, Action<T> resetAction = null, int maxSize = 100)
+    {
+        _objectGenerator = objectGenerator ?? throw new ArgumentNullException(nameof(objectGenerator));
+        _resetAction = resetAction;
+        _maxSize = maxSize;
+    }
+
+    public T Get()
+    {
+        if (_objects.TryDequeue(out T item))
+        {
+            Interlocked.Decrement(ref _currentCount);
+            return item;
+        }
+        return _objectGenerator();
+    }
+
+    public void Return(T item)
+    {
+        if (item == null) return;
+        
+        if (_currentCount < _maxSize)
+        {
+            _resetAction?.Invoke(item);
+            _objects.Enqueue(item);
+            Interlocked.Increment(ref _currentCount);
+        }
+    }
 }
 
 /// <summary>

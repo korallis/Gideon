@@ -1,4 +1,16 @@
+// ==========================================================================
+// ShipFitting.cs - Ship Fitting Domain Entities
+// ==========================================================================
+// Domain entities for ship fitting management, analysis, and optimization.
+//
+// Author: Gideon Development Team
+// Created: June 22, 2025
+// ==========================================================================
+
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gideon.WPF.Core.Domain.Entities;
 

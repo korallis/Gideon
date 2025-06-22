@@ -11,6 +11,7 @@ using Gideon.WPF.Infrastructure.Data.Repositories;
 using Gideon.WPF.Infrastructure.Services;
 using Gideon.WPF.Core.Domain.Interfaces;
 using Gideon.WPF.Core.Application.Services;
+using Gideon.WPF.Core.Infrastructure.Services;
 using Gideon.WPF.Presentation.ViewModels.Shared;
 using Gideon.WPF.Infrastructure.Configuration;
 using FluentValidation;
@@ -143,6 +144,16 @@ public partial class App : System.Windows.Application
         // Register application services
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IShipFittingService, ShipFittingService>();
+        services.AddScoped<IStackingPenaltyService, StackingPenaltyService>();
+        services.AddScoped<ISkillCalculationService, SkillCalculationService>();
+        services.AddScoped<IShipFittingCalculationService, ShipFittingCalculationService>();
+        services.AddScoped<IDpsCalculationService, DpsCalculationService>();
+        services.AddScoped<ITankCalculationService, TankCalculationService>();
+        services.AddScoped<ICapacitorCalculationService, CapacitorCalculationService>();
+        services.AddScoped<INavigationCalculationService, NavigationCalculationService>();
+        services.AddScoped<ITargetingCalculationService, TargetingCalculationService>();
+        services.AddScoped<IAmmunitionCalculationService, AmmunitionCalculationService>();
+        services.AddScoped<IMarketDataCacheService, MarketDataCacheService>();
         
         // Register Windows integration services
         services.AddSingleton<WindowsThemeService>();

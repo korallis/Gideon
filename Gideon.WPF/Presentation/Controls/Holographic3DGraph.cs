@@ -49,6 +49,22 @@ public class Holographic3DGraph : UserControl
         DependencyProperty.Register(nameof(ColorScheme), typeof(EVEColorScheme), typeof(Holographic3DGraph),
             new PropertyMetadata(EVEColorScheme.ElectricBlue, OnColorSchemeChanged));
 
+    public static readonly DependencyProperty MarketDataProperty =
+        DependencyProperty.Register(nameof(MarketData), typeof(IEnumerable<MarketDataPoint>), typeof(Holographic3DGraph),
+            new PropertyMetadata(null, OnMarketDataChanged));
+
+    public static readonly DependencyProperty TimeRangeProperty =
+        DependencyProperty.Register(nameof(TimeRange), typeof(TimeSpan), typeof(Holographic3DGraph),
+            new PropertyMetadata(TimeSpan.FromHours(24), OnTimeRangeChanged));
+
+    public static readonly DependencyProperty ShowGridProperty =
+        DependencyProperty.Register(nameof(ShowGrid), typeof(bool), typeof(Holographic3DGraph),
+            new PropertyMetadata(true, OnShowGridChanged));
+
+    public static readonly DependencyProperty ShowVolatilityProperty =
+        DependencyProperty.Register(nameof(ShowVolatility), typeof(bool), typeof(Holographic3DGraph),
+            new PropertyMetadata(false, OnShowVolatilityChanged));
+
     #endregion
 
     #region Properties
@@ -81,6 +97,30 @@ public class Holographic3DGraph : UserControl
     {
         get => (EVEColorScheme)GetValue(ColorSchemeProperty);
         set => SetValue(ColorSchemeProperty, value);
+    }
+
+    public IEnumerable<MarketDataPoint> MarketData
+    {
+        get => (IEnumerable<MarketDataPoint>)GetValue(MarketDataProperty);
+        set => SetValue(MarketDataProperty, value);
+    }
+
+    public TimeSpan TimeRange
+    {
+        get => (TimeSpan)GetValue(TimeRangeProperty);
+        set => SetValue(TimeRangeProperty, value);
+    }
+
+    public bool ShowGrid
+    {
+        get => (bool)GetValue(ShowGridProperty);
+        set => SetValue(ShowGridProperty, value);
+    }
+
+    public bool ShowVolatility
+    {
+        get => (bool)GetValue(ShowVolatilityProperty);
+        set => SetValue(ShowVolatilityProperty, value);
     }
 
     #endregion
@@ -209,12 +249,32 @@ public class Holographic3DGraph : UserControl
 
     private void UpdateGraph()
     {
-        if (_model == null || DataPoints == null) return;
+        if (_model == null) return;
 
         // Clear existing graph but keep lighting
         ClearGraphGeometry();
         AddHolographicLighting();
 
+        // Add holographic grid if enabled
+        if (ShowGrid)
+        {
+            CreateHolographicGrid();
+        }
+
+        // Create market data visualization if available
+        if (MarketData != null && MarketData.Any())
+        {
+            CreateMarketDataVisualization();
+        }
+        // Fallback to generic data points
+        else if (DataPoints != null)
+        {
+            CreateGenericGraph();
+        }
+    }
+
+    private void CreateGenericGraph()
+    {
         // Create graph based on type
         switch (GraphType)
         {
@@ -231,6 +291,63 @@ public class Holographic3DGraph : UserControl
                 CreateHolographicScatterGraph();
                 break;
         }
+    }
+
+    private void CreateMarketDataVisualization()
+    {
+        var marketData = MarketData.Where(d => d.Timestamp >= DateTime.Now - TimeRange).ToList();
+        if (!marketData.Any()) return;
+
+        switch (GraphType)
+        {
+            case GraphType.Line:
+                CreateMarketLineGraph(marketData);
+                break;
+            case GraphType.Surface:
+                CreateMarketSurfaceGraph(marketData);
+                break;
+            case GraphType.Bar:
+                CreateMarketVolumeGraph(marketData);
+                break;
+            case GraphType.Scatter:
+                CreateMarketScatterGraph(marketData);
+                break;
+        }
+
+        if (ShowVolatility)
+        {
+            CreateVolatilityVisualization(marketData);
+        }
+    }
+
+    private void CreateHolographicGrid()
+    {
+        var gridBuilder = new MeshBuilder();
+        var gridSize = 10;
+        var gridSpacing = 1.0;
+        
+        // Create grid lines
+        for (int i = -gridSize; i <= gridSize; i++)
+        {
+            var x = i * gridSpacing;
+            // X-direction lines
+            gridBuilder.AddTube(
+                new Point3D(x, -gridSize * gridSpacing, 0), 
+                new Point3D(x, gridSize * gridSpacing, 0), 
+                0.02, 0.02, 4);
+            
+            // Y-direction lines
+            gridBuilder.AddTube(
+                new Point3D(-gridSize * gridSpacing, x, 0), 
+                new Point3D(gridSize * gridSpacing, x, 0), 
+                0.02, 0.02, 4);
+        }
+
+        var gridMesh = gridBuilder.ToMesh();
+        var gridMaterial = CreateHolographicMaterial(ColorScheme, 0.2);
+        var gridGeometry = new GeometryModel3D(gridMesh, gridMaterial);
+        
+        _model.Children.Add(new ModelVisual3D { Content = gridGeometry });
     }
 
     private void ClearGraphGeometry()
@@ -338,6 +455,185 @@ public class Holographic3DGraph : UserControl
         {
             CreateDataPointMarker(point, 0.3);
         }
+    }
+
+    private void CreateMarketLineGraph(List<MarketDataPoint> marketData)
+    {
+        if (marketData.Count < 2) return;
+
+        // Normalize data for 3D space
+        var minPrice = marketData.Min(d => d.Price);
+        var maxPrice = marketData.Max(d => d.Price);
+        var priceRange = maxPrice - minPrice;
+        
+        var normalizedPoints = marketData.Select((d, i) => new Point3D(
+            i * 10.0 / marketData.Count - 5, // X: Time axis
+            0, // Y: Keep at center
+            (double)((d.Price - minPrice) / priceRange) * 5 // Z: Price axis
+        )).ToList();
+
+        // Create price line with varying thickness based on volume
+        for (int i = 0; i < normalizedPoints.Count - 1; i++)
+        {
+            var start = normalizedPoints[i];
+            var end = normalizedPoints[i + 1];
+            var volume = marketData[i].Volume;
+            var thickness = Math.Max(0.05, Math.Log10((double)volume + 1) * 0.03);
+
+            var lineBuilder = new MeshBuilder();
+            lineBuilder.AddTube(start, end, thickness, thickness, 8);
+            var lineMesh = lineBuilder.ToMesh();
+
+            // Color based on price movement
+            var priceChange = marketData[i + 1].Price - marketData[i].Price;
+            var lineColorScheme = priceChange >= 0 ? EVEColorScheme.EmeraldGreen : EVEColorScheme.CrimsonRed;
+            var lineMaterial = CreateHolographicMaterial(lineColorScheme, 0.8);
+            var lineGeometry = new GeometryModel3D(lineMesh, lineMaterial);
+            
+            _model.Children.Add(new ModelVisual3D { Content = lineGeometry });
+        }
+
+        // Add price markers at significant points
+        foreach (var (point, data) in normalizedPoints.Zip(marketData))
+        {
+            if (IsSignificantDataPoint(data, marketData))
+            {
+                CreateMarketDataMarker(point, data);
+            }
+        }
+    }
+
+    private void CreateMarketSurfaceGraph(List<MarketDataPoint> marketData)
+    {
+        // Create a 3D surface showing price/volume/time relationships
+        var surfaceBuilder = new MeshBuilder();
+        var timeSteps = Math.Min(50, marketData.Count);
+        var volumeSteps = 20;
+        
+        // Create surface grid
+        for (int t = 0; t < timeSteps - 1; t++)
+        {
+            for (int v = 0; v < volumeSteps - 1; v++)
+            {
+                var timeProgress = (double)t / timeSteps;
+                var volumeProgress = (double)v / volumeSteps;
+                
+                var dataIndex = (int)(timeProgress * (marketData.Count - 1));
+                var data = marketData[dataIndex];
+                
+                var x = timeProgress * 10 - 5; // Time axis
+                var y = volumeProgress * 5 - 2.5; // Volume axis
+                var z = (double)(data.Price - marketData.Min(d => d.Price)) / 
+                       (double)(marketData.Max(d => d.Price) - marketData.Min(d => d.Price)) * 5; // Price axis
+
+                var p1 = new Point3D(x, y, z);
+                var p2 = new Point3D(x + 10.0/timeSteps, y, z);
+                var p3 = new Point3D(x, y + 5.0/volumeSteps, z);
+                var p4 = new Point3D(x + 10.0/timeSteps, y + 5.0/volumeSteps, z);
+
+                surfaceBuilder.AddTriangle(p1, p2, p3);
+                surfaceBuilder.AddTriangle(p2, p4, p3);
+            }
+        }
+
+        var surfaceMesh = surfaceBuilder.ToMesh();
+        var surfaceMaterial = CreateHolographicMaterial(ColorScheme, 0.5);
+        var surfaceGeometry = new GeometryModel3D(surfaceMesh, surfaceMaterial);
+        
+        _model.Children.Add(new ModelVisual3D { Content = surfaceGeometry });
+    }
+
+    private void CreateMarketVolumeGraph(List<MarketDataPoint> marketData)
+    {
+        var maxVolume = marketData.Max(d => d.Volume);
+        
+        for (int i = 0; i < marketData.Count; i++)
+        {
+            var data = marketData[i];
+            var barBuilder = new MeshBuilder();
+            
+            var x = i * 10.0 / marketData.Count - 5;
+            var height = (double)(data.Volume / maxVolume) * 5;
+            var center = new Point3D(x, 0, height / 2);
+            
+            barBuilder.AddBox(center, 0.1, 0.1, height);
+            var barMesh = barBuilder.ToMesh();
+
+            // Color based on price trend
+            var colorScheme = i > 0 && data.Price > marketData[i-1].Price 
+                ? EVEColorScheme.EmeraldGreen 
+                : EVEColorScheme.CrimsonRed;
+            var barMaterial = CreateHolographicMaterial(colorScheme, 0.7);
+            var barGeometry = new GeometryModel3D(barMesh, barMaterial);
+            
+            _model.Children.Add(new ModelVisual3D { Content = barGeometry });
+        }
+    }
+
+    private void CreateMarketScatterGraph(List<MarketDataPoint> marketData)
+    {
+        var minPrice = marketData.Min(d => d.Price);
+        var maxPrice = marketData.Max(d => d.Price);
+        var maxVolume = marketData.Max(d => d.Volume);
+        
+        foreach (var (data, i) in marketData.Select((d, i) => (d, i)))
+        {
+            var x = i * 10.0 / marketData.Count - 5; // Time
+            var y = (double)(data.Volume / maxVolume) * 5 - 2.5; // Volume
+            var z = (double)((data.Price - minPrice) / (maxPrice - minPrice)) * 5; // Price
+            
+            var point = new Point3D(x, y, z);
+            var size = Math.Max(0.1, (double)(data.Volume / maxVolume) * 0.5);
+            
+            CreateMarketDataMarker(point, data, size);
+        }
+    }
+
+    private void CreateVolatilityVisualization(List<MarketDataPoint> marketData)
+    {
+        // Calculate volatility bands
+        for (int i = 1; i < marketData.Count; i++)
+        {
+            var priceChange = Math.Abs((double)(marketData[i].Price - marketData[i-1].Price));
+            var avgPrice = (double)(marketData[i].Price + marketData[i-1].Price) / 2;
+            var volatility = priceChange / avgPrice;
+            
+            if (volatility > 0.05) // 5% volatility threshold
+            {
+                var x = i * 10.0 / marketData.Count - 5;
+                var z = (double)((marketData[i].Price - marketData.Min(d => d.Price)) / 
+                                (marketData.Max(d => d.Price) - marketData.Min(d => d.Price))) * 5;
+                
+                // Create volatility indicator
+                var volBuilder = new MeshBuilder();
+                volBuilder.AddSphere(new Point3D(x, 0, z), 0.2 + volatility * 2, 6, 6);
+                var volMesh = volBuilder.ToMesh();
+                
+                var volMaterial = CreateHolographicMaterial(EVEColorScheme.VoidPurple, 0.6);
+                var volGeometry = new GeometryModel3D(volMesh, volMaterial);
+                
+                _model.Children.Add(new ModelVisual3D { Content = volGeometry });
+            }
+        }
+    }
+
+    private bool IsSignificantDataPoint(MarketDataPoint data, List<MarketDataPoint> allData)
+    {
+        // Identify significant price movements, high volume, etc.
+        var avgVolume = allData.Average(d => (double)d.Volume);
+        return (double)data.Volume > avgVolume * 2; // High volume threshold
+    }
+
+    private void CreateMarketDataMarker(Point3D point, MarketDataPoint data, double size = 0.15)
+    {
+        var sphereBuilder = new MeshBuilder();
+        sphereBuilder.AddSphere(point, size, 8, 8);
+        var sphereMesh = sphereBuilder.ToMesh();
+
+        var sphereMaterial = CreateHolographicMaterial(EVEColorScheme.GoldAccent, 0.9);
+        var sphereGeometry = new GeometryModel3D(sphereMesh, sphereMaterial);
+        
+        _model.Children.Add(new ModelVisual3D { Content = sphereGeometry });
     }
 
     private void CreateDataPointMarker(Point3D point, double size = 0.2)
@@ -452,6 +748,38 @@ public class Holographic3DGraph : UserControl
         }
     }
 
+    private static void OnMarketDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Holographic3DGraph graph)
+        {
+            graph.UpdateGraph();
+        }
+    }
+
+    private static void OnTimeRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Holographic3DGraph graph)
+        {
+            graph.UpdateGraph();
+        }
+    }
+
+    private static void OnShowGridChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Holographic3DGraph graph)
+        {
+            graph.UpdateGraph();
+        }
+    }
+
+    private static void OnShowVolatilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Holographic3DGraph graph)
+        {
+            graph.UpdateGraph();
+        }
+    }
+
     #endregion
 
     #region Dispose
@@ -486,4 +814,21 @@ public enum EVEColorScheme
     CrimsonRed,
     EmeraldGreen,
     VoidPurple
+}
+
+/// <summary>
+/// Market data point for 3D visualization
+/// </summary>
+public class MarketDataPoint
+{
+    public DateTime Timestamp { get; set; }
+    public decimal Price { get; set; }
+    public decimal Volume { get; set; }
+    public decimal High { get; set; }
+    public decimal Low { get; set; }
+    public decimal Open { get; set; }
+    public decimal Close { get; set; }
+    public string ItemName { get; set; } = string.Empty;
+    public int ItemId { get; set; }
+    public string Region { get; set; } = string.Empty;
 }
