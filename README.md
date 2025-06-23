@@ -5,7 +5,7 @@
 
 Gideon is a comprehensive Windows-native desktop application for EVE Online players, featuring advanced ship fitting, character planning, and market analysis tools with a stunning holographic UI inspired by Westworld and EVE Online's aesthetic.
 
-![Gideon Interface](image.png)
+![Gideon Interface](Coming Soon)
 
 ## 📥 Installation
 
