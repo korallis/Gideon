@@ -41,7 +41,7 @@ public class HoloWindowChrome : Control, IAnimationIntensityTarget, IAdaptiveCon
 
     public static readonly DependencyProperty WindowTitleProperty =
         DependencyProperty.Register(nameof(WindowTitle), typeof(string), typeof(HoloWindowChrome),
-            new PropertyMetadata("Gideon - EVE AI Copilot"));
+            new PropertyMetadata("Gideon - EVE Toolkit"));
 
     public static readonly DependencyProperty WindowIconProperty =
         DependencyProperty.Register(nameof(WindowIcon), typeof(ImageSource), typeof(HoloWindowChrome),

@@ -1,7 +1,7 @@
 // ==========================================================================
 // GideonDbContext.cs - Entity Framework Core Database Context
 // ==========================================================================
-// Comprehensive database context for Gideon EVE Online AI Copilot featuring
+// Comprehensive database context for Gideon EVE Online Toolkit featuring
 // character data, ship fittings, market analysis, and holographic interface state.
 //
 // Author: Gideon Development Team

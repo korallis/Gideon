@@ -358,7 +358,7 @@ public class HoloLoginInterface : UserControl, IAnimationIntensityTarget, IAdapt
         // Subtitle
         _subtitleText = new TextBlock
         {
-            Text = "EVE ONLINE AI COPILOT",
+            Text = "EVE ONLINE TOOLKIT",
             FontSize = 24,
             FontWeight = FontWeights.Normal,
             Foreground = new SolidColorBrush(Color.FromArgb(200, 150, 150, 200)),

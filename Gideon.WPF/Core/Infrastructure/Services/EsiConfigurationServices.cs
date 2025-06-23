@@ -310,7 +310,7 @@ public class EsiConfigurationService : IEsiConfigurationService
     {
         return new EsiApplicationConfig
         {
-            ApplicationName = "Gideon - EVE Online AI Copilot",
+            ApplicationName = "Gideon - EVE Online Toolkit",
             ClientId = GetConfiguredClientId(),
             ClientSecret = GetConfiguredClientSecret(),
             EsiBaseUrl = "https://esi.evetech.net",

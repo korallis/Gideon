@@ -42,7 +42,7 @@ public class NotificationManager
             // Show startup notification if enabled
             if (_config.System.EnableStartup)
             {
-                await ShowSystemNotificationAsync("Gideon Started", "EVE Online AI Copilot is ready to assist you");
+                await ShowSystemNotificationAsync("Gideon Started", "EVE Online Toolkit is ready to assist you");
             }
         }
         catch (Exception ex)

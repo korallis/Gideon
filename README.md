@@ -1,4 +1,4 @@
-# Gideon - EVE Online AI Copilot
+# Gideon - EVE Online Toolkit
 
 > **Status:** 🚧 In Development - Foundation Phase  
 > **Version:** 2.0.0-alpha  

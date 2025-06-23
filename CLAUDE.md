@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Gideon is a comprehensive native Windows desktop application for EVE Online players that serves as an AI Copilot for ship fitting, character planning, and market analysis. The application is built using .NET 9.0 + WPF with Windows 11 integration, designed to be highly accurate with calculations matching EVE Online's server-side formulas within 0.01%.
+Gideon is a comprehensive native Windows desktop application for EVE Online players that provides advanced ship fitting, character planning, and market analysis tools. The application is built using .NET 9.0 + WPF with Windows 11 integration, designed to be highly accurate with calculations matching EVE Online's server-side formulas within 0.01%.
 
 ## Current Architecture & Technology Stack
 

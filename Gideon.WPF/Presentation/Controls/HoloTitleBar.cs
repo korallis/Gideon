@@ -46,7 +46,7 @@ public class HoloTitleBar : Control, IAnimationIntensityTarget, IAdaptiveControl
 
     public static readonly DependencyProperty ApplicationSubtitleProperty =
         DependencyProperty.Register(nameof(ApplicationSubtitle), typeof(string), typeof(HoloTitleBar),
-            new PropertyMetadata("EVE AI COPILOT"));
+            new PropertyMetadata("EVE TOOLKIT"));
 
     public static readonly DependencyProperty CharacterNameProperty =
         DependencyProperty.Register(nameof(CharacterName), typeof(string), typeof(HoloTitleBar),

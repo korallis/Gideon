@@ -345,7 +345,7 @@ public class HoloLogin : Control, IAnimationIntensityTarget, IAdaptiveControl
         // Subtitle text
         var subtitleText = new FrameworkElementFactory(typeof(TextBlock));
         subtitleText.Name = "PART_SubtitleText";
-        subtitleText.SetValue(TextBlock.TextProperty, "EVE AI COPILOT");
+        subtitleText.SetValue(TextBlock.TextProperty, "EVE TOOLKIT");
         subtitleText.SetValue(TextBlock.FontFamilyProperty, new FontFamily("Segoe UI"));
         subtitleText.SetValue(TextBlock.FontWeightProperty, FontWeights.Normal);
         subtitleText.SetValue(TextBlock.FontSizeProperty, 14.0);

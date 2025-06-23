@@ -1,10 +1,10 @@
-# Gideon - EVE Online's AI Copilot
+# Gideon - EVE Online's Advanced Toolkit
 
 ## Product Requirements Document v2.0
 
 **Document Version:** 2.0  
 **Last Updated:** June 20, 2025  
-**Product:** Gideon (EVE Online's AI Copilot)  
+**Product:** Gideon (EVE Online's Advanced Toolkit)  
 **Platform:** Windows Desktop Application  
 **Target Audience:** EVE Online Players
 
@@ -13,7 +13,7 @@
 # 1. Executive Summary
 
 ## 1.1 Product Vision
-Gideon (EVE Online's AI Copilot) is a comprehensive desktop application designed to revolutionize how EVE Online pilots interact with ship fitting, character planning, and game data analysis. The application provides an intuitive, efficient workspace that consolidates essential EVE Online tools into a single, powerful desktop environment.
+Gideon (EVE Online's Advanced Toolkit) is a comprehensive desktop application designed to revolutionize how EVE Online pilots interact with ship fitting, character planning, and game data analysis. The application provides an intuitive, efficient workspace that consolidates essential EVE Online tools into a single, powerful desktop environment.
 
 ## 1.2 Product Mission
 To empower EVE Online players with accurate, real-time tools that enhance their gameplay experience through intelligent ship fitting, character optimization, and data-driven decision making, while maintaining the highest standards of accuracy and user experience.
@@ -1123,7 +1123,7 @@ So that I can budget appropriately and find cost-effective alternatives
 ---
 
 # 12. Conclusion
-This Product Requirements Document provides comprehensive specifications for the development of Gideon (EVE Online's AI Copilot), a desktop application for EVE Online players. The requirements detailed in this document are designed to ensure that the final product meets the highest standards of functionality, usability, and reliability.
+This Product Requirements Document provides comprehensive specifications for the development of Gideon (EVE Online's Advanced Toolkit), a desktop application for EVE Online players. The requirements detailed in this document are designed to ensure that the final product meets the highest standards of functionality, usability, and reliability.
 
 ## 12.1 Implementation Guidelines
 The successful implementation of Gideon requires adherence to all specifications outlined in this document. Development teams should prioritize accuracy, performance, and user experience in all implementation decisions. Regular validation against these requirements will ensure that the final product meets the expectations of the EVE Online community.

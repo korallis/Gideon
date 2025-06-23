@@ -9,7 +9,7 @@
     <LangVersion>latest</LangVersion>
     
     <!-- Application Information -->
-    <AssemblyTitle>Gideon - EVE Online AI Copilot</AssemblyTitle>
+    <AssemblyTitle>Gideon - EVE Online Toolkit</AssemblyTitle>
     <AssemblyDescription>High-performance native Windows desktop application for EVE Online players</AssemblyDescription>
     <AssemblyCompany>Gideon Development Team</AssemblyCompany>
     <AssemblyProduct>Gideon</AssemblyProduct>

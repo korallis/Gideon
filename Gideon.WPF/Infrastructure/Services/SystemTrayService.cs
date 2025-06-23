@@ -70,7 +70,7 @@ public class SystemTrayService : IDisposable
                 _notifyIcon = new NotifyIcon
                 {
                     Icon = GetApplicationIcon(),
-                    Text = "Gideon - EVE Online AI Copilot",
+                    Text = "Gideon - EVE Online Toolkit",
                     Visible = _config.SystemTray.ShowOnStartup
                 };
 

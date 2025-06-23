@@ -6,7 +6,7 @@
 
 ## 🎯 Project Overview
 
-Building Gideon (EVE Online's AI Copilot) - a high-performance native Windows desktop application for EVE Online players featuring ship fitting, character planning, and market analysis with Windows 11 Fluent Design integration and Westworld-EVE fusion holographic UI.
+Building Gideon (EVE Online's Advanced Toolkit) - a high-performance native Windows desktop application for EVE Online players featuring ship fitting, character planning, and market analysis with Windows 11 Fluent Design integration and Westworld-EVE fusion holographic UI.
 
 ### 🚀 **Technology Stack**
 - **.NET 9.0** - Latest .NET with C# 13 and native AOT support

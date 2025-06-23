@@ -816,7 +816,7 @@ public class HoloHelpSystem : UserControl, IAnimationIntensityTarget, IAdaptiveC
             Title = "Getting Started with Gideon",
             Category = "Basics",
             Type = HelpTopicType.Documentation,
-            Content = "Welcome to Gideon, your AI copilot for EVE Online. This guide will help you get started with the basics of ship fitting, market analysis, and character planning.",
+            Content = "Welcome to Gideon, your advanced toolkit for EVE Online. This guide will help you get started with the basics of ship fitting, market analysis, and character planning.",
             QuickHelp = "New to Gideon? Start here for the basics.",
             Keywords = new List<string> { "getting started", "basics", "introduction", "setup" }
         });

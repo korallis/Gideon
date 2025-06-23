@@ -183,7 +183,7 @@ public class AppSdkNotificationConfiguration
     /// <summary>
     /// Application display name for notifications
     /// </summary>
-    public string AppDisplayName { get; set; } = "Gideon - EVE Online AI Copilot";
+    public string AppDisplayName { get; set; } = "Gideon - EVE Online Toolkit";
 
     /// <summary>
     /// Application icon path for notifications

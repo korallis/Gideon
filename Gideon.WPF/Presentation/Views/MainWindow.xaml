@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Gideon.WPF.Presentation.Controls"
         mc:Ignorable="d"
-        Title="Gideon - EVE Online AI Copilot"
+        Title="Gideon - EVE Online Toolkit"
         Height="900" Width="1400"
         MinHeight="600" MinWidth="1000"
         WindowStartupLocation="CenterScreen"
@@ -150,7 +150,7 @@
                                          FontSize="16"
                                          Foreground="{StaticResource HoloTextBrush}"
                                          VerticalAlignment="Center"/>
-                                <TextBlock Text="EVE AI COPILOT" 
+                                <TextBlock Text="EVE TOOLKIT" 
                                          FontFamily="Segoe UI" 
                                          FontWeight="Normal" 
                                          FontSize="10"
@@ -321,7 +321,7 @@
                                     </Path.Effect>
                                 </Path>
                                 
-                                <TextBlock Text="GIDEON EVE AI COPILOT" 
+                                <TextBlock Text="GIDEON EVE TOOLKIT" 
                                          FontFamily="Segoe UI" 
                                          FontWeight="Bold" 
                                          FontSize="32"
