@@ -1,253 +1,163 @@
-# Gideon - EVE Online Toolkit
+# Gideon - Advanced EVE Online Toolkit
 
-> **Status:** 🚧 In Development - Foundation Phase  
-> **Version:** 2.0.0-alpha  
-> **Tech Stack:** .NET 9.0 + WPF + Windows 11 Integration
+> **Status:** 🚀 Alpha Release | **Version:** 2.0.0-alpha  
+> **Platform:** Windows 10/11 | **Requirements:** .NET 9.0 Runtime
 
-A high-performance native Windows desktop application for EVE Online players featuring ship fitting, character planning, and market analysis with Windows 11 Fluent Design integration.
+Gideon is a comprehensive Windows-native desktop application for EVE Online players, featuring advanced ship fitting, character planning, and market analysis tools with a stunning holographic UI inspired by Westworld and EVE Online's aesthetic.
 
-## 🚀 Quick Start
+![Gideon Interface](image.png)
 
-### Prerequisites
-- **Windows 10 version 1903+** or **Windows 11** (recommended)
-- **.NET 9.0 Runtime** (will be bundled with installer)
-- **Visual Studio 2022 17.11+** (for development)
-- **Git** for version control
+## 📥 Installation
 
-### Development Setup
+### System Requirements
 
-```bash
-# Clone the repository
-git clone https://github.com/your-username/Gideon.git
-cd Gideon
+- **Operating System:** Windows 10 (version 1903 or later) or Windows 11 (recommended)
+- **Processor:** Dual-core 2GHz or higher
+- **Memory:** 4GB RAM minimum (8GB recommended)
+- **Graphics:** DirectX 11 compatible
+- **Storage:** 100MB available space
+- **.NET Runtime:** .NET 9.0 (included in installer)
 
-# The WPF project will be created in Phase 1
-# Legacy Electron code is archived in archive-electron/
-```
+### Installation Steps
 
-### Build Commands (Coming in Phase 1)
+1. Download the latest installer from [Releases](https://github.com/yourusername/Gideon/releases)
+2. Run the installer and follow on-screen instructions
+3. Launch Gideon from the Start Menu or desktop shortcut
+4. Authenticate with your EVE Online account when prompted
 
-```bash
-# Development
-dotnet run                    # Start application in development mode
-dotnet watch run              # Start with hot reload
+## 🌟 Key Features
 
-# Building
-dotnet build                  # Debug build
-dotnet build -c Release       # Release build
-dotnet publish               # Publish self-contained
+### 🚢 Ship Fitting
 
-# Testing
-dotnet test                   # Run unit tests
-dotnet test --collect:"XPlat Code Coverage"  # With coverage
-```
+- **✅ Comprehensive Ship Database** - Complete database of all EVE Online ships with accurate attributes
+- **✅ Holographic 3D Ship Viewer** - Interactive 3D visualization with holographic effects
+- **✅ Module Management** - Drag and drop interface for fitting modules to your ships
+- **✅ Real-time Calculations** - Immediate performance statistics with EVE-accurate formulas
+- **✅ Performance Metrics** - Complete DPS, tank, capacitor, speed, and targeting statistics
+- **✅ Animated Visualizations** - Holographic data visualization for ship performance
+- **❌ Fitting Templates** - Save and load ship configurations (Coming soon)
+- **❌ Fitting Optimization** - AI-powered suggestions for improving your fits (Coming soon)
+- **❌ Fitting Comparison** - Side-by-side comparison of multiple ship configurations (Coming soon)
 
-## 📋 Development Plan
+### 📊 Market Analysis
 
-This project follows a comprehensive **163-task development plan** organized into **10 phases**:
+- **✅ Price Tracking** - Real-time market data visualization with particle effects
+- **✅ Market Graphs** - Holographic 3D price history and volume visualization
+- **✅ Order Books** - Complete market order data for all regions
+- **✅ Trading Dashboard** - Holographic trading metrics and analysis
+- **✅ Market History** - Historical price and volume data visualization
+- **✅ Regional Comparison** - Compare prices across different regions
+- **❌ Trade Route Analysis** - Find profitable trade routes (Coming soon)
+- **❌ Profit Margin Calculation** - Automated profit calculation with tax consideration (Coming soon)
+- **❌ Market Alerts** - Notifications for price thresholds (Coming soon)
 
-### **Phase 0: Project Cleanup & Documentation** ✅ **ACTIVE**
-- Clean up legacy Electron artifacts
-- Update project documentation
-- Archive existing codebase for reference
+### 👨‍🚀 Character Management
 
-### **Phase 1: Foundation & Project Setup** (Weeks 1-2)
-- .NET 9 WPF project with Windows 11 targeting
-- Modern WPF stack (CommunityToolkit.Mvvm, MaterialDesign, HelixToolkit)
-- Windows integration foundation
+- **✅ Multi-Character Support** - Manage multiple EVE Online characters
+- **✅ Skill Tracking** - Holographic skill tree visualization
+- **✅ Character Progress Timeline** - Visualize your character's development
+- **✅ Skill Queue Management** - Interactive skill planning interface
+- **✅ Training Predictions** - Accurate training time calculations with implants
+- **✅ Attribute Analysis** - Remapping optimization visualization
+- **❌ Skill Plan Optimization** - AI recommendations for optimal training (Coming soon)
+- **❌ Corporation Integration** - Corporation-level planning and analysis (Coming soon)
 
-### **Phase 2: Core Architecture & MVVM** (Weeks 3-4)
-- MVVM architecture with CommunityToolkit.Mvvm
-- Data layer with Entity Framework Core
-- Configuration and settings management
+### 🖥️ User Experience
 
-### **Phase 3: Authentication System** (Weeks 5-6)
-- OAuth2 PKCE implementation with native Windows integration
-- Multi-character support
-- ESI integration layer
+- **✅ Holographic UI** - Stunning Westworld-inspired interface with EVE Online aesthetics
+- **✅ Windows 11 Integration** - Native notifications, system tray, and Fluent Design
+- **✅ High Performance** - Fast startup, minimal resource usage, responsive interface
+- **✅ Multi-Monitor Support** - Optimized for multiple display configurations
+- **✅ Offline Support** - Core functionality available without internet connection
+- **✅ Glassmorphism Effects** - Modern transparent interface elements with depth
+- **✅ Animation System** - Fluid transitions and data visualizations
+- **❌ Interface Customization** - Personalize layout and appearance (Coming soon)
 
-### **Phase 4: Main UI & Navigation** (Weeks 7-8)
-- Windows 11 Fluent Design main window
-- Modern navigation system
-- Authentication UI
+## 🗺️ Feature Roadmap
 
-### **Phase 5: Ship Fitting System** (Weeks 9-10)
-- Native WPF drag-and-drop fitting interface
-- High-precision calculation engine
+### Phase 1: Core Foundation (Completed)
 
-### **Phase 6: 3D Ship Visualization** (Weeks 11-12)
-- HelixToolkit 3D ship rendering
-- Hardware-accelerated graphics
+- ✅ Ship database and fitting interface
+- ✅ ESI authentication and data retrieval
+- ✅ Holographic UI foundation
+- ✅ Character skill management
+- ✅ Basic market data visualization
 
-### **Phase 7: Market Analysis & Character Planning** (Weeks 13-14)
-- Real-time market data integration
-- Skill tree visualization and optimization
+### Phase 2: Enhanced Functionality (In Progress)
 
-### **Phase 8: Testing & Quality Assurance** (Week 15)
-- Comprehensive testing with xUnit
-- Performance and security validation
+- ⏳ Advanced fitting optimization
+- ⏳ Skill planning algorithms
+- ⏳ Comprehensive market analysis
+- ⏳ Fitting comparison tools
+- ⏳ 3D visualization enhancements
 
-### **Phase 9: Deployment & Distribution** (Week 16)
-- MSIX packaging and Windows Store preparation
-- Auto-updater and crash reporting
+### Phase 3: Advanced Integration (Planned)
 
-**Current Progress:** Phase 0 - Project Cleanup (67% complete)  
-**Active Task:** TASK-000-B - Update README.md  
-**Next Phase:** Phase 1 - Foundation & Project Setup
+- 📅 Fleet doctrine management
+- 📅 Advanced analytics and performance tracking
+- 📅 Corporation-level asset management
 
-See [development-plan.md](./development-plan.md) for complete task breakdown and progress tracking.
+## 🤔 Getting Started
 
-## 🏗️ Architecture
+### Authentication
 
-### Technology Stack
-- **.NET 9.0** - Latest .NET with C# 13 and native AOT support
-- **WPF** - Windows Presentation Foundation for rich native UI
-- **CommunityToolkit.Mvvm** - Modern MVVM framework with source generators
-- **HelixToolkit.Wpf** - 3D visualization for ship viewer
-- **MaterialDesignInXamlToolkit** - Modern Material Design UI components
-- **Entity Framework Core** - Data persistence with SQLite
-- **Refit** - Type-safe HTTP client for ESI API
-- **Polly** - Resilience patterns for API calls
-- **Windows 11 Features** - Native notifications, system tray, Fluent Design
+1. Launch Gideon and click "Add Character"
+2. Log in with your EVE Online credentials in the secure OAuth window
+3. Grant the requested permissions
+4. Your character data will sync automatically
 
-### Project Structure (Planned)
-```
-Gideon.WPF/
-├── Models/              # EVE data models and entities
-├── ViewModels/          # MVVM ViewModels with CommunityToolkit
-├── Views/               # XAML user interface
-├── Services/            # Business logic and data services
-│   ├── Authentication/ # ESI OAuth2 and token management
-│   ├── Data/           # EVE data access and caching
-│   ├── Fitting/        # Ship fitting calculations
-│   └── Market/         # Market analysis services
-├── Resources/           # Assets, styles, and resources
-├── Utilities/           # Helper classes and extensions
-└── Tests/              # Unit and integration tests
-```
+### Creating Your First Fit
 
-## 🎯 Key Features
+1. Navigate to the Ship Fitting module
+2. Select a ship from the holographic browser
+3. Drag and drop modules onto the fitting slots
+4. View real-time performance metrics
+5. Save your configuration with a custom name
 
-### Core Modules
-- **Ship Fitting:** Native drag-and-drop interface with 3D visualization
-- **Character Management:** ESI authentication with Windows Credential Manager
-- **Market Analysis:** Real-time pricing with native charts
-- **Settings:** Windows-native preferences and theming
+### Analyzing Market Data
 
-### Technical Excellence
-- **Performance:** <2s startup, <100ms UI response, <100MB memory
-- **Accuracy:** Ship calculations within 0.01% of EVE Online values
-- **Security:** OAuth2 PKCE with Windows Credential Manager integration
-- **Integration:** Full Windows 11 features (notifications, system tray, themes)
+1. Go to the Market Analysis module
+2. Search for items or browse categories
+3. View price history and regional comparisons
+4. Set up watchlists for important items
+5. Use the trading calculator for profit estimation
 
-### Windows-Native Benefits
-- **80% smaller** footprint than Electron (~30MB vs ~150MB)
-- **75% faster** startup time (1-2s vs 3-5s)
-- **Native performance** with hardware acceleration
-- **Windows integration** - system tray, notifications, file associations
-- **Professional feel** matching Windows 11 design standards
+## 🛠️ Troubleshooting
 
-## 🔧 Configuration
+### Common Issues
 
-### Application Settings (Planned)
-```json
-{
-  "Authentication": {
-    "ESIClientId": "your-esi-client-id",
-    "RedirectUri": "http://localhost:3000/auth/callback",
-    "Scopes": ["esi-skills.read_skills.v1", "..."]
-  },
-  "UI": {
-    "Theme": "Windows11",
-    "AccentColor": "Auto",
-    "StartMinimized": false
-  },
-  "Performance": {
-    "Enable3D": true,
-    "MaxMemoryMB": 500,
-    "CacheRetentionDays": 7
-  }
-}
-```
+- **Authentication Failed**: Ensure you have stable internet and correct credentials
+- **Performance Issues**: Check system requirements and update graphics drivers
+- **Missing Data**: Try refreshing ESI data through Settings > Synchronization
 
-### ESI Integration
-Native Windows OAuth2 flow with secure credential storage using Windows Credential Manager. No need for separate developer accounts - streamlined user experience.
+### Support
 
-## 📦 Legacy Archive
+- **Discord**: [Join our Discord Server](https://discord.gg/gideon)
+- **GitHub Issues**: [Report bugs here](https://github.com/yourusername/Gideon/issues)
+- **Email Support**: support@gideonapp.com
 
-The original Electron implementation has been archived to `archive-electron/` for reference. This archive contains:
+## 💖 Contributions
 
-- ✅ **Complete OAuth2 PKCE authentication system**
-- ✅ **Multi-character support with secure token storage**
-- ✅ **3D ship visualization with Babylon.js**
-- ✅ **Ship fitting calculation engines**
-- ✅ **Comprehensive React component library**
+### Financial Support
 
-These proven patterns serve as reference for the WPF implementation while we build a superior native Windows experience.
+ISK donations are most welcome and can be sent to **"Lee Barry"** in game. Your generous contributions help fund ongoing development.
 
-## 🧪 Testing (Planned)
+### Feature Requests
 
-### Testing Strategy
-```bash
-# Unit Tests
-dotnet test
+Have ideas for new features? Let us know through our [Discord](https://discord.gg/gideon) or [GitHub Issues](https://github.com/yourusername/Gideon/issues)!
 
-# Integration Tests
-dotnet test --filter Category=Integration
+## 📜 Legal
 
-# UI Tests
-# WinAppDriver automation tests
+### License
 
-# Performance Tests
-# Memory usage and startup time validation
-```
+Gideon is licensed under the MIT License - see LICENSE for details.
 
-### Quality Metrics
-- **Calculation Accuracy:** Within 0.01% of EVE Online
-- **Performance:** Startup <2s, Memory <100MB
-- **Test Coverage:** 80%+ with comprehensive scenarios
-- **Security:** Regular security audits and penetration testing
+### EVE Online Disclaimer
 
-## 🚀 Migration Benefits
+EVE Online and the EVE logo are the registered trademarks of CCP hf. All rights are reserved worldwide. All other trademarks are the property of their respective owners. EVE Online, the EVE logo, EVE and all associated logos and designs are the intellectual property of CCP hf. All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the intellectual property of CCP hf.
 
-### Electron → WPF Improvements
-| Metric | Electron | WPF Native | Improvement |
-|--------|----------|------------|-------------|
-| **Bundle Size** | ~150MB | ~30MB | **80% smaller** |
-| **Memory Usage** | ~200MB | ~50MB | **75% reduction** |
-| **Startup Time** | 3-5 seconds | 1-2 seconds | **75% faster** |
-| **Windows Integration** | Limited | Excellent | **Native features** |
-| **Performance** | Good | Excellent | **Hardware acceleration** |
-
-## 🤝 Development Workflow
-
-### Current Phase Process
-1. **Check Active Task:** Review [development-plan.md](./development-plan.md)
-2. **Update Progress:** Mark tasks as in_progress → completed
-3. **Sequential Development:** Complete phases in order for proper foundation
-4. **Quality Gates:** Test thoroughly before advancing phases
-5. **Documentation:** Update progress and patterns
-
-### Code Standards (Planned)
-- **C# 13** with latest language features
-- **MVVM pattern** with CommunityToolkit.Mvvm
-- **Async/await** throughout for responsive UI
-- **Dependency injection** with Microsoft.Extensions.DependencyInjection
-- **Clean Architecture** principles
-- **Windows 11 design guidelines**
-
-## 📄 License
-
-MIT License - see [LICENSE](./LICENSE) for details.
-
-## 🔗 Links
-
-- [Product Requirements](./prd.md) - Complete product specification
-- [Development Plan](./development-plan.md) - Task breakdown and progress
-- [Architecture Decision](./ARCHITECTURE_DECISION.md) - Technology choice rationale
-- [Electron Archive](./archive-electron/) - Reference implementation
-- [EVE Online ESI](https://esi.evetech.net/) - EVE API documentation
+CCP hf. has granted permission to Gideon to use EVE Online and all associated logos and designs for promotional and information purposes on its website but does not endorse, and is not in any way affiliated with, Gideon. CCP is in no way responsible for the content on or functioning of this application, nor can it be liable for any damage arising from the use of this application.
 
 ---
 
-**Building the future of EVE Online desktop applications with native Windows performance and integration.**
+**Fly safe, capsuleer. o7**
